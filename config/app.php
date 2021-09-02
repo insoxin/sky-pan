@@ -15,11 +15,11 @@
 
 return [
     // 应用名称
-    'app_name'               => '',
+    'app_name'               => 'SkyPan',
     // 应用地址
-    'app_host'               => '',
+    'app_host'               => 'https://gitee.com/tobugnet/sky-pan.git',
     // 应用调试模式
-    'app_debug'              => false,
+    'app_debug'              => true,
     // 应用Trace
     'app_trace'              => false,
     // 是否支持多模块
