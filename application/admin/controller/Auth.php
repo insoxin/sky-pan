@@ -8,7 +8,7 @@ class Auth extends Controller
 {
 
     public function login(){
-
+        return $this->fetch();
     }
 
     public function logout(){
