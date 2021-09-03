@@ -178,7 +178,7 @@ layui.define(['message', 'table', 'jquery', 'element', 'yaml', 'form', 'tab', 'm
 				} else {
 					bodyFrame = pearFrame.render({
 						elem: 'content',
-						title: '首页',
+						title: param.tab.index.title,
 						url: param.tab.index.href,
 						width: '100%',
 						height: '100%'

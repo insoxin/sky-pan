@@ -468,7 +468,10 @@ layui.define(['jquery', 'element'], function(exports) {
 			}
 			TitleItem += '<i class="layui-icon layui-unselect layui-tab-close">ဆ</i></li>';
 			title += TitleItem;
+
 			if (option.index == index) {
+
+
 
 				// 处 理 显 示 内 容
 				content += '<div class="layui-show layui-tab-item"><iframe id="' + item.id + '" data-frameid="' + item.id +
