@@ -24,7 +24,7 @@ layui.use(['admin', 'jquery', 'layer','element'], function() {
             "index": {
                 id: "1",
                 href: skpan_config.home_url,
-                title: "仪表面板"
+                title: "面板首页"
             }
         },
         "theme": {
