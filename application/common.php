@@ -10,3 +10,10 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
+function getNotNullTime($time,$default = '',$format = 'Y-m-d H:i:s'){
+    if($time > 0){
+        return date($format,$time);
+    }else{
+        return $default;
+    }
+}

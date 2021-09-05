@@ -11,15 +11,9 @@
     <form class="layui-form" action="">
       <div class="layui-form-item">
         <div class="layui-form-item layui-inline">
-          <label class="layui-form-label">账号</label>
+          <label class="layui-form-label">手机号码</label>
           <div class="layui-input-inline">
-            <input type="text" name="realName" placeholder="" class="layui-input">
-          </div>
-        </div>
-        <div class="layui-form-item layui-inline">
-          <label class="layui-form-label">邮箱</label>
-          <div class="layui-input-inline">
-            <input type="text" name="realName" placeholder="" class="layui-input">
+            <input type="text" name="phone" placeholder="" class="layui-input">
           </div>
         </div>
         <div class="layui-form-item layui-inline">
@@ -59,7 +53,7 @@
 </script>
 
 <script type="text/html" id="user-enable">
-  <input type="checkbox" name="status" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="user-enable" checked = "{{ d.status == 0 ? 'true' : 'false' }}">
+  <input type="checkbox" name="status" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="user-enable" {{ d.status == 1 ? 'checked' : '' }}>
 </script>
 
 
@@ -67,9 +61,17 @@
   {{#if (d.is_auth == 0) { }}
   <span class="layui-badge layui-bg-orange">未实名</span>
   {{# }else if(d.is_auth == 1){ }}
-  <span class="layui-badge layui-bg-blue">实名认证</span>
+  <span class="layui-badge layui-bg-blue">已认证</span>
   {{# } }}
 
+</script>
+
+<script type="text/html" id="user-grade">
+  {{#if (d.grade == 0) { }}
+  <span class="layui-badge layui-bg-gray">普通用户</span>
+  {{# }else if(d.grade > 0){ }}
+  <span class="layui-badge">VIP用户</span>
+  {{# } }}
 </script>
 
 <script type="text/html" id="user-createTime">
@@ -88,9 +90,10 @@
     let cols = [
       [{type: 'checkbox'},
         {title: '手机号码', field: 'phone', align: 'center'},
-        {title: '实名认证', field: 'is_auth', align: 'center', templet: '#user-auth'},
+        {title: '用户等级', field: 'grade', align: 'center', templet: '#user-grade'},
         {title: '余额', field: 'amount', align: 'center'},
         {title: '安全邮箱', field: 'email', align: 'center'},
+        {title: '实名认证', field: 'is_auth', align: 'center', templet: '#user-auth'},
         {title: '账号状态', field: 'status', align: 'center', templet: '#user-enable'},
         {title: '注册时间', field: 'create_time', align: 'center', templet: '#user-createTime'},
         {title: '操作', toolbar: '#user-bar', align: 'center', width: 130}
@@ -137,7 +140,23 @@
     });
 
     form.on('switch(user-enable)', function(obj) {
-      layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
+      let status = obj.elem.checked ? 1 : 0;
+      $.ajax({
+        url:"{:url('users/change_status')}",
+        type:'get',
+        data:{
+          id:this.value,
+          status:status
+        },
+        dataType:'JSON',
+        success:function(result){
+          if(result.code == 200){
+            layer.tips(result.msg, obj.othis);
+          }else{
+            layer.msg(result,{icon:2});
+          }
+        }
+      })
     });
 
     window.add = function() {
@@ -155,25 +174,25 @@
         type: 2,
         title: '修改',
         shade: 0.1,
-        area: ['500px', '400px'],
-        content: MODULE_PATH + 'edit.html'
+        area: ['600px', '500px'],
+        content: "{:url('users/edit')}?id=" + obj.data['id']
       });
     }
 
     window.remove = function(obj) {
-      layer.confirm('确定要删除该用户', {
+      layer.confirm('确定要删除该用户吗？<b style="color: red">删除后用户的储存数据会被清空，且不可恢复</b>', {
         icon: 3,
         title: '提示'
       }, function(index) {
         layer.close(index);
         let loading = layer.load();
         $.ajax({
-          url: MODULE_PATH + "remove/" + obj.data['userId'],
+          url: "{:url('users/del')}?ids=" + obj.data['id'],
           dataType: 'json',
-          type: 'delete',
+          type: 'get',
           success: function(result) {
             layer.close(loading);
-            if (result.success) {
+            if (result.code == 200) {
               layer.msg(result.msg, {
                 icon: 1,
                 time: 1000
@@ -193,7 +212,7 @@
 
     window.batchRemove = function(obj) {
 
-      var checkIds = common.checkField(obj,'userId');
+      var checkIds = common.checkField(obj,'id');
 
       if (checkIds === "") {
         layer.msg("未选中数据", {
@@ -203,19 +222,19 @@
         return false;
       }
 
-      layer.confirm('确定要删除这些用户', {
+      layer.confirm('确定要删除这些用户[' + checkIds + ']吗，<b style="color: red">删除后数据不可恢复</b>', {
         icon: 3,
         title: '提示'
       }, function(index) {
         layer.close(index);
         let loading = layer.load();
         $.ajax({
-          url: MODULE_PATH + "batchRemove/" + ids,
+          url: "{:url('users/del')}?ids=" + ids,
           dataType: 'json',
-          type: 'delete',
+          type: 'get',
           success: function(result) {
             layer.close(loading);
-            if (result.success) {
+            if (result.code == 200) {
               layer.msg(result.msg, {
                 icon: 1,
                 time: 1000

@@ -13,8 +13,15 @@ class Users extends AdminController
         if($this->request->isAjax()){
             $page = input('get.page',1);
             $limit = input('get.limit',10);
+            $phone = input('get.phone','');
 
-            $list = User::page($page,$limit)->select();
+            $map = [];
+
+            if(!empty($phone)){
+                $map[] = ['phone','like','%'.$phone.'%'];
+            }
+
+            $list = User::where($map)->page($page,$limit)->field('id,phone,grade,is_auth,amount,email,status,create_time')->select();
 
             $count = User::count();
 
@@ -52,6 +59,84 @@ class Users extends AdminController
         }else{
             return $this->fetch();
         }
+    }
+
+    public function del(){
+        $del_list = input('get.ids');
+        //删除用户
+        User::destroy($del_list);
+        /**
+         * 待完成功能：删除用户后删除相关数据，如：上传储存的数据，订单数据，目录数据，分享数据等
+         */
+        return json(['code' => 200,'删除成功']);
+    }
+
+    public function edit(){
+        $id = input('get.id');
+        $info = User::get($id);
+
+        if(empty($info)){
+            $this->error('用户数据不存在');
+        }
+
+        if($this->request->isPost()){
+            $data = input('post.');
+            $result = $this->validate($data,[
+                'email|安全邮箱' => 'email',
+                'password|登录密码' => 'alphaNum|length:6,18',
+                'grade|用户等级' => 'require|number',
+                'grade_time|到期时间' => 'dateFormat:Y-m-d'
+            ]);
+
+            if($result !== true) return json(['code' => 502,'msg' => $result]);
+
+            $update = [];
+
+            if(!empty($data['email'])){
+                $update['email'] = $data['email'];
+            }
+
+            if(!empty($data['password'])){
+                $salt = substr(md5(uniqid()),0,6);
+                $en_password = md5($data['password'].$salt);
+                $update['salt'] = $salt;
+                $update['password'] = $en_password;
+            }
+
+            $update['grade'] = $data['grade'];
+
+            if($data['grade'] > 0){
+                $grade_time = strtotime($data['grade_time']);
+                if($grade_time < time()){
+                    unset($update['grade']);
+                }else{
+                    $update['grade_time'] = $grade_time;
+                }
+            }
+
+            User::where('id',$id)->update($update);
+
+            return json(['code' => 200,'msg' => '用户信息修改成功']);
+
+        }else{
+            $this->assign('info',$info);
+            return $this->fetch();
+        }
+    }
+
+    public function change_status(){
+        $id = input('get.id');
+        $status = input('get.status');
+
+        $info = User::get($id);
+
+        if($info->isEmpty()){
+            return json(['code' => 502,'msg' => '用户数据不存在']);
+        }
+
+        User::where('id',$id)->update(['status' => $status]);
+
+        return json(['code' => 200,'msg' => '用户状态切换成功']);
     }
 
 }
