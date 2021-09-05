@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version: 5.5.29)
-# Date: 2021-09-04 17:00:18
+# Date: 2021-09-05 19:20:59
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
@@ -11,14 +11,18 @@
 DROP TABLE IF EXISTS `sk_admin`;
 CREATE TABLE `sk_admin` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(30) NOT NULL DEFAULT '' COMMENT '管理员用户名',
+  `password` varchar(32) NOT NULL DEFAULT '' COMMENT '管理员密码',
+  `last_login_time` int(11) NOT NULL DEFAULT '0' COMMENT '最后登录时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='管理员表';
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='管理员表';
 
 #
 # Data for table "sk_admin"
 #
 
 /*!40000 ALTER TABLE `sk_admin` DISABLE KEYS */;
+INSERT INTO `sk_admin` VALUES (1,'admin','21232f297a57a5a743894a0e4a801fc3',1630836771);
 /*!40000 ALTER TABLE `sk_admin` ENABLE KEYS */;
 
 #
@@ -103,12 +107,24 @@ CREATE TABLE `sk_store` (
 DROP TABLE IF EXISTS `sk_user`;
 CREATE TABLE `sk_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `phone` varchar(11) DEFAULT NULL COMMENT '手机号',
+  `email` varchar(255) NOT NULL DEFAULT '' COMMENT '邮箱账号',
+  `password` varchar(32) DEFAULT NULL COMMENT '密码',
+  `salt` varchar(6) NOT NULL DEFAULT '' COMMENT '密码盐',
+  `amount` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '用户余额',
+  `grade` int(11) NOT NULL DEFAULT '0' COMMENT '是否为会员',
+  `is_auth` tinyint(3) NOT NULL DEFAULT '0' COMMENT '是否实名认证',
+  `grade_time` int(11) NOT NULL DEFAULT '0' COMMENT '会员到期时间',
+  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '注册时间',
+  `login_time` int(11) NOT NULL DEFAULT '0' COMMENT '最近登录时间',
+  `status` tinyint(2) NOT NULL DEFAULT '1' COMMENT '用户状态 1 正常 0封禁',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户表';
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 #
 # Data for table "sk_user"
 #
 
 /*!40000 ALTER TABLE `sk_user` DISABLE KEYS */;
+INSERT INTO `sk_user` VALUES (1,'15502500571','1655545174@qq.com','33a85db969a535214cc05edac5fd2dbf','fadb41',0.00,0,0,0,1630839716,0,1),(2,'15111142675','yunjiwl@qq.com','c5233713e3c1fe85a581f91f82863be6','c7f96f',0.00,0,0,0,1630840142,0,1);
 /*!40000 ALTER TABLE `sk_user` ENABLE KEYS */;
