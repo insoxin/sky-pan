@@ -24,15 +24,12 @@
   <div class="layui-form-item">
     <input placeholder="密 码" type="password" name="password"  hover class="layui-input"/>
   </div>
-  {if config('web.login_captcha')==1}
   <div class="layui-form-item">
     <input placeholder="验证码 : " type="text" maxlength="4" name="captcha" hover class="code layui-input layui-input-inline"/>
-    <img id="codeimg" class="codeImage" style="cursor: pointer;"/>
+    <img id="codeimg" class="codeImage" style="cursor: pointer;width: calc(100% - 192px);"/>
   </div>
-  {/if}
-  <div class="layui-form-item">
-    <input type="checkbox" name="remember" title="30天内自动登录" lay-skin="primary" checked>
-  </div>
+
+  <br>
   <div class="layui-form-item">
     <button  class="pear-btn pear-btn-success login" lay-submit lay-filter="login">
       登 入
@@ -56,9 +53,9 @@
         data: data.field,
         success: function (res) {
           layer.closeAll('loading');
-          if (res.code==200){
+          if (res.code == 200){
             layer.msg(res.msg,{icon:1,time:1000},function () {
-              location.href = '{$Request.root??"/"}';
+              location.href = "{:url('index/index')}";
             })
           } else {
             layer.msg(res.msg,{icon:2,time:1000},function () {
@@ -71,8 +68,9 @@
     });
     initCode();
     function initCode() {
-      $('#codeimg').attr("src","{$Request.root}/login/verify?data=" + new Date().getTime());
+      $('#codeimg').attr("src","{:url('auth/verify')}?data=" + new Date().getTime());
     }
+
     $('#codeimg').on('click', function () {
       initCode();
     });

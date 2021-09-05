@@ -20,8 +20,24 @@ return [
         'id' => 3,
         'title' => '文件管理',
         'icon' => 'layui-icon layui-icon-template-1',
-        'type' => 1,
-        'href' => url('admin/files/index'),
+        'type' => 0,
+        'href' => '',
+        'children' => [
+            [
+                'id' => 131,
+                'title' => '文件列表',
+                'type' => 1,
+                'openType' => '_iframe',
+                'href' => url('admin/files/index')
+            ],
+            [
+                'id' => 132,
+                'title' => '文件回收站',
+                'type' => 1,
+                'openType' => '_iframe',
+                'href' => url('admin/files/delete')
+            ],
+        ]
     ],
     [
         'id' => 4,

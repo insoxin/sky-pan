@@ -2,9 +2,9 @@
 
 namespace app\admin\controller;
 
-use think\Controller;
+use app\common\controller\AdminController;
 
-class Index extends Controller
+class Index extends AdminController
 {
 
     public function index(){
