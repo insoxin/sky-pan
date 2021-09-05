@@ -22,7 +22,7 @@ class Auth extends AdminController
 
                 return json(['code' => 200,'msg' => '登录成功，正在跳转后台..']);
             }catch (\Throwable $e){
-                return json(['code' => 502,'msg' => $e->getMessage()]);
+                return json(['code' => 502,'msg' => '登录失败：' . $e->getMessage()]);
             }
         }else{
             return $this->fetch();

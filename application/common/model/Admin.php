@@ -19,7 +19,7 @@ class Admin extends Model
     public function login($username,$password){
         $user = self::where('username',$username)->find();
 
-        if($user->isEmpty()){
+        if(empty($user)){
             throw new AdminLoginError('账号不存在');
         }
 
