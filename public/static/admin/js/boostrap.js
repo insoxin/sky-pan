@@ -17,7 +17,7 @@ layui.use(['admin', 'jquery', 'layer','element'], function() {
             async: false
         },
         "tab": {
-            "muiltTab": false,
+            "muiltTab": true,
             "keepState": false,
             "session": true,
             "tabMax": 30,
@@ -30,7 +30,7 @@ layui.use(['admin', 'jquery', 'layer','element'], function() {
         "theme": {
             "defaultColor": "3",
             "defaultMenu": "dark-theme",
-            "allowCustom": true
+            "allowCustom": false
         },
         "colors": [
             {
@@ -40,7 +40,7 @@ layui.use(['admin', 'jquery', 'layer','element'], function() {
         ],
         "links": [],
         "other": {
-            "keepLoad": 100
+            "keepLoad": 1000
         },
         "header":{
             message: false
