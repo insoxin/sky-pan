@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>用户组管理</title>
+    <link rel="stylesheet" href="/static/component/pear/css/pear.css" />
+</head>
+<body class="pear-container">
+
+<div class="layui-card">
+    <div class="layui-card-body">
+        <table id="user-table" lay-filter="user-table"></table>
+    </div>
+</div>
+
+<script type="text/html" id="user-toolbar">
+    <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
+        <i class="layui-icon layui-icon-add-1"></i>
+        新增用户组
+    </button>
+</script>
+
+<script type="text/html" id="user-bar">
+    <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
+    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
+</script>
+
+<script type="text/html" id="user-speed">
+    {{#if (d.speed == '') { }}
+    <span class="layui-badge layui-bg-blue">不限速</span>
+    {{# }else if(d.speed == 0){ }}
+    <span class="layui-badge layui-bg-orange">禁止下载</span>
+    {{# }else if(d.speed > 0){ }}
+    <span class="layui-badge-rim">{{ d.speed }} KB/s</span>
+    {{# } }}
+
+</script>
+
+<script type="text/html" id="user-share">
+    {{#if (d.allow_share == 0) { }}
+    <span class="layui-badge layui-bg-orange">禁止</span>
+    {{# }else if(d.allow_share == 1){ }}
+    <span class="layui-badge layui-bg-blue">允许</span>
+    {{# } }}
+</script>
+
+
+<script src="/static/component/layui/layui.js"></script>
+<script src="/static/component/pear/pear.js"></script>
+<script>
+    layui.use(['table', 'form', 'jquery','common'], function() {
+        let table = layui.table;
+        let form = layui.form;
+        let $ = layui.jquery;
+        let common = layui.common;
+
+        let cols = [
+            [{type: 'checkbox'},
+                {title: 'ID', field: 'id', align: 'center'},
+                {title: '用户组名称', field: 'group_name', align: 'center'},
+                {title: '存储策略', field: 'policy_id', align: 'center'},
+                {title: '最大容量', field: 'max_storage', align: 'center'},
+                {title: '下载限速', field: 'speed', align: 'center', templet: '#user-speed'},
+                {title: '允许分享', field: 'allow_share', align: 'center', templet: '#user-share'},
+                {title: '操作', toolbar: '#user-bar', align: 'center', width: 130}
+            ]
+        ]
+
+        table.render({
+            elem: '#user-table',
+            url: window.location.href,
+            page: true,
+            cols: cols,
+            skin: 'line',
+            toolbar: '#user-toolbar',
+            defaultToolbar: [{
+                title: '刷新',
+                layEvent: 'refresh',
+                icon: 'layui-icon-refresh',
+            }, 'print', 'exports']
+        });
+
+        table.on('tool(user-table)', function(obj) {
+            if (obj.event === 'remove') {
+                window.remove(obj);
+            } else if (obj.event === 'edit') {
+                window.edit(obj);
+            }
+        });
+
+        table.on('toolbar(user-table)', function(obj) {
+            if (obj.event === 'add') {
+                window.add();
+            } else if (obj.event === 'refresh') {
+                window.refresh();
+            }
+        });
+
+        window.add = function() {
+            layer.open({
+                type: 2,
+                title: '新增用户组',
+                shade: 0.1,
+                area: [common.isModile()?'100%':'600px', common.isModile()?'100%':'500px'],
+                content: "{:url('group/add')}"
+            });
+        }
+
+        window.edit = function(obj) {
+            layer.open({
+                type: 2,
+                title: '修改用户组',
+                shade: 0.1,
+                area: ['600px', '500px'],
+                content: "{:url('users/edit')}?id=" + obj.data['id']
+            });
+        }
+
+        window.remove = function(obj) {
+            layer.confirm('确定要删除该用户吗？<b style="color: red">删除后用户的储存数据会被清空，且不可恢复</b>', {
+                icon: 3,
+                title: '提示'
+            }, function(index) {
+                layer.close(index);
+                let loading = layer.load();
+                $.ajax({
+                    url: "{:url('users/del')}?ids=" + obj.data['id'],
+                    dataType: 'json',
+                    type: 'get',
+                    success: function(result) {
+                        layer.close(loading);
+                        if (result.code == 200) {
+                            layer.msg(result.msg, {
+                                icon: 1,
+                                time: 1000
+                            }, function() {
+                                obj.del();
+                            });
+                        } else {
+                            layer.msg(result.msg, {
+                                icon: 2,
+                                time: 1000
+                            });
+                        }
+                    }
+                })
+            });
+        }
+
+        window.refresh = function(param) {
+            table.reload('user-table');
+        }
+    })
+</script>
+</body>
+</html>

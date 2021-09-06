@@ -2,11 +2,11 @@
 
 namespace app\admin\controller;
 
-use app\common\controller\AdminController;
-use app\common\model\Admin;
+use app\common\controller\Admin;
+use app\common\model\Admin as AdminModel;
 use think\captcha\Captcha;
 
-class Auth extends AdminController
+class Auth extends Admin
 {
 
     public function login(){

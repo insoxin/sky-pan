@@ -2,11 +2,11 @@
 
 namespace app\admin\controller;
 
-use app\common\controller\AdminController;
+use app\common\controller\Admin;
 use app\common\model\User;
 use think\Exception;
 
-class Users extends AdminController
+class Users extends Admin
 {
 
     public function index(){
@@ -68,7 +68,7 @@ class Users extends AdminController
         /**
          * 待完成功能：删除用户后删除相关数据，如：上传储存的数据，订单数据，目录数据，分享数据等
          */
-        return json(['code' => 200,'删除成功']);
+        return json(['code' => 200,'msg' => '删除成功']);
     }
 
     public function edit(){

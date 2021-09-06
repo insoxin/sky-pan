@@ -13,8 +13,24 @@ return [
         'id' => 2,
         'title' => '用户管理',
         'icon' => 'layui-icon layui-icon-component',
-        'type' => 1,
-        'href' => url('admin/users/index'),
+        'type' => 0,
+        'href' => '',
+        'children' => [
+            [
+                'id' => 121,
+                'title' => '用户列表',
+                'type' => 1,
+                'openType' => '_iframe',
+                'href' => url('admin/users/index')
+            ],
+            [
+                'id' => 122,
+                'title' => '用户组管理',
+                'type' => 1,
+                'openType' => '_iframe',
+                'href' => url('admin/group/index')
+            ],
+        ]
     ],
     [
         'id' => 3,
@@ -41,7 +57,7 @@ return [
     ],
     [
         'id' => 4,
-        'title' => '上传策略',
+        'title' => '储存策略',
         'icon' => 'layui-icon layui-icon-util',
         'type' => 1,
         'href' => url('admin/policy/index'),

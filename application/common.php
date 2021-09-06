@@ -17,3 +17,15 @@ function getNotNullTime($time,$default = '',$format = 'Y-m-d H:i:s'){
         return $default;
     }
 }
+
+function countSize($bit,$array=false){
+    $type = array('Bytes','KB','MB','GB','TB');
+    $box = array('1','1024','1048576','1073741824','TB');
+    for($i = 0; $bit >= 1024; $i++) {
+        $bit/=1024;
+    }
+    if($array){
+        return [(floor($bit*100)/100),$box[$i]];
+    }
+    return (floor($bit*100)/100).$type[$i];
+}

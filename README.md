@@ -24,6 +24,9 @@ composer 加速
 ```
 composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 ```
+Cloudreve下载
+
+https://xiaoluzyw.lanzoui.com/iMblCto46sb
 
 #### 使用说明
 

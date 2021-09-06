@@ -2,9 +2,9 @@
 
 namespace app\admin\controller;
 
-use app\common\controller\AdminController;
+use app\common\controller\Admin;
 
-class Dashboard extends AdminController
+class Dashboard extends Admin
 {
 
     public function index(){

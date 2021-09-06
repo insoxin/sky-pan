@@ -229,7 +229,7 @@
         layer.close(index);
         let loading = layer.load();
         $.ajax({
-          url: "{:url('users/del')}?ids=" + ids,
+          url: "{:url('users/del')}?ids=" + checkIds,
           dataType: 'json',
           type: 'get',
           success: function(result) {
