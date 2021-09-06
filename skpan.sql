@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version: 5.5.29)
-# Date: 2021-09-06 17:24:58
+# Date: 2021-09-06 18:21:43
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
@@ -70,7 +70,7 @@ CREATE TABLE `sk_groups` (
 #
 
 /*!40000 ALTER TABLE `sk_groups` DISABLE KEYS */;
-INSERT INTO `sk_groups` VALUES (1,'管理员',0,10737418240,'10',1,0),(2,'管理员',0,10737418240,'',1,0);
+INSERT INTO `sk_groups` VALUES (1,'管理员',0,10737418240,'10',1,1),(2,'游客',0,10737418240,'',1,1),(3,'普通用户',0,104857600,'10',1,0);
 /*!40000 ALTER TABLE `sk_groups` ENABLE KEYS */;
 
 #
