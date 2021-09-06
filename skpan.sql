@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version: 5.5.29)
-# Date: 2021-09-05 19:20:59
+# Date: 2021-09-06 17:24:58
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
@@ -22,7 +22,7 @@ CREATE TABLE `sk_admin` (
 #
 
 /*!40000 ALTER TABLE `sk_admin` DISABLE KEYS */;
-INSERT INTO `sk_admin` VALUES (1,'admin','21232f297a57a5a743894a0e4a801fc3',1630836771);
+INSERT INTO `sk_admin` VALUES (1,'admin','21232f297a57a5a743894a0e4a801fc3',1630909184);
 /*!40000 ALTER TABLE `sk_admin` ENABLE KEYS */;
 
 #
@@ -48,6 +48,30 @@ CREATE TABLE `sk_folder` (
 
 /*!40000 ALTER TABLE `sk_folder` DISABLE KEYS */;
 /*!40000 ALTER TABLE `sk_folder` ENABLE KEYS */;
+
+#
+# Structure for table "sk_groups"
+#
+
+DROP TABLE IF EXISTS `sk_groups`;
+CREATE TABLE `sk_groups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_name` varchar(120) DEFAULT '' COMMENT '用户组名称',
+  `policy_id` int(11) NOT NULL DEFAULT '0' COMMENT '存储策略ID',
+  `max_storage` bigint(20) NOT NULL DEFAULT '0' COMMENT '最大存储',
+  `speed` varchar(20) DEFAULT NULL COMMENT '下载限速',
+  `allow_share` tinyint(1) NOT NULL DEFAULT '0' COMMENT '允许分享',
+  `is_sys` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否为系统用户组',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='用户组';
+
+#
+# Data for table "sk_groups"
+#
+
+/*!40000 ALTER TABLE `sk_groups` DISABLE KEYS */;
+INSERT INTO `sk_groups` VALUES (1,'管理员',0,10737418240,'10',1,0),(2,'管理员',0,10737418240,'',1,0);
+/*!40000 ALTER TABLE `sk_groups` ENABLE KEYS */;
 
 #
 # Structure for table "sk_policy"
@@ -126,5 +150,4 @@ CREATE TABLE `sk_user` (
 #
 
 /*!40000 ALTER TABLE `sk_user` DISABLE KEYS */;
-INSERT INTO `sk_user` VALUES (1,'15502500571','1655545174@qq.com','33a85db969a535214cc05edac5fd2dbf','fadb41',0.00,0,0,0,1630839716,0,1),(2,'15111142675','yunjiwl@qq.com','c5233713e3c1fe85a581f91f82863be6','c7f96f',0.00,0,0,0,1630840142,0,1);
 /*!40000 ALTER TABLE `sk_user` ENABLE KEYS */;
