@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/static/component/pear/css/pear.css" />
+</head>
+<body>
+<form class="layui-form">
+  <div class="mainBox">
+    <div class="main-container">
+      <div class="layui-form-item">
+        <label class="layui-form-label">用户组名</label>
+        <div class="layui-input-block">
+          <input type="text" name="group_name" value="{$info.group_name}" required  lay-verify="required" autocomplete="off" class="layui-input">
+          <div class="layui-form-mid layui-word-aux">用户组的名称</div>
+        </div>
+      </div>
+
+      <div class="layui-form-item">
+        <label class="layui-form-label">存储策略</label>
+        <div class="layui-input-block">
+          <select name="policy_id" lay-verify="required">
+            <option value="0">默认存储策略</option>
+          </select>
+          <div class="layui-form-mid layui-word-aux">为该用户组绑定一个上传策略</div>
+        </div>
+      </div>
+
+      <div class="layui-form-item">
+        <label class="layui-form-label">储存容量</label>
+        <div class="layui-input-block">
+          <div class="layui-input-inline">
+            <input type="number" name="max_storage" required value="{:countSize($info.max_storage,true)[0]}"  lay-verify="required" autocomplete="off" class="layui-input">
+          </div>
+          <div class="layui-form-mid">单位：</div>
+          <div class="layui-input-inline">
+            <select name="storage_size" lay-verify="required">
+              {php}
+                $storage_size = countSize($info['max_storage'],true)[1];
+              {/php}
+              <option value="1" {eq name="$storage_size" value="1"}selected{/eq}>B</option>
+              <option value="1024" {eq name="$storage_size" value="1024"}selected{/eq}>KB</option>
+              <option value="1048576" {eq name="$storage_size" value="1048576"}selected{/eq}>MB</option>
+              <option value="1073741824" {eq name="$storage_size" value="1073741824"}selected{/eq}>GB</option>
+            </select>
+          </div>
+          <div class="layui-form-mid layui-word-aux">该用户组初始最大可用容量</div>
+        </div>
+
+      </div>
+
+      <div class="layui-form-item">
+        <label class="layui-form-label">下载限速</label>
+        <div class="layui-input-inline">
+          <input type="text" name="speed" min="0" value="{$info.speed}" placeholder="留空表示不限速" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-form-mid layui-word-aux"><b>KB/s</b>  填写0表示禁止下载</div>
+      </div>
+
+      <div class="layui-form-item">
+        <label class="layui-form-label">分享文件</label>
+        <div class="layui-input-inline">
+          <input type="radio" name="allow_share" value="1" title="允许" {eq name="$info.allow_share" value="1"}checked{/eq}>
+          <input type="radio" name="allow_share" value="0" title="禁止" {eq name="$info.allow_share" value="0"}checked{/eq}>
+        </div>
+        <div class="layui-form-mid layui-word-aux">是否允许创建文件分享链接</div>
+      </div>
+
+    </div>
+  </div>
+  <div class="bottom">
+    <div class="button-container">
+      <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit="" lay-filter="save">
+        <i class="layui-icon layui-icon-ok"></i>
+        提交
+      </button>
+    </div>
+  </div>
+</form>
+<script src="/static/component/layui/layui.js"></script>
+<script src="/static/component/pear/pear.js"></script>
+<script>
+  layui.use(['form','jquery'],function(){
+    let form = layui.form;
+    let $ = layui.jquery;
+
+    form.on('submit(save)', function(data){
+      $.ajax({
+        data:JSON.stringify(data.field),
+        dataType:'json',
+        contentType:'application/json',
+        type:'post',
+        success:function(res){
+          //判断有没有权限
+          if(res && res.code == 999){
+            layer.msg(res.msg, {
+              icon: 5,
+              time: 2000,
+            })
+            return false;
+          }else if(res.code == 200){
+            layer.msg(res.msg,{icon:1,time:1000},function(){
+              parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+              parent.layui.table.reload("user-table");
+            });
+          }else{
+            layer.msg(res.msg,{icon:2,time:1000});
+          }
+        }
+      })
+      return false;
+    });
+  })
+</script>
+</body>
+</html>

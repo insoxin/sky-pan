@@ -13,4 +13,10 @@ class Groups extends Model
         self::insert($data);
     }
 
+    public function editGroup($id,$data){
+        $data["max_storage"] = $data["max_storage"] * $data["storage_size"];
+        unset($data["storage_size"]);
+        self::where('id',$id)->update($data);
+    }
+
 }

@@ -58,7 +58,9 @@
             [{type: 'checkbox'},
                 {title: 'ID', field: 'id', align: 'center'},
                 {title: '用户组名称', field: 'group_name', align: 'center'},
+                {title: '类型', field: 'is_sys', align: 'center'},
                 {title: '存储策略', field: 'policy_id', align: 'center'},
+                {title: '用户数量', field: 'user_num', align: 'center'},
                 {title: '最大容量', field: 'max_storage', align: 'center'},
                 {title: '下载限速', field: 'speed', align: 'center', templet: '#user-speed'},
                 {title: '允许分享', field: 'allow_share', align: 'center', templet: '#user-share'},
@@ -112,19 +114,19 @@
                 title: '修改用户组',
                 shade: 0.1,
                 area: ['600px', '500px'],
-                content: "{:url('users/edit')}?id=" + obj.data['id']
+                content: "{:url('group/edit')}?id=" + obj.data['id']
             });
         }
 
         window.remove = function(obj) {
-            layer.confirm('确定要删除该用户吗？<b style="color: red">删除后用户的储存数据会被清空，且不可恢复</b>', {
+            layer.confirm('确定要删除该用户组吗？', {
                 icon: 3,
                 title: '提示'
             }, function(index) {
                 layer.close(index);
                 let loading = layer.load();
                 $.ajax({
-                    url: "{:url('users/del')}?ids=" + obj.data['id'],
+                    url: "{:url('group/delete')}?id=" + obj.data['id'],
                     dataType: 'json',
                     type: 'get',
                     success: function(result) {

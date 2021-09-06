@@ -16,8 +16,12 @@ class Group extends Admin
 
             $list = Groups::page($page,$limit)->select()->each(function($item){
                 $item['max_storage'] = countSize($item['max_storage']);
+                $item['is_sys'] = $item['is_sys'] ? '<span class="layui-badge-rim">系统</span>' : '自定义';
+                $item['user_num'] = 0;
                 return $item;
             });
+
+
             $count = Groups::count();
             $this->returnSuccessLayTable($count,$list->toArray());
         }
@@ -34,11 +38,41 @@ class Group extends Admin
     }
 
     public function edit(){
+        $id = input('get.id');
+        $info = Groups::get($id);
 
+        if(empty($info)){
+            $this->error('用户组数据不存在');
+        }
+
+        if($this->request->isPost()){
+            $this->callModelMethods('Groups','editGroup',$id,input('post.'));
+            $this->returnSuccess();
+        }
+
+        $this->assign('info',$info);
+        return $this->fetch();
     }
 
     public function delete(){
+        $id = input('get.id');
+        $info = Groups::get($id);
 
+        if(empty($info)){
+            $this->returnError('用户组不存在');
+        }
+
+        if($info['is_sys'] == 1){
+            $this->returnError('系统用户组，不可删除');
+        }
+
+        /**
+         * 判断用户组下是否存在用户
+         */
+
+        Groups::where('id',$id)->delete();
+
+        $this->returnSuccess('删除成功');
     }
 
 }
