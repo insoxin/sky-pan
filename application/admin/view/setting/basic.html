@@ -10,59 +10,44 @@
         <div class="main-container">
             <br>
             <br>
+
             <div class="layui-form-item">
-                <label class="layui-form-label">用户组名</label>
+                <label class="layui-form-label">站点标题</label>
                 <div class="layui-input-block" style="max-width: 800px;">
-                    <input type="text" name="group_name" required  lay-verify="required" autocomplete="off" class="layui-input">
-                    <div class="layui-form-mid layui-word-aux">用户组的名称</div>
+                    <input type="text" name="site_name" required  lay-verify="required" autocomplete="off" class="layui-input">
+                    <div class="layui-form-mid layui-word-aux">站点的标题，将会展示在个页面的标题尾部、邮件中。</div>
                 </div>
             </div>
 
             <div class="layui-form-item">
-                <label class="layui-form-label">存储策略</label>
+                <label class="layui-form-label">SEO关键词</label>
                 <div class="layui-input-block" style="max-width: 800px;">
-                    <select name="policy_id" lay-verify="required">
-                        <option value="0">默认存储策略</option>
-                    </select>
-                    <div class="layui-form-mid layui-word-aux">为该用户组绑定一个上传策略</div>
+                    <input type="text" name="site_keyword" required  lay-verify="required" autocomplete="off" class="layui-input">
+                    <div class="layui-form-mid layui-word-aux">位于首页meta标签内的站点关键词</div>
                 </div>
             </div>
 
-            <div class="layui-form-item">
-                <label class="layui-form-label">储存容量</label>
-                <div class="layui-input-block">
-                    <div class="layui-input-inline">
-                        <input type="number" name="max_storage" required value="10"  lay-verify="required" autocomplete="off" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid">单位：</div>
-                    <div class="layui-input-inline">
-                        <select name="storage_size" lay-verify="required">
-                            <option value="1">B</option>
-                            <option value="1024">KB</option>
-                            <option value="1048576" selected>MB</option>
-                            <option value="1073741824">GB</option>
-                        </select>
-                    </div>
-                    <div class="layui-form-mid layui-word-aux">该用户组初始最大可用容量</div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">SEO描述</label>
+                <div class="layui-input-block" style="max-width: 800px;">
+                    <textarea name="site_desc" placeholder="位于首页meta标签内的SEO描述" class="layui-textarea"></textarea>
                 </div>
-
             </div>
 
-            <div class="layui-form-item">
-                <label class="layui-form-label">下载限速</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="speed" min="0" placeholder="留空表示不限速" autocomplete="off" class="layui-input">
+            <br>
+
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">网站头部</label>
+                <div class="layui-input-block" style="max-width: 800px;">
+                    <textarea name="site_head" placeholder="网站头部代码，用于百度站长等工具验证" class="layui-textarea"></textarea>
                 </div>
-                <div class="layui-form-mid layui-word-aux"><b>KB/s</b>  填写0表示禁止下载</div>
             </div>
 
-            <div class="layui-form-item">
-                <label class="layui-form-label">分享文件</label>
-                <div class="layui-input-inline">
-                    <input type="radio" name="allow_share" value="1" title="允许">
-                    <input type="radio" name="allow_share" value="0" title="禁止" checked>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">网站底部</label>
+                <div class="layui-input-block" style="max-width: 800px;">
+                    <textarea name="site_foot" placeholder="网站底部代码，你可以在此放置统计代码" class="layui-textarea"></textarea>
                 </div>
-                <div class="layui-form-mid layui-word-aux">是否允许创建文件分享链接</div>
             </div>
 
             <br>
@@ -100,7 +85,6 @@
                     }else if(res.code == 200){
                         layer.msg(res.msg,{icon:1,time:1000},function(){
                             parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
-                            parent.layui.table.reload("user-table");
                         });
                     }else{
                         layer.msg(res.msg,{icon:2,time:1000});
