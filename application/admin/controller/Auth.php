@@ -3,13 +3,18 @@
 namespace app\admin\controller;
 
 use app\common\controller\Admin;
-use app\common\model\Admin as AdminModel;
+use app\common\model\Users;
 use think\captcha\Captcha;
 
 class Auth extends Admin
 {
 
     public function login(){
+
+        if((new Users)->login_auth('admin')){
+            return redirect('index/index');
+        }
+
         if($this->request->isPost()){
             $username = input('post.username');
             $password = input('post.password');
@@ -18,7 +23,8 @@ class Auth extends Admin
                 if(!captcha_check($captcha)){
                     throw new \Exception('验证码错误');
                 }
-                (new Admin)->login($username,$password);
+
+                (new Users)->login($username,$password,'admin');
 
                 return json(['code' => 200,'msg' => '登录成功，正在跳转后台..']);
             }catch (\Throwable $e){
@@ -27,6 +33,7 @@ class Auth extends Admin
         }else{
             return $this->fetch();
         }
+
     }
 
     public function logout(){

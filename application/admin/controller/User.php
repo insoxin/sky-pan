@@ -3,10 +3,10 @@
 namespace app\admin\controller;
 
 use app\common\controller\Admin;
-use app\common\model\User;
+use app\common\model\Users;
 use think\Exception;
 
-class Users extends Admin
+class User extends Admin
 {
 
     public function index(){

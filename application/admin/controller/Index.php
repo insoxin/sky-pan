@@ -19,7 +19,7 @@ class Index extends Admin
             // 管理员
             'admin' => [
                 'avatar' => '/static/admin/images/avatar.jpg',
-                'nickname' => 'Admin'
+                'nickname' => $this->adminInfo['nickname']
             ],
             // 激活菜单
             'menu_select' => 1,

@@ -2,7 +2,7 @@
 
 namespace app\http\middleware;
 
-use app\common\model\Admin;
+use app\common\model\Users;
 
 class AdminLoginCheck
 {
@@ -16,7 +16,7 @@ class AdminLoginCheck
 
         $request_uri = $request->controller() . '/' . $request->action();
 
-        if(!in_array($request_uri,$this->except) && !(new Admin)->auth_login()){
+        if(!in_array($request_uri,$this->except) && !(new Users)->login_auth('admin')){
             return redirect('auth/login');
         }
 

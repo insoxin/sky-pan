@@ -142,5 +142,7 @@ return [
     'show_error_msg'         => false,
     // 异常处理handle类 留空使用 \think\exception\Handle
     'exception_handle'       => '',
+    // 密码盐
+    'pass_salt' => 'tbg-sk-pan-ver-1-1-0'
 
 ];

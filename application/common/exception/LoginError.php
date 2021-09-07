@@ -4,7 +4,7 @@ namespace app\common\exception;
 
 use think\Exception;
 
-class AdminLoginError extends Exception
+class LoginError extends Exception
 {
 
 
