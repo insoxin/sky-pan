@@ -14,7 +14,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">站点标题</label>
                 <div class="layui-input-block" style="max-width: 800px;">
-                    <input type="text" name="site_name" required  lay-verify="required" autocomplete="off" class="layui-input">
+                    <input type="text" name="site_name" value="{$option.site_name}" required  lay-verify="required" autocomplete="off" class="layui-input">
                     <div class="layui-form-mid layui-word-aux">站点的标题，将会展示在个页面的标题尾部、邮件中。</div>
                 </div>
             </div>
@@ -22,7 +22,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">SEO关键词</label>
                 <div class="layui-input-block" style="max-width: 800px;">
-                    <input type="text" name="site_keyword" required  lay-verify="required" autocomplete="off" class="layui-input">
+                    <input type="text" name="site_keywords" value="{$option.site_keywords}" required  lay-verify="required" autocomplete="off" class="layui-input">
                     <div class="layui-form-mid layui-word-aux">位于首页meta标签内的站点关键词</div>
                 </div>
             </div>
@@ -30,7 +30,7 @@
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">SEO描述</label>
                 <div class="layui-input-block" style="max-width: 800px;">
-                    <textarea name="site_desc" placeholder="位于首页meta标签内的SEO描述" class="layui-textarea"></textarea>
+                    <textarea name="site_desc" placeholder="位于首页meta标签内的SEO描述" class="layui-textarea">{$option.site_desc}</textarea>
                 </div>
             </div>
 
@@ -39,14 +39,14 @@
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">网站头部</label>
                 <div class="layui-input-block" style="max-width: 800px;">
-                    <textarea name="site_head" placeholder="网站头部代码，用于百度站长等工具验证" class="layui-textarea"></textarea>
+                    <textarea name="site_head" placeholder="网站头部代码，用于百度站长等工具验证" class="layui-textarea">{$option.site_head}</textarea>
                 </div>
             </div>
 
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">网站底部</label>
                 <div class="layui-input-block" style="max-width: 800px;">
-                    <textarea name="site_foot" placeholder="网站底部代码，你可以在此放置统计代码" class="layui-textarea"></textarea>
+                    <textarea name="site_foot" placeholder="网站底部代码，你可以在此放置统计代码" class="layui-textarea">{$option.site_foot}</textarea>
                 </div>
             </div>
 

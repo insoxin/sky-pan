@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/component/pear/css/pear.css" />
+</head>
+<body>
+<form class="layui-form">
+    <div class="mainBox">
+        <div class="main-container">
+            <br>
+            <br>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">允许注册</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="allow_register" value="1" title="允许" {eq name="$option.allow_register" value="1"}checked{/eq}>
+                    <input type="radio" name="allow_register" value="0" title="禁止" {eq name="$option.allow_register" value="0"}checked{/eq}>
+                </div>
+                <div class="layui-form-mid layui-word-aux">是否允许新用户注册</div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">默认用户组</label>
+                <div class="layui-input-block" style="max-width: 800px;">
+                    <select name="default_group" lay-verify="required">
+                        {volist name="$group" id="vo" key="k"}
+                        <option value="{$k}" {eq name="$option.default_group" value="$k"}selected{/eq}>{$vo}</option>
+                        {/volist}
+                    </select>
+                    <div class="layui-form-mid layui-word-aux">用户注册后默认属于的用户组</div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">登录验证码</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="login_captcha" value="1" title="开启" {eq name="$option.login_captcha" value="1"}checked{/eq}>
+                    <input type="radio" name="login_captcha" value="0" title="关闭" {eq name="$option.login_captcha" value="0"}checked{/eq}>
+                </div>
+                <div class="layui-form-mid layui-word-aux">是否启用登录表单验证码</div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">注册验证码</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="register_captcha" value="1" title="开启" {eq name="$option.register_captcha" value="1"}checked{/eq}>
+                    <input type="radio" name="register_captcha" value="0" title="关闭" {eq name="$option.register_captcha" value="0"}checked{/eq}>
+                </div>
+                <div class="layui-form-mid layui-word-aux">是否启用注册表单验证码</div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">找回密码验证码</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="forget_captcha" value="1" title="开启" {eq name="$option.forget_captcha" value="1"}checked{/eq}>
+                    <input type="radio" name="forget_captcha" value="0" title="关闭" {eq name="$option.forget_captcha" value="0"}checked{/eq}>
+                </div>
+                <div class="layui-form-mid layui-word-aux">是否启用找回密码表单验证码</div>
+            </div>
+
+
+            <br>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn layui-btn-normal" lay-submit lay-filter="save">保存设置</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+<script src="/static/component/layui/layui.js"></script>
+<script src="/static/component/pear/pear.js"></script>
+<script>
+    layui.use(['form','jquery'],function(){
+        let form = layui.form;
+        let $ = layui.jquery;
+
+        form.on('submit(save)', function(data){
+            $.ajax({
+                data:JSON.stringify(data.field),
+                dataType:'json',
+                contentType:'application/json',
+                type:'post',
+                success:function(res){
+                    //判断有没有权限
+                    if(res && res.code == 999){
+                        layer.msg(res.msg, {
+                            icon: 5,
+                            time: 2000,
+                        })
+                        return false;
+                    }else if(res.code == 200){
+                        layer.msg(res.msg,{icon:1,time:1000},function(){
+                            parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                        });
+                    }else{
+                        layer.msg(res.msg,{icon:2,time:1000});
+                    }
+                }
+            })
+            return false;
+        });
+    })
+</script>
+</body>
+</html>
