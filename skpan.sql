@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version: 5.5.29)
-# Date: 2021-09-07 20:12:01
+# Date: 2021-09-07 23:53:47
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
@@ -80,14 +80,14 @@ CREATE TABLE `sk_setting` (
   `set_value` text NOT NULL COMMENT '配置值',
   `set_type` varchar(60) NOT NULL DEFAULT '' COMMENT '配置类型',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='系统配置表';
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='系统配置表';
 
 #
 # Data for table "sk_setting"
 #
 
 /*!40000 ALTER TABLE `sk_setting` DISABLE KEYS */;
-INSERT INTO `sk_setting` VALUES (1,'site_name','','basic'),(2,'site_keywords','','basic'),(3,'site_desc','','basic'),(4,'site_head','','basic'),(5,'site_foot','','basic');
+INSERT INTO `sk_setting` VALUES (1,'site_name','SK网盘系统','basic'),(2,'site_keywords','SK网盘系统,网盘系统,网盘','basic'),(3,'site_desc','SK网盘系统xxxxxxxxxxxxxxxxxxx','basic'),(4,'site_head','','basic'),(5,'site_foot','','basic'),(6,'allow_register','1','register'),(7,'login_captcha','1','register'),(8,'default_group','3','register'),(9,'register_captcha','1','register'),(10,'forget_captcha','0','register');
 /*!40000 ALTER TABLE `sk_setting` ENABLE KEYS */;
 
 #
