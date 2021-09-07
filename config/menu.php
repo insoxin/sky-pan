@@ -109,7 +109,7 @@ return [
                 'title' => '基本设置',
                 'type' => 1,
                 'openType' => '_iframe',
-                'href' => url('admin/setting/index')
+                'href' => url('admin/setting/basic')
             ],
             [
                 'id' => 102,
