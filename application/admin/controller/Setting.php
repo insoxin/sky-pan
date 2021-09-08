@@ -5,6 +5,7 @@ namespace app\admin\controller;
 use app\common\controller\Admin;
 use app\common\model\Groups;
 use app\common\model\Setting as SettingModel;
+use think\facade\Cache;
 
 class Setting extends Admin
 {
@@ -43,7 +44,8 @@ class Setting extends Admin
             }
 
             // 更新缓存
-
+            $setting = SettingModel::select()->toArray();
+            Cache::set('_setting_config',$setting);
 
             $this->returnSuccess('保存成功');
         }

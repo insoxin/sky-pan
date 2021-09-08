@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version: 5.5.29)
-# Date: 2021-09-07 23:53:47
+# Date: 2021-09-08 20:57:36
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
@@ -59,6 +59,11 @@ INSERT INTO `sk_groups` VALUES (1,'管理员',0,10737418240,'10',1,1),(2,'游客
 DROP TABLE IF EXISTS `sk_policy`;
 CREATE TABLE `sk_policy` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(120) DEFAULT NULL COMMENT '上传策略名称',
+  `type` varchar(60) NOT NULL DEFAULT '' COMMENT '上传策略类型',
+  `filetype` text COMMENT '允许上传的类型',
+  `max_size` bigint(20) NOT NULL DEFAULT '0' COMMENT '单文件最大大小',
+  `config` text COMMENT '配置信息',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='储存策略';
 
@@ -80,7 +85,7 @@ CREATE TABLE `sk_setting` (
   `set_value` text NOT NULL COMMENT '配置值',
   `set_type` varchar(60) NOT NULL DEFAULT '' COMMENT '配置类型',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='系统配置表';
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='系统配置表';
 
 #
 # Data for table "sk_setting"
