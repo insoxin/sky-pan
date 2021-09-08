@@ -111,6 +111,7 @@
                                     <em class="icon icon-upload"></em>
                                     <p class="text">上传</p>
                                 </div>
+
                                 <div class="top-item flex-box" onclick="mkdir()">
                                     <em class="icon icon-newfolder" title="新建文件夹"></em>
                                     <p class="text">新建文件夹</p>
@@ -452,24 +453,8 @@
         </div>
     </div>
 </div>
-<div role="tooltip" id="el-popover-2040" aria-hidden="true" class="el-popover el-popper" tabindex="0"
-     style="width: 260px; transform-origin: center top; z-index: 2005; display: none;">
-    <div class="pop-box">
-        <div class="pop-top" style="padding-top: 40px;">
-            <p class="text">最近登录时间:2021-01-10 20:24:56</p>
-        </div>
-        <div class="pop-bottom">
-            <div class="text-box space-between">
-                <p class="text">绑定手机号：19179076756</p>
-                <p class="btn flex-box">更换</p>
-            </div>
-            <div class="text-box">下载流量：不限制</div>
-            <div class="text-box">下载速度：不限制</div>
-            <div class="text-box" style="cursor: pointer;">退出</div>
-        </div>
-    </div>
-    <div x-arrow="" class="popper__arrow" style="left: 122.5px;"></div>
-</div>
+
+
 <script>
     function getTable(sousuo="") {
         $('#table').bootstrapTable('destroy'); //销毁数据
@@ -588,6 +573,7 @@
         })
     }
     getTable();</script>
+
 <script type="text/javascript">
 
     //全局变量
@@ -647,6 +633,7 @@
         }
     });
 </script>
+
 <script>
     function tixianadd() {
         if (window.screen.width < 768) {

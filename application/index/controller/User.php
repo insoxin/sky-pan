@@ -41,4 +41,5 @@ class User extends Home
     public function shouyi(){
         return $this->fetch();
     }
+
 }

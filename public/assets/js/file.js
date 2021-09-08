@@ -51,7 +51,7 @@ function upload(){
         area: ['520px', '413px'],
         offset: ['15%','13%'],
        // shadeClose: true,   // 是否点击遮罩关闭
-        content: '/user/upload.html',
+        content: '/upload/index',
         end:function () {
             getTable('当前文件夹'); //刷新数据
         }
