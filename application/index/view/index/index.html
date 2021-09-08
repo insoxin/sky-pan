@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="{$Think.config.basic.site_title}">
+    <meta name="keywords" content="{$Think.config.basic.site_keywords}">
+    <meta name="description" content="{$Think.config.basic.site_desc}">
+
+    <link href="__STATIC__/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/main.css">
+    <!--<link href="__STATIC__/css/index.css" rel="stylesheet" type="text/css">-->
+    <title>{$Think.config.basic.site_name}</title>
+
+    <link href="__STATIC__/css/app.css" rel="stylesheet">
+    <style>
+        .loader-x {
+            display: block;
+            width: 2em;
+            height: 2em;
+            margin: 100px auto;
+            color: inherit;
+            pointer-events: none;
+            color: #f60
+        }
+
+        .loader-x {
+            border-top: .2em solid currentcolor;
+            border-right: .1em solid transparent;
+            -webkit-animation: loader-x 1s linear infinite;
+            animation: loader-x 1s linear infinite;
+            border-radius: 100%;
+            position: relative
+        }
+
+        @-webkit-keyframes loader-x {
+            to {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg)
+            }
+        }
+
+        @keyframes loader-x {
+            to {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg)
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div id="app">
+    <div class="home">
+
+        <div id="header">
+            <div class="fixwid">
+                <div class="logo">
+                    <a href="">
+                        <img src="{$Think.config.basic.site_logo}" style="width: 100%;margin-top: 17px;">
+                    </a>
+                </div>
+                <div class="nav">
+                    <ul>
+                        <li><a href="{:url('index/index')}" class="a_line">首页</a></li>
+                        <li><a href="xieyi.html" class="a_line" target="_blank">免责声明</a></li>
+                        <li><a href="javascript:;" class="a_line" style="color:red;" target="_self">分享赚钱</a></li>
+                    </ul>
+                    <div class="login">
+                        <!-- <a href="index.html" title="您好，Hudson Star" class="a_area">我的网盘</a> -->
+                        <a target="_blank" href="{:url('user/login')}" class="a_area">登录/注册</a>
+                    </div>
+                </div>
+            </div>
+            <img src="__STATIC__/picture/shadow.png">
+        </div>
+
+        <div data-v-e9e0751c="" class="header">
+            <div data-v-e9e0751c="" class="header-content">
+                <div data-v-e9e0751c="" class="header-body">
+                    <div data-v-e9e0751c="" class="body-left">
+                        <div data-v-e9e0751c="" class="left-title">高速存储的云盘</div>
+                        <div data-v-e9e0751c="" class="left-text">
+                            闪客云盘是一款速度快、不打扰、够安全、易于分享的网络云盘,你可以在这里存储、管理和探索内容，尽情打造丰富的数字世界。</div>
+                        <div data-v-e9e0751c="" class="left-download">
+                            <a data-v-e9e0751c="" href="{:url('user/index')}">
+                                <div data-v-e9e0751c="" class="apps">用户中心</div>
+                            </a>
+                            <a data-v-e9e0751c="" href="{:url('user/index')}" target="_self">
+                                <div data-v-e9e0751c="" class="pc">网盘联盟</div>
+                            </a>
+
+                        </div>
+                        <!--<a data-v-e9e0751c="" href="h#">
+                                <div data-v-e9e0751c="" class="left-reservation">
+                                    <span data-v-e9e0751c="">预约测试 1 月 28 日截止，立即申请</span>
+                                </div>
+                            </a>-->
+                    </div>
+                    <div data-v-e9e0751c="" class="body-right">
+                        <div data-v-e9e0751c="" class="right-round1"></div>
+                        <div data-v-e9e0751c="" class="right-round5"></div>
+                        <div data-v-e9e0751c="" class="right-round2"></div>
+                        <div data-v-e9e0751c="" class="right-round3"></div>
+                        <div data-v-e9e0751c="" class="right-round4"></div>
+                        <!---->
+                        <div data-v-e9e0751c="" class="header-img"><img data-v-e9e0751c=""
+                                                                        src="__STATIC__/picture/header-mobile.png" alt=""></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-v-35ecef7e="" class="space">
+            <div data-v-35ecef7e="" class="space-content">
+                <div data-v-35ecef7e="" class="space-title">
+                    <p data-v-35ecef7e="">存储到云端更畅快</p>
+                </div>
+                <div data-v-35ecef7e="" class="space-body">
+                    <div data-v-35ecef7e="" class="body-item">
+                        <p data-v-35ecef7e="">尽享极速</p>
+                        <p data-v-35ecef7e="">上传下载</p>
+                        <p data-v-35ecef7e="">告别 kb/s，极速上传下载文件资料，</p>
+                        <p data-v-35ecef7e="">免费用户也享有合理带宽。</p>
+                        <div data-v-35ecef7e="" class="space-logo space1"></div>
+                    </div>
+                    <div data-v-35ecef7e="" class="body-item">
+                        <p data-v-35ecef7e="">网盘联盟</p>
+                        <p data-v-35ecef7e="">资源共享</p>
+                        <p data-v-35ecef7e="">您的数据，变的有价值!</p>
+                        <p data-v-35ecef7e="">入口一直向你敞开。</p>
+                        <div data-v-35ecef7e="" class="space-logo space3"></div>
+                    </div>
+                    <div data-v-35ecef7e="" class="body-item">
+                        <p data-v-35ecef7e="">云端数据</p>
+                        <p data-v-35ecef7e="">非常安全</p>
+                        <p data-v-35ecef7e="">分享文件地址永久有效</p>
+                        <p data-v-35ecef7e="">不必担心过期而经常更换链接。</p>
+                        <p data-v-35ecef7e=""></p>
+                        <div data-v-35ecef7e="" class="space-logo space4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div data-v-20ff4511="" class="footer">
+        <div data-v-20ff4511="" class="footer-item">
+            <div data-v-20ff4511="" class="footer-img">
+                <div data-v-20ff4511="" class="footer-img2 spinMe"></div>
+                <div data-v-20ff4511="" class="footer-img1 spinMe"></div>
+            </div>
+            <div data-v-20ff4511="" class="footer-title">
+                <p data-v-20ff4511="">高效存储，真正的云加速下载!</p>
+            </div>
+            <div data-v-20ff4511="" class="footer-content">
+                <a data-v-20ff4511="" href="{:url('user/index')}">
+                    <div data-v-20ff4511="" class="content-apps">用户中心</div>
+                </a>
+                <a data-v-20ff4511="" href="{:url('user/login')}">
+                    <div data-v-20ff4511="" class="content-pc">账户登录</div>
+                </a>
+            </div>
+            <div data-v-20ff4511="" class="footer-text">
+                <div data-v-20ff4511="" class="footer-text-links">
+                    <div data-v-20ff4511="" class="footer-text-links-title">友情链接：</div>
+                    <ul data-v-20ff4511="">
+                        <li>
+                            <a data-v-20ff4511="" target="_blank" href="">闪客云盘</a>
+                        </li>
+                        <li>
+                            <a data-v-20ff4511="" target="_self" href="javascript:;">玖讯支付</a>
+                        </li>
+                    </ul>
+                </div>
+                <div data-v-20ff4511="" class="footer-text-content">Copyright © 2018-2021 xxxxx网络科技有限公司 All rights
+                    reserved. 版权所有 <a href="javascript:;" target="_self" style="color: #8286a6">皖ICP备18025451号-6</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="__STATIC__/js/jquery.js"></script>
+<script src="__STATIC__/js/bootstrap.min.js"></script>
+<script src="__STATIC__/js/jquery.cxscroll.js"></script>
+<script type="text/javascript">
+    $(".display,#main .fixwid:eq(2) h1").css("background", "#f5f7f7");
+    $(".course_c:eq(3),.course_c:eq(7)").css("margin-right", "0");
+    $(".course_c:eq(2),.course_c:eq(6)").css("margin-right", "28px");
+    $("#pic_list_1").cxScroll();
+</script>
+</body>
+</html>

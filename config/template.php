@@ -33,4 +33,8 @@ return [
     'taglib_begin' => '{',
     // 标签库标签结束标记
     'taglib_end'   => '}',
+    // 全局替换
+    'tpl_replace_string'  =>  [
+        '__STATIC__'=>'/assets',
+    ]
 ];

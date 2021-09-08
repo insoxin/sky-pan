@@ -12,10 +12,26 @@
             <br>
 
             <div class="layui-form-item">
-                <label class="layui-form-label">站点标题</label>
+                <label class="layui-form-label">站点名称</label>
+                <div class="layui-input-block" style="max-width: 800px;">
+                    <input type="text" name="site_title" value="{$option.site_title}" required  lay-verify="required" autocomplete="off" class="layui-input">
+                    <div class="layui-form-mid layui-word-aux">站点的名称，将会展示在个页面的标题尾部、邮件中。</div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">站点LOGO</label>
+                <div class="layui-input-block" style="max-width: 800px;">
+                    <input type="text" name="site_logo" value="{$option.site_logo}" required  lay-verify="required" autocomplete="off" class="layui-input">
+                    <div class="layui-form-mid layui-word-aux">站点logo路径</div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">SEO标题</label>
                 <div class="layui-input-block" style="max-width: 800px;">
                     <input type="text" name="site_name" value="{$option.site_name}" required  lay-verify="required" autocomplete="off" class="layui-input">
-                    <div class="layui-form-mid layui-word-aux">站点的标题，将会展示在个页面的标题尾部、邮件中。</div>
+                    <div class="layui-form-mid layui-word-aux">位于首页meta标签内的站点标题</div>
                 </div>
             </div>
 

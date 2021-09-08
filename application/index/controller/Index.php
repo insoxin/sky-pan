@@ -1,13 +1,13 @@
 <?php
 namespace app\index\controller;
 
-use think\Controller;
+use app\common\controller\Home;
 
-class Index extends Controller
+class Index extends Home
 {
     public function index()
     {
-        echo 'Hello Index~';
+        return $this->fetch();
     }
     
 }

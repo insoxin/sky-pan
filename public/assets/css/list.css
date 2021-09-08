@@ -1,0 +1,298 @@
+/*  滚动条样式 */
+::-webkit-scrollbar {
+	width: 12px;
+	height: 10px;
+}
+::-webkit-scrollbar-thumb {
+	height: 30px;
+	background-color: #999;
+	-webkit-border-radius: 7px;
+	outline: 2px solid #fff;
+	outline-offset: -2px;
+	border: 2px solid #fff;
+}
+::-webkit-scrollbar-track-piece {
+	background-color: #fff;
+	-webkit-border-radius: 3px;
+}
+		
+.g-button-right {
+	color: #666;
+}
+
+.select {
+	color: #09AAFF;
+	background: rgba(0,0,0,.05);
+}
+
+.brdCom{
+	content: " ";
+	position: absolute;
+	width: 100%;
+	-webkit-transform: scaleY(.5);
+	transform: scaleY(.5)
+}
+
+.top-item{
+	color: #409eff;
+	height: 34px;
+	border-radius: 4px;
+	border: 1px solid #C3EAFF;
+	padding: 0 18px 0 15px;
+	cursor: pointer;
+	margin-right: 10px;
+	position: relative
+}
+
+
+.top-item .text{
+	color: #409eff;
+	font-size: 14px;
+	margin-left: 10px
+}
+
+.top-item:hover .text {
+	border: none;
+	color: #2f6aff
+}
+
+.icon-box{
+	border: 1px solid #4f7cec;
+	border-radius: 4px
+}
+
+.icon-box .top-item{
+	border: none;
+	border-radius: 0;
+	margin-right: 0;
+	border-right: 1px solid #4f7cec
+}
+
+.icon-box .top-item:last-child {
+	border-right: none
+}
+
+.top-right{
+	width: 316px;
+	height: 32px;
+	background-color: #f1f2f4;
+	border-radius: 16px;
+	padding: 0 15px
+}
+
+.top-right input{
+	font-size: 14px;
+	background: none;
+	border: none;
+	width: 250px
+}
+
+.top-right .icon{
+	color: #434343;
+	cursor: pointer
+}
+
+.all-box1{
+	margin-top: 14px
+}
+
+.all-box1 .text{
+	font-size: 12px;
+	color: #535353
+}
+
+.all-box1 .text1{
+	font-size: 12px;
+	color: #626262
+}
+
+.cz-box .icon,.cz-box img{
+	cursor: pointer;
+	margin-right: 15px
+}
+
+.cz-box .icon{
+	color: #4f7cec
+}
+
+.scop-text{
+	cursor: pointer;
+	color: #313131;
+	width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap
+}
+
+.dis-form{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	padding-left: 20px;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	-ms-flex-align: center;
+	align-items: center
+}
+
+.dis-form.from1{
+	margin-top: 35px
+}
+
+.dis-form .text1{
+	width: 85px;
+	font-size: 14px;
+	color: #a0a0a0
+}
+
+.dis-form .text2{
+	font-size: 14px;
+	color: #b5b5b5;
+	margin-left: 15px
+}
+
+.lj{
+	width: 370px;
+	height: 40px;
+	border: 1px solid #dcdcdc;
+	font-size: 14px;
+	color: #b5b5b5;
+	margin: 30px auto 0 auto;
+	border-radius: 4px
+}
+
+.share-img{
+	width: 151px;
+	margin: 30px auto 0 auto
+}
+
+.dis-btn1{
+	width: 115px;
+	height: 34px;
+	background-color: #4f7cec;
+	border-radius: 4px;
+	font-size: 14px;
+	color: #fff;
+	margin: 30px auto 0 auto
+}
+
+.tqm{
+	width: 257px;
+	height: 34px;
+	background-color: #eee;
+	border-radius: 4px;
+	border: 1px solid #dcdcdc;
+	font-size: 14px;
+	color: #707070;
+	margin-top: 10px;
+	margin-left: 130px
+}
+
+.file-box{
+	max-height: 400px;
+	overflow-y: auto
+}
+
+.code-text{
+	position: absolute;
+	bottom: 68px;
+	left: 200px;
+	color: #000
+}
+
+.el-pagination {
+	margin-top: 20px
+}
+
+.el-dialog__title {
+	width: 370px;
+	display: inline-block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap
+}
+
+.el-select {
+	width: 110px
+}
+
+.el-upload-dragger {
+	width: 83px;
+	height: 34px
+}
+
+.file-box .el-radio {
+	margin-top: 20px
+}
+
+.url-box {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	-ms-flex-align: center;
+	align-items: center
+}
+
+.url-box .url {
+	width: 350px;
+	margin-right: 20px
+}
+
+.url-box .url,.url-box .url1 {
+	height: 42px;
+	border: 1px solid #dcdcdc
+}
+
+.url-box .url1 {
+	width: 130px;
+	text-align: center;
+	line-height: 42px
+}
+
+.code-img {
+	width: 300px;
+	display: block;
+	margin: 20px auto
+}
+
+.shareimg-box {
+	position: relative
+}
+
+.shareimg-box .code-box {
+	position: absolute;
+	bottom: 93px;
+	left: 149px;
+	width: 120px;
+	height: 120px;
+	background: #fff
+}
+
+.top-right .el-input__inner {
+	background: none;
+	border: none
+}
+
+/* 上传按钮 */
+.upload {
+	color: #fff;
+	background-color:#09AAFF;
+	border: 1px solid #fff;
+}
+
+.upload:hover {
+	background-color:#09a0f1;
+}
+
+.upload .text {
+	color: #fff;
+}
+
+.upload:hover .text {
+	color: #fff;
+}
+

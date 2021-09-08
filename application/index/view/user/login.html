@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <title>会员登录 - {$Think.config.basic.site_title}</title>
+
+    <link href="__STATIC__/css/login.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__STATIC__/js/jquery.js"></script>
+    <script src="__STATIC__/js/common.js"></script>
+    <script src="__STATIC__/js/layer.js"></script>
+</head>
+
+<body>
+<div class="top">
+    <div class="d1">
+        <div class="d11" style="background-image: url({$Think.config.basic.site_logo});height: 18px; background-repeat: no-repeat; background-position: 15px 5px;">
+            <a href="{:url('index/index')}" class="d7">会分享有收获</a>
+        </div>
+    </div>
+</div>
+<div class="pc"></div>
+<span class="bg"></span>
+
+<div class="p9">
+    <div class="p5"> </div>
+    <div class="p6">为用户而变革，越简单越好，越快越好 ！</div>
+    <div class="p4">会分享，就会有收获！</div>
+
+    <div class="p1" style="margin-top: 15px;">
+        <!-- 微信扫码登录 -->
+        <div id="wx">
+            <!-- <span class="main-title">微信扫码登录</span>
+            <div class="wx-img">
+                <img src="static/picture/showqrcode.jpg" onerror="layer.alert('微信二维码加载失败，请更换浏览器后再试。<br/><br/>推荐您使用搜狗浏览器或者Chrome浏览器<br/><br/>客服QQ：1665555255',{icon:2});">
+            </div>
+            <span class="wx-title">
+                <p>
+                <img src="static/picture/wx.png">
+                微信扫码
+                </p>
+                <p style="margin-top:-8px;">扫码关注公众号登录注册</p>
+            </span> -->
+            <!--<div class="p3" style="text-align:right;">-->
+            <!--    <a onclick="login()" href="#">账号密码登录</a>-->
+            <!--</div>-->
+        </div>
+
+        <!-- 注册账号 -->
+        <div id="reg" style="display:none;">
+            <span class="main-title">注册新账号</span>
+            <form onkeydown="if(event.keyCode==13){doReg();return false;}">
+
+                <div class="p3 pmob1">
+                    <input class="input" type="text" id="reg_username" name="username" tabindex="1" maxlength="20" placeholder="用户名 (支持中文)">
+                </div>
+                <div class="p3 pmob2">
+                    <input class="input pwd" id="reg_pass1" type="password" name="password" value="" tabindex="2" maxlength="32" placeholder="密码">
+                </div>
+                <div class="p3 pmob2">
+                    <input class="input pwd" id="reg_pass2" type="password" value="" tabindex="3" maxlength="32" placeholder="确认密码">
+                </div>
+                <div class="p3">
+                    <div class="errorBox">请输入密码</div>
+                </div>
+
+                <div class="p3"></div>
+            </form>
+
+            <div class="p3">
+                <input onclick="doReg()" class="btn" type="submit" tabindex="4" value="注 册">
+            </div>
+            <div class="p3" style="text-align:left;position:absolute">
+                <a onclick="login()" href="#">已有账号？点我登录</a>
+            </div>
+            <!-- <div class="p3" style="text-align:right;">
+                <a onclick="wx()" href="#">微信扫码登录</a>
+            </div> -->
+        </div>
+
+
+        <!-- 账号密码登录 -->
+        <div id="login" >
+            <form onkeydown="if(event.keyCode==13){doLogin();return false;}">
+
+                <div class="p3">
+                    <div class="p2"> </div>
+                </div>
+                <div class="p3 pmob1">
+                    <input class="input" type="text" id="user" name="username" tabindex="1" maxlength="20" placeholder="用户名">
+                </div>
+                <div class="p3 pmob2">
+                    <input class="input pwd" type="password" id="pass" name="password" tabindex="2" maxlength="32" placeholder="密码">
+                </div>
+                <div class="p3">
+                    <div class="errorBox">请输入密码</div>
+                </div>
+
+                <div class="p3"></div>
+            </form>
+            <div class="p3" class='btn'>
+                <input onclick="doLogin()" class="btn" type="submit" tabindex="4" value="登 录">
+            </div>
+            <div class="p3" style="text-align:left;position:absolute">
+                <a onclick="reg()" href="#">没有账号？点我注册</a>
+            </div>
+            <!-- <div class="p3" style="text-align:right;">
+                <a onclick="wx()" href="#">微信扫码登录</a>
+            </div> -->
+        </div>
+
+    </div>
+
+    <script>
+        $(function () {
+            //setTimeout("check_login()", 1300);
+        });
+
+        function wx() {
+            $("#wx").show();
+            $("#login").hide();
+            $("#reg").hide();
+        }
+        function reg(){
+            $("#wx").hide();
+            $("#login").hide();
+            $("#reg").show();
+        }
+        function login(){
+            $("#wx").hide();
+            $("#login").show();
+            $("#reg").hide();
+        }
+
+        //判断是否扫码
+        function check_login() {
+            $.ajax({
+                type: "get",
+                url : "/user/login/wxLogin",
+                dataType:'json',
+                success: function(data){
+
+                    if (data.status == 1) {
+                        ok(data.msg);
+                    } else if (data.status == -1) {
+                        layer.alert(data.msg, {icon: 2});
+                    }else{
+                        setTimeout("check_login()", 1300);
+                    }
+                },
+                error: function (error) {
+                    layer.alert("API请求失败，请联系客服",{icon:2});
+                }
+            });
+        }
+
+
+        //提交登录
+        function doLogin()
+        {
+            var sacct = $("#user").val();
+            var pwd = $("#pass").val();
+            var msg = '';
+            if (!sacct) {
+                $("#user").focus();
+                msg = "请输入账号";
+            } else if (!pwd) {
+                $('#pass').focus();
+                msg = "请输入密码";
+
+            }else if (pwd.length < 6 || pwd.length > 32) {
+                $('#pass').focus();
+                msg = "密码长度最短6位，最长32位！";
+            }
+            if(msg != ''){
+                return error(msg);
+            }
+
+            //提交登录
+            $.ajax({
+                type: "post",
+                url : "{:url('user/login')}",
+                data: {"username":sacct,"password":pwd},
+                dataType:'json',
+                success: function(data){
+                    if (data.status == 1) {
+                        ok(data.msg);
+                    } else if (data.status == 0) {
+                        error(data.msg);
+                    }
+                },
+                error: function (error) {
+                    layer.alert("API请求失败，请联系客服",{icon:2});
+                }
+            });
+        }
+
+        //提交注册
+        function doReg()
+        {
+
+            var sacct = $("#reg_username").val();
+            var pwd1 = $("#reg_pass1").val();
+            var pwd2 = $("#reg_pass2").val();
+            var msg = '';
+            if (!sacct) {
+                $("#reg_username").focus();
+                msg = "请输入账号";
+
+            } else if (!pwd1) {
+                $('#reg_pass1').focus();
+                msg = "请输入密码";
+            }
+            else if (pwd1.length < 6 || pwd1.length > 32) {
+                $('#reg_pass1').focus();
+                msg = "密码长度最短6位，最长32位！";
+
+            }else if (!pwd2) {
+                $('#reg_pass2').focus();
+                msg = "请重复输入密码";
+
+            }else if (pwd1 != pwd2) {
+
+                $('#reg_pass1').focus();
+                msg = "两次密码不一致！请检查";
+            }
+            if(msg != ''){
+                return error(msg);
+            }
+
+            //提交注册
+            $.ajax({
+                type: "post",
+                url : "{:url('user/register')}",
+                data: {"username":sacct,"password":pwd1},
+                dataType:'json',
+                success: function(data){
+                    if (data.status == 1) {
+                        ok(data.msg);
+                    } else if (data.status == 0) {
+                        error(data.msg);
+                    }
+                },
+                error: function (error) {
+                    layer.alert("API请求失败，请联系客服",{icon:2});
+                }
+            });
+        }
+
+        //成功
+        function ok(msg)
+        {
+            if (self != top) {
+                parent.layer.alert(msg,{
+                    icon: 1,
+                    end: function () {
+                        parent.location.reload();
+                    },
+                });
+            }else{
+                layer.alert(msg,{
+                    icon: 1,
+                    end: function () {
+                        location.reload();
+                    },
+                });
+            }
+        }
+
+        //失败
+        function error(msg)
+        {
+            layer.msg(msg, function(){});
+            $(".errorBox").html(msg);
+            $(".errorBox").show();
+        }
+    </script>
+</div>
+
+<div class="copyright">不得利用云存储发布，存储，传播违法信息<br> 投诉邮箱：skyunpan@qq.com</div>
+<div class="foot_info"> © 2021 {$Think.config.basic.site_title}    </div>
+</body>
+</html>
