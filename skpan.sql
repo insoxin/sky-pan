@@ -1,15 +1,15 @@
 ﻿# Host: localhost  (Version: 5.5.29)
-# Date: 2021-09-08 20:57:36
+# Date: 2021-09-09 01:12:56
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
 
 #
-# Structure for table "sk_folder"
+# Structure for table "sk_folders"
 #
 
-DROP TABLE IF EXISTS `sk_folder`;
-CREATE TABLE `sk_folder` (
+DROP TABLE IF EXISTS `sk_folders`;
+CREATE TABLE `sk_folders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) NOT NULL DEFAULT '0' COMMENT '目录所有人',
   `folder_name` text NOT NULL COMMENT '目录名称',
@@ -22,11 +22,11 @@ CREATE TABLE `sk_folder` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='文件夹';
 
 #
-# Data for table "sk_folder"
+# Data for table "sk_folders"
 #
 
-/*!40000 ALTER TABLE `sk_folder` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sk_folder` ENABLE KEYS */;
+/*!40000 ALTER TABLE `sk_folders` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sk_folders` ENABLE KEYS */;
 
 #
 # Structure for table "sk_groups"
@@ -49,15 +49,15 @@ CREATE TABLE `sk_groups` (
 #
 
 /*!40000 ALTER TABLE `sk_groups` DISABLE KEYS */;
-INSERT INTO `sk_groups` VALUES (1,'管理员',0,10737418240,'10',1,1),(2,'游客',0,10737418240,'',1,1),(3,'普通用户',0,104857600,'10',1,1);
+INSERT INTO `sk_groups` VALUES (1,'管理员',1,10737418240,'10',1,1),(2,'游客',0,10737418240,'',1,1),(3,'普通用户',0,104857600,'10',1,1);
 /*!40000 ALTER TABLE `sk_groups` ENABLE KEYS */;
 
 #
-# Structure for table "sk_policy"
+# Structure for table "sk_policys"
 #
 
-DROP TABLE IF EXISTS `sk_policy`;
-CREATE TABLE `sk_policy` (
+DROP TABLE IF EXISTS `sk_policys`;
+CREATE TABLE `sk_policys` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(120) DEFAULT NULL COMMENT '上传策略名称',
   `type` varchar(60) NOT NULL DEFAULT '' COMMENT '上传策略类型',
@@ -68,11 +68,12 @@ CREATE TABLE `sk_policy` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='储存策略';
 
 #
-# Data for table "sk_policy"
+# Data for table "sk_policys"
 #
 
-/*!40000 ALTER TABLE `sk_policy` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sk_policy` ENABLE KEYS */;
+/*!40000 ALTER TABLE `sk_policys` DISABLE KEYS */;
+INSERT INTO `sk_policys` VALUES (1,'默认存储','local','',10485760,'{\"save_dir\":\"\\/default\\/\",\"access_token\":\"\",\"server_uri\":\"\"}'),(3,'远程服务器一','remote','',10485760,'{\"save_dir\":\"\\/uploads\\/\",\"access_token\":\"asdasfasfasfasfasfa\",\"server_uri\":\"http:\\/\\/dev.com\\/\"}');
+/*!40000 ALTER TABLE `sk_policys` ENABLE KEYS */;
 
 #
 # Structure for table "sk_setting"
@@ -113,21 +114,21 @@ CREATE TABLE `sk_shares` (
 /*!40000 ALTER TABLE `sk_shares` ENABLE KEYS */;
 
 #
-# Structure for table "sk_store"
+# Structure for table "sk_stores"
 #
 
-DROP TABLE IF EXISTS `sk_store`;
-CREATE TABLE `sk_store` (
+DROP TABLE IF EXISTS `sk_stores`;
+CREATE TABLE `sk_stores` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='储存文件';
 
 #
-# Data for table "sk_store"
+# Data for table "sk_stores"
 #
 
-/*!40000 ALTER TABLE `sk_store` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sk_store` ENABLE KEYS */;
+/*!40000 ALTER TABLE `sk_stores` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sk_stores` ENABLE KEYS */;
 
 #
 # Structure for table "sk_users"
@@ -147,14 +148,15 @@ CREATE TABLE `sk_users` (
   `wx_openid` varchar(64) DEFAULT NULL COMMENT '微信开放平台ID',
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '注册时间',
   `login_time` int(11) NOT NULL DEFAULT '0' COMMENT '最近登录时间',
+  `login_real_ip` varchar(60) NOT NULL DEFAULT '',
   `status` tinyint(2) NOT NULL DEFAULT '1' COMMENT '用户状态 1 正常 0封禁',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户表';
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 #
 # Data for table "sk_users"
 #
 
 /*!40000 ALTER TABLE `sk_users` DISABLE KEYS */;
-INSERT INTO `sk_users` VALUES (1,'admin','管理员','admin@skpan.net','3e9464c59cc03ef5f3c5ed555e2757e2',NULL,0.00,1,0,NULL,1631009197,0,1);
+INSERT INTO `sk_users` VALUES (1,'admin','管理员','admin@skpan.net','3e9464c59cc03ef5f3c5ed555e2757e2',NULL,0.00,1,0,NULL,1631009197,0,'',1),(3,'1655545174','1655545174','1655545174@qq.com','aa74d4f55ab021191811aa285c0fe696',NULL,0.00,3,0,NULL,1631120171,0,'',1);
 /*!40000 ALTER TABLE `sk_users` ENABLE KEYS */;
