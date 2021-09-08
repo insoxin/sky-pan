@@ -4,6 +4,7 @@ namespace app\admin\controller;
 
 use app\common\controller\Admin;
 use app\common\model\Groups;
+use app\common\model\Policys;
 
 class Group extends Admin
 {
@@ -34,6 +35,8 @@ class Group extends Admin
             $this->callModelMethods('Groups','addGroup',input('post.'));
             $this->returnSuccess();
         }
+        $policy = Policys::getPolicyAll();
+        $this->assign('policy',$policy);
         return $this->fetch();
     }
 
@@ -50,6 +53,8 @@ class Group extends Admin
             $this->returnSuccess();
         }
 
+        $policy = Policys::getPolicyAll();
+        $this->assign('policy',$policy);
         $this->assign('info',$info);
         return $this->fetch();
     }

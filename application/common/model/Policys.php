@@ -46,4 +46,9 @@ class Policys extends Model
         self::where('id',$id)->update($data);
     }
 
+    public static function getPolicyAll(): array
+    {
+        return self::field('id,name')->select()->toArray();
+    }
+
 }

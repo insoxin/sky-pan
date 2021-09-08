@@ -25,8 +25,8 @@
                 <label class="layui-form-label">默认用户组</label>
                 <div class="layui-input-block" style="max-width: 800px;">
                     <select name="default_group" lay-verify="required">
-                        {volist name="$group" id="vo" key="k"}
-                        <option value="{$k}" {eq name="$option.default_group" value="$k"}selected{/eq}>{$vo}</option>
+                        {volist name="$group" id="vo"}
+                        <option value="{$vo.id}" {eq name="$option.default_group" value="$vo.id"}selected{/eq}>{$vo.group_name}</option>
                         {/volist}
                     </select>
                     <div class="layui-form-mid layui-word-aux">用户注册后默认属于的用户组</div>

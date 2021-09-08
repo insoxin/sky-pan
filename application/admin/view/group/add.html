@@ -20,7 +20,9 @@
                 <label class="layui-form-label">存储策略</label>
                 <div class="layui-input-block">
                     <select name="policy_id" lay-verify="required">
-                        <option value="0">默认存储策略</option>
+                        {volist name="$policy" id="vo"}
+                        <option value="{$vo.id}">{$vo.name}</option>
+                        {/volist}
                     </select>
                     <div class="layui-form-mid layui-word-aux">为该用户组绑定一个上传策略</div>
                 </div>

@@ -20,7 +20,7 @@ class Setting extends Admin
 
     public function register(){
         $this->saveOptions();
-        $group = Groups::column('group_name','id');
+        $group = Groups::field('id,group_name')->select()->toArray();
         $this->assign('group',$group);
         $this->assign('option',$this->getOptions());
         return $this->fetch();
