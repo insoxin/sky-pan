@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version: 5.5.29)
-# Date: 2021-09-09 01:12:56
+# Date: 2021-09-09 07:01:35
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
@@ -16,8 +16,8 @@ CREATE TABLE `sk_folders` (
   `parent_folder` int(11) NOT NULL DEFAULT '0' COMMENT '上级目录',
   `position` text NOT NULL COMMENT '路径',
   `position_absolute` text NOT NULL COMMENT '绝对路径',
-  `desc` text COMMENT '文件夹描述',
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `delete_time` timestamp NULL DEFAULT NULL COMMENT '软删除',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='文件夹';
 
@@ -65,7 +65,7 @@ CREATE TABLE `sk_policys` (
   `max_size` bigint(20) NOT NULL DEFAULT '0' COMMENT '单文件最大大小',
   `config` text COMMENT '配置信息',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='储存策略';
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='储存策略';
 
 #
 # Data for table "sk_policys"
@@ -93,7 +93,7 @@ CREATE TABLE `sk_setting` (
 #
 
 /*!40000 ALTER TABLE `sk_setting` DISABLE KEYS */;
-INSERT INTO `sk_setting` VALUES (1,'site_name','SK网盘系统','basic'),(2,'site_keywords','SK网盘系统,网盘系统,网盘','basic'),(3,'site_desc','SK网盘系统xxxxxxxxxxxxxxxxxxx','basic'),(4,'site_head','','basic'),(5,'site_foot','','basic'),(6,'allow_register','1','register'),(7,'login_captcha','1','register'),(8,'default_group','3','register'),(9,'register_captcha','1','register'),(10,'forget_captcha','0','register');
+INSERT INTO `sk_setting` VALUES (1,'site_name','闪客网盘 | 分享赚钱,让资源有价值!','basic'),(2,'site_keywords','闪客网盘 | 闪客云盘 | 网络云盘 | 网盘联盟 | 网赚网盘 | 云盘 | 云存储','basic'),(3,'site_desc','闪客云盘是一款速度快、不打扰、够安全、易于分享的网络云盘,提供了分享下载分成功能,分享赚钱,让资源变的有收益有价值!','basic'),(4,'site_head','','basic'),(5,'site_foot','','basic'),(6,'allow_register','1','register'),(7,'login_captcha','1','register'),(8,'default_group','3','register'),(9,'register_captcha','1','register'),(10,'forget_captcha','0','register'),(11,'site_title','SK网盘','basic'),(12,'site_logo','/assets/logo/logo.gif','basic');
 /*!40000 ALTER TABLE `sk_setting` ENABLE KEYS */;
 
 #
@@ -120,6 +120,19 @@ CREATE TABLE `sk_shares` (
 DROP TABLE IF EXISTS `sk_stores`;
 CREATE TABLE `sk_stores` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NOT NULL DEFAULT '0' COMMENT '所属用户',
+  `origin_name` varchar(255) NOT NULL DEFAULT '' COMMENT '源文件名',
+  `file_name` text NOT NULL COMMENT '存储文件名',
+  `size` bigint(20) NOT NULL DEFAULT '0' COMMENT '文件大小',
+  `meta` text NOT NULL COMMENT '文件元属性',
+  `mime_type` varchar(60) NOT NULL DEFAULT '' COMMENT '文件类型',
+  `ext` varchar(60) NOT NULL DEFAULT '' COMMENT '文件后缀',
+  `parent_folder` int(11) NOT NULL DEFAULT '0' COMMENT '所属目录',
+  `policy_id` int(11) NOT NULL DEFAULT '0' COMMENT '存储策略',
+  `dir` text NOT NULL COMMENT '文件目录',
+  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `delete_time` timestamp NULL DEFAULT NULL COMMENT '软删除',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='储存文件';
 
@@ -151,12 +164,12 @@ CREATE TABLE `sk_users` (
   `login_real_ip` varchar(60) NOT NULL DEFAULT '',
   `status` tinyint(2) NOT NULL DEFAULT '1' COMMENT '用户状态 1 正常 0封禁',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='用户表';
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 #
 # Data for table "sk_users"
 #
 
 /*!40000 ALTER TABLE `sk_users` DISABLE KEYS */;
-INSERT INTO `sk_users` VALUES (1,'admin','管理员','admin@skpan.net','3e9464c59cc03ef5f3c5ed555e2757e2',NULL,0.00,1,0,NULL,1631009197,0,'',1),(3,'1655545174','1655545174','1655545174@qq.com','aa74d4f55ab021191811aa285c0fe696',NULL,0.00,3,0,NULL,1631120171,0,'',1);
+INSERT INTO `sk_users` VALUES (1,'admin','管理员','admin@skpan.net','3e9464c59cc03ef5f3c5ed555e2757e2',NULL,0.00,1,0,NULL,1631009197,0,'',1),(3,'1655545174','1655545174','1655545174@qq.com','a99cc781713cee3057be007a9abe845c',NULL,0.00,3,0,NULL,1631120171,0,'',1);
 /*!40000 ALTER TABLE `sk_users` ENABLE KEYS */;
