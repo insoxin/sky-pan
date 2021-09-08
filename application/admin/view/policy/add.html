@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/component/pear/css/pear.css" />
+    <style>
+        .remote_field{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<form class="layui-form">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="layui-form-item">
+                <label class="layui-form-label">策略名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" lay-verify="required" placeholder="请输入上传策略的名称" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">上传限制</label>
+                <div class="layui-input-block">
+                    <div class="layui-input-inline">
+                        <input type="number" name="max_size" required value="10"  lay-verify="required" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid">单位：</div>
+                    <div class="layui-input-inline">
+                        <select name="storage_size" lay-verify="required">
+                            <option value="1">B</option>
+                            <option value="1024">KB</option>
+                            <option value="1048576" selected>MB</option>
+                            <option value="1073741824">GB</option>
+                        </select>
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">允许上传的单个文件的最大尺寸</div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">允许后缀</label>
+                <div class="layui-input-block">
+                    <input type="text" name="filetype"  placeholder="请输入文件后缀" class="layui-input">
+                    <div class="layui-form-mid layui-word-aux">多个请以半角逗号","隔开，留空表示不限制。如"png,jpg"</div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">存储服务器</label>
+                <div class="layui-input-block">
+                    <select name="type" lay-verify="required" lay-filter="server_select">
+                        <option value="local">本地</option>
+                        <option value="remote">远程</option>
+                    </select>
+                    <div class="layui-form-mid layui-word-aux">文件存储的服务器</div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">存储目录</label>
+                <div class="layui-input-block">
+                    <input type="text" name="save_dir"  placeholder="请输入文件存放的目录"  lay-verify="required" autocomplete="off"  class="layui-input">
+                    <div class="layui-form-mid layui-word-aux">请以根目录 / 开始，结尾要加"/"，例如：/uploads/</div>
+                </div>
+            </div>
+
+            <div class="layui-form-item remote_field">
+                <label class="layui-form-label">远程Token</label>
+                <div class="layui-input-block">
+                    <input type="text" name="access_token"  placeholder="AccessToken" class="layui-input">
+                    <div class="layui-form-mid layui-word-aux">默认随机生成，请与远程服务端配置文件中保持一致</div>
+                </div>
+            </div>
+
+            <div class="layui-form-item remote_field">
+                <label class="layui-form-label">服务端URL</label>
+                <div class="layui-input-block">
+                    <input type="text" name="server_uri"  placeholder="服务端URL" class="layui-input">
+                    <div class="layui-form-mid layui-word-aux">请填写合法的URL地址，结尾要加"/"</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="button-container">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit="" lay-filter="save">
+                <i class="layui-icon layui-icon-ok"></i>
+                提交
+            </button>
+        </div>
+    </div>
+</form>
+<script src="/static/component/layui/layui.js"></script>
+<script src="/static/component/pear/pear.js"></script>
+<script>
+    layui.use(['form','jquery'],function(){
+        let form = layui.form;
+        let $ = layui.jquery;
+
+        form.on('select(server_select)',function(obj){
+            if(obj.value == 'remote'){
+                $(".remote_field").show();
+            }else{
+                $(".remote_field").hide();
+            }
+        });
+
+        form.on('submit(save)', function(data){
+            $.ajax({
+                data:JSON.stringify(data.field),
+                dataType:'json',
+                contentType:'application/json',
+                type:'post',
+                success:function(res){
+                    //判断有没有权限
+                    if(res && res.code == 999){
+                        layer.msg(res.msg, {
+                            icon: 5,
+                            time: 2000,
+                        })
+                        return false;
+                    }else if(res.code == 200){
+                        layer.msg(res.msg,{icon:1,time:1000},function(){
+                            parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                            parent.layui.table.reload("user-table");
+                        });
+                    }else{
+                        layer.msg(res.msg,{icon:2,time:1000});
+                    }
+                }
+            })
+            return false;
+        });
+    })
+</script>
+</body>
+</html>

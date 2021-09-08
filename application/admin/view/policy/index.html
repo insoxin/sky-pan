@@ -63,10 +63,10 @@
         let cols = [
             [{type: 'checkbox'},
                 {title: '策略名称', field: 'name', align: 'center'},
-                {title: '类型', field: 'type', align: 'center', templet: '#user-grade'},
-                {title: '文件数量', field: 'amount', align: 'center'},
-                {title: '存储数据量', field: 'email', align: 'center'},
-                {title: '上传大小限制', field: 'is_auth', align: 'center', templet: '#user-auth'},
+                {title: '类型', field: 'type', align: 'center'},
+                {title: '文件数量', field: 'file_num', align: 'center'},
+                {title: '存储数据量', field: 'store_num', align: 'center'},
+                {title: '上传大小限制', field: 'max_size', align: 'center'},
                 {title: '操作', toolbar: '#user-bar', align: 'center', width: 130}
             ]
         ]
@@ -98,67 +98,39 @@
                 window.add();
             } else if (obj.event === 'refresh') {
                 window.refresh();
-            } else if (obj.event === 'batchRemove') {
-                window.batchRemove(obj);
             }
         });
 
-        form.on('submit(user-query)', function(data) {
-            table.reload('user-table', {
-                where: data.field
-            })
-            return false;
-        });
-
-        form.on('switch(user-enable)', function(obj) {
-            let status = obj.elem.checked ? 1 : 0;
-            $.ajax({
-                url:"{:url('users/change_status')}",
-                type:'get',
-                data:{
-                    id:this.value,
-                    status:status
-                },
-                dataType:'JSON',
-                success:function(result){
-                    if(result.code == 200){
-                        layer.tips(result.msg, obj.othis);
-                    }else{
-                        layer.msg(result,{icon:2});
-                    }
-                }
-            })
-        });
 
         window.add = function() {
             layer.open({
                 type: 2,
-                title: '新增',
+                title: '添加策略',
                 shade: 0.1,
-                area: [common.isModile()?'100%':'600px', common.isModile()?'100%':'350px'],
-                content: "{:url('users/add')}"
+                area: [common.isModile()?'100%':'600px', common.isModile()?'100%':'600px'],
+                content: "{:url('Policy/add')}"
             });
         }
 
         window.edit = function(obj) {
             layer.open({
                 type: 2,
-                title: '修改',
+                title: '修改策略',
                 shade: 0.1,
-                area: ['600px', '500px'],
-                content: "{:url('users/edit')}?id=" + obj.data['id']
+                area: [common.isModile()?'100%':'600px', common.isModile()?'100%':'600px'],
+                content: "{:url('policy/edit')}?id=" + obj.data['id']
             });
         }
 
         window.remove = function(obj) {
-            layer.confirm('确定要删除该用户吗？<b style="color: red">删除后用户的储存数据会被清空，且不可恢复</b>', {
+            layer.confirm('确定要删除该储存策略吗？<b style="color: red">删除后会导致上传文件不能下载，且不可恢复</b>', {
                 icon: 3,
                 title: '提示'
             }, function(index) {
                 layer.close(index);
                 let loading = layer.load();
                 $.ajax({
-                    url: "{:url('users/del')}?ids=" + obj.data['id'],
+                    url: "{:url('policy/delete')}?id=" + obj.data['id'],
                     dataType: 'json',
                     type: 'get',
                     success: function(result) {
@@ -169,48 +141,6 @@
                                 time: 1000
                             }, function() {
                                 obj.del();
-                            });
-                        } else {
-                            layer.msg(result.msg, {
-                                icon: 2,
-                                time: 1000
-                            });
-                        }
-                    }
-                })
-            });
-        }
-
-        window.batchRemove = function(obj) {
-
-            var checkIds = common.checkField(obj,'id');
-
-            if (checkIds === "") {
-                layer.msg("未选中数据", {
-                    icon: 3,
-                    time: 1000
-                });
-                return false;
-            }
-
-            layer.confirm('确定要删除这些用户[' + checkIds + ']吗，<b style="color: red">删除后数据不可恢复</b>', {
-                icon: 3,
-                title: '提示'
-            }, function(index) {
-                layer.close(index);
-                let loading = layer.load();
-                $.ajax({
-                    url: "{:url('users/del')}?ids=" + checkIds,
-                    dataType: 'json',
-                    type: 'get',
-                    success: function(result) {
-                        layer.close(loading);
-                        if (result.code == 200) {
-                            layer.msg(result.msg, {
-                                icon: 1,
-                                time: 1000
-                            }, function() {
-                                table.reload('user-table');
                             });
                         } else {
                             layer.msg(result.msg, {

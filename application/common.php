@@ -29,3 +29,13 @@ function countSize($bit,$array=false){
     }
     return (floor($bit*100)/100).$type[$i];
 }
+
+function PolicyType($d): string
+{
+    $type = [
+        'local' => '本地',
+        'remote' => '远程'
+    ];
+
+    return $type[$d] ?? '未知';
+}
