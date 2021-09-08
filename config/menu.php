@@ -7,7 +7,7 @@ return [
         'title' => '面板首页',
         'icon' => 'layui-icon layui-icon-console',
         'type' => 1,
-        'href' => url('admin/dashboard/index'),
+        'href' => url('dashboard/index'),
     ],
     [
         'id' => 2,
@@ -21,14 +21,14 @@ return [
                 'title' => '用户列表',
                 'type' => 1,
                 'openType' => '_iframe',
-                'href' => url('admin/user/index')
+                'href' => url('user/index')
             ],
             [
                 'id' => 122,
                 'title' => '用户组管理',
                 'type' => 1,
                 'openType' => '_iframe',
-                'href' => url('admin/group/index')
+                'href' => url('group/index')
             ],
         ]
     ],
@@ -44,14 +44,14 @@ return [
                 'title' => '文件列表',
                 'type' => 1,
                 'openType' => '_iframe',
-                'href' => url('admin/files/index')
+                'href' => url('file/index')
             ],
             [
                 'id' => 132,
                 'title' => '文件回收站',
                 'type' => 1,
                 'openType' => '_iframe',
-                'href' => url('admin/files/delete')
+                'href' => url('recycle/index')
             ],
         ]
     ],
@@ -60,42 +60,42 @@ return [
         'title' => '储存策略',
         'icon' => 'layui-icon layui-icon-util',
         'type' => 1,
-        'href' => url('admin/policy/index'),
+        'href' => url('policy/index'),
     ],
     [
         'id' => 5,
         'title' => '订单记录',
         'icon' => 'layui-icon layui-icon-chart',
         'type' => 1,
-        'href' => url('admin/order/index'),
+        'href' => url('order/index'),
     ],
     [
         'id' => 6,
         'title' => '提现列表',
         'icon' => 'layui-icon layui-icon-form',
         'type' => 1,
-        'href' => url('admin/withdraw/index'),
+        'href' => url('withdraw/index'),
     ],
     [
         'id' => 7,
         'title' => '实名认证',
         'icon' => 'layui-icon layui-icon-vercode',
         'type' => 1,
-        'href' => url('admin/withdraw/index'),
+        'href' => url('withdraw/index'),
     ],
     [
         'id' => 8,
         'title' => '举报处理',
         'icon' => 'layui-icon layui-icon-about',
         'type' => 1,
-        'href' => url('admin/report/index'),
+        'href' => url('report/index'),
     ],
     [
         'id' => 9,
         'title' => '模板管理',
         'icon' => 'layui-icon layui-icon-theme',
         'type' => 1,
-        'href' => url('admin/template/index'),
+        'href' => url('template/index'),
     ],
     [
         'id' => 10,
@@ -109,28 +109,28 @@ return [
                 'title' => '基本设置',
                 'type' => 1,
                 'openType' => '_iframe',
-                'href' => url('admin/setting/basic')
+                'href' => url('setting/basic')
             ],
             [
                 'id' => 102,
                 'title' => '注册访问',
                 'type' => 1,
                 'openType' => '_iframe',
-                'href' => url('admin/setting/register')
+                'href' => url('setting/register')
             ],
             [
                 'id' => 103,
                 'title' => '支付配置',
                 'type' => 1,
                 'openType' => '_iframe',
-                'href' => url('admin/setting/pay')
+                'href' => url('setting/pay')
             ],
             [
                 'id' => 104,
                 'title' => '邮件配置',
                 'type' => 1,
                 'openType' => '_iframe',
-                'href' => url('admin/setting/email')
+                'href' => url('setting/email')
             ]
         ]
     ]
