@@ -11,19 +11,30 @@
     <form class="layui-form" action="">
       <div class="layui-form-item">
         <div class="layui-form-item layui-inline">
-          <label class="layui-form-label">手机号码</label>
+          <label class="layui-form-label">搜索类型</label>
           <div class="layui-input-inline">
-            <input type="text" name="phone" placeholder="" class="layui-input">
+            <select name="search_type" lay-verify="required">
+              <option value="username">帐号搜索</option>
+              <option value="email">邮箱搜索</option>
+              <option value="nickname">昵称搜索</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+          <label class="layui-form-label">搜索内容</label>
+          <div class="layui-input-inline">
+            <input type="text" name="search_value" placeholder="请输入搜索内容" class="layui-input">
           </div>
         </div>
         <div class="layui-form-item layui-inline">
           <button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="user-query">
             <i class="layui-icon layui-icon-search"></i>
-            查询
+            搜索结果
           </button>
           <button type="reset" class="pear-btn pear-btn-md">
             <i class="layui-icon layui-icon-refresh"></i>
-            重置
+            重置搜索
           </button>
         </div>
       </div>
@@ -66,14 +77,6 @@
 
 </script>
 
-<script type="text/html" id="user-grade">
-  {{#if (d.grade == 0) { }}
-  <span class="layui-badge layui-bg-gray">普通用户</span>
-  {{# }else if(d.grade > 0){ }}
-  <span class="layui-badge">VIP用户</span>
-  {{# } }}
-</script>
-
 <script type="text/html" id="user-createTime">
   {{layui.util.toDateString(d.createTime, 'yyyy-MM-dd')}}
 </script>
@@ -89,8 +92,9 @@
 
     let cols = [
       [{type: 'checkbox'},
-        {title: '手机号码', field: 'phone', align: 'center'},
-        {title: '用户等级', field: 'grade', align: 'center', templet: '#user-grade'},
+        {title: '昵称', field: 'nickname', align: 'center'},
+        {title: '用户帐号', field: 'username', align: 'center'},
+        {title: '用户等级', field: 'group', align: 'center'},
         {title: '余额', field: 'amount', align: 'center'},
         {title: '安全邮箱', field: 'email', align: 'center'},
         {title: '实名认证', field: 'is_auth', align: 'center', templet: '#user-auth'},
@@ -102,7 +106,7 @@
 
     table.render({
       elem: '#user-table',
-      url: "{:url('users/index')}",
+      url: "{:url('user/index')}",
       page: true,
       cols: cols,
       skin: 'line',
@@ -142,7 +146,7 @@
     form.on('switch(user-enable)', function(obj) {
       let status = obj.elem.checked ? 1 : 0;
       $.ajax({
-        url:"{:url('users/change_status')}",
+        url:"{:url('user/change_status')}",
         type:'get',
         data:{
           id:this.value,
@@ -150,11 +154,7 @@
         },
         dataType:'JSON',
         success:function(result){
-          if(result.code == 200){
-            layer.tips(result.msg, obj.othis);
-          }else{
-            layer.msg(result,{icon:2});
-          }
+          layer.tips(result.msg, obj.othis);
         }
       })
     });
@@ -164,8 +164,8 @@
         type: 2,
         title: '新增',
         shade: 0.1,
-        area: [common.isModile()?'100%':'600px', common.isModile()?'100%':'350px'],
-        content: "{:url('users/add')}"
+        area: [common.isModile()?'100%':'600px', common.isModile()?'100%':'400px'],
+        content: "{:url('user/add')}"
       });
     }
 
@@ -175,7 +175,7 @@
         title: '修改',
         shade: 0.1,
         area: ['600px', '500px'],
-        content: "{:url('users/edit')}?id=" + obj.data['id']
+        content: "{:url('user/edit')}?id=" + obj.data['id']
       });
     }
 
@@ -187,7 +187,7 @@
         layer.close(index);
         let loading = layer.load();
         $.ajax({
-          url: "{:url('users/del')}?ids=" + obj.data['id'],
+          url: "{:url('user/del')}?ids=" + obj.data['id'],
           dataType: 'json',
           type: 'get',
           success: function(result) {
@@ -229,7 +229,7 @@
         layer.close(index);
         let loading = layer.load();
         $.ajax({
-          url: "{:url('users/del')}?ids=" + checkIds,
+          url: "{:url('user/del')}?ids=" + checkIds,
           dataType: 'json',
           type: 'get',
           success: function(result) {

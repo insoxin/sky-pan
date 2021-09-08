@@ -3,6 +3,7 @@
 namespace app\admin\controller;
 
 use app\common\controller\Admin;
+use app\common\model\Groups;
 use app\common\model\Users;
 use think\Exception;
 
@@ -13,17 +14,35 @@ class User extends Admin
         if($this->request->isAjax()){
             $page = input('get.page',1);
             $limit = input('get.limit',10);
-            $phone = input('get.phone','');
-
+            $search_type = input('get.search_type','');
+            $search_value = input('get.search_value','');
             $map = [];
 
-            if(!empty($phone)){
-                $map[] = ['phone','like','%'.$phone.'%'];
+            if(!empty($search_type) && !empty($search_value)){
+                $map[] = [$search_type,'like','%'.$search_value.'%'];
             }
 
-            $list = User::where($map)->page($page,$limit)->field('id,phone,grade,is_auth,amount,email,status,create_time')->select();
+            $groups = Groups::column('group_name','id');
+            $default_group = config('register.default_group');
 
-            $count = User::count();
+            $list = Users::where($map)
+                ->page($page,$limit)
+                ->field('id,nickname,username,group,is_auth,amount,email,status,create_time')
+                ->select()->each(function ($item) use ($groups,$default_group){
+                    $group_name = $groups[$item['group']] ?? '未知';
+
+                    if($item['group'] == 1){
+                        $item['group'] = '<span class="layui-badge layui-bg-blue">'. $group_name .'</span>';
+                    }elseif ($item['group'] == $default_group){
+                        $item['group'] = '<span class="layui-badge layui-bg-gray">'. $group_name .'</span>';
+                    }else{
+                        $item['group'] = '<span class="layui-badge layui-bg-red">'. $group_name .'</span>';
+                    }
+
+                    return $item;
+                });
+
+            $count = Users::count();
 
             return json([
                 'code' => 0,
@@ -37,43 +56,68 @@ class User extends Admin
     }
 
     public function add(){
+
+        $default_group = config('register.default_group');
+
         if($this->request->isPost()){
             $data = input('post.');
             $result = $this->validate($data,[
-               'phone|手机号码' => 'require|mobile',
+               'username|用户帐号' => 'require|alphaNum|length:6,26',
+                'group|用户组' => 'require|number',
                 'password|登录密码' => 'require|alphaNum|length:6,18',
                 'repassword|重复密码' => 'require|confirm:password',
                 'email|安全邮箱' => 'require|email'
-            ],[
-                'phone.mobile' => '请输入合法的手机号码'
             ]);
 
             if($result !== true) return json(['code' => 502,'msg' => $result]);
 
+            if(empty($data['group'])){
+                $data['group'] = $default_group;
+            }
+
             try {
-                (new User)->register($data['phone'],$data['email'],$data['password']);
+                (new Users)->register($data['username'],$data['email'],$data['password'],$data['group']);
                 return json(['code' => 200,'msg' => '账号新增成功']);
             }catch (Exception $e){
                 return json(['code' => 503,'msg' => $e->getMessage()]);
             }
         }else{
+            $group = Groups::field('id,group_name')->select()->toArray();
+            $this->assign('default_group',$default_group);
+            $this->assign('group',$group);
             return $this->fetch();
         }
     }
 
     public function del(){
-        $del_list = input('get.ids');
-        //删除用户
-        User::destroy($del_list);
-        /**
-         * 待完成功能：删除用户后删除相关数据，如：上传储存的数据，订单数据，目录数据，分享数据等
-         */
+        $ids = input('get.ids');
+
+        if(count(explode(',',$ids)) > 20){
+            $this->returnError('删除失败，不能一次删除20条以上的数据');
+        }
+
+        $delete_users = Users::where('id','in',$ids)->field('id,group')->select()->toArray();
+
+        foreach ($delete_users as $item){
+            if($item['id'] == 1){
+                $this->returnError('删除失败，删除帐号中包含总管理员帐号');
+                break;
+            }
+
+            /**
+             * 待完成功能：删除用户后删除相关数据，如：上传储存的数据，订单数据，目录数据，分享数据等
+             */
+
+            Users::where('id',$item['id'])->delete();
+        }
+
         return json(['code' => 200,'msg' => '删除成功']);
     }
 
+
     public function edit(){
         $id = input('get.id');
-        $info = User::get($id);
+        $info = Users::get($id);
 
         if(empty($info)){
             $this->error('用户数据不存在');
@@ -84,8 +128,7 @@ class User extends Admin
             $result = $this->validate($data,[
                 'email|安全邮箱' => 'email',
                 'password|登录密码' => 'alphaNum|length:6,18',
-                'grade|用户等级' => 'require|number',
-                'grade_time|到期时间' => 'dateFormat:Y-m-d'
+                'group|用户组' => 'require|number'
             ]);
 
             if($result !== true) return json(['code' => 502,'msg' => $result]);
@@ -97,44 +140,56 @@ class User extends Admin
             }
 
             if(!empty($data['password'])){
-                $salt = substr(md5(uniqid()),0,6);
-                $en_password = md5($data['password'].$salt);
-                $update['salt'] = $salt;
+                $en_password = md5($data['password'] . config('app.pass_salt'));
                 $update['password'] = $en_password;
             }
 
-            $update['grade'] = $data['grade'];
-
-            if($data['grade'] > 0){
-                $grade_time = strtotime($data['grade_time']);
-                if($grade_time < time()){
-                    unset($update['grade']);
-                }else{
-                    $update['grade_time'] = $grade_time;
-                }
+            if($info['group'] == 1 && $info['id'] != $this->adminInfo['id'] && !empty($data['password']) && $this->adminInfo['id'] != 1){
+                $this->returnError('操作失败，您不能更改其他管理员组用户的密码');
             }
 
-            User::where('id',$id)->update($update);
+            if($info['id'] == $this->adminInfo['id'] && $data['group'] != $info['group']){
+                $this->returnError('操作失败，您不能更改自己的用户组');
+            }
+
+            if($info['id'] == 1 && $data['group'] != $info['group']){
+                $this->returnError('操作失败，您不能更改总管理员的用户组');
+            }
+
+            $update['group'] = $data['group'];
+
+            Users::where('id',$id)->update($update);
 
             return json(['code' => 200,'msg' => '用户信息修改成功']);
 
         }else{
+            $group = Groups::field('id,group_name')->select()->toArray();
+            $this->assign('group',$group);
             $this->assign('info',$info);
             return $this->fetch();
         }
     }
 
+
     public function change_status(){
         $id = input('get.id');
         $status = input('get.status');
 
-        $info = User::get($id);
+        $info = Users::get($id);
 
         if($info->isEmpty()){
-            return json(['code' => 502,'msg' => '用户数据不存在']);
+            $this->returnError('用户数据不存在');
         }
 
-        User::where('id',$id)->update(['status' => $status]);
+        if($info['id'] == 1){
+            $this->returnError('操作失败，您不能封禁总管理员的帐号');
+        }
+
+        if($info['id'] == $this->adminInfo['id']){
+            $this->returnError('操作失败，您不能封禁自己的帐号');
+        }
+
+        Users::where('id',$id)->update(['status' => $status]);
 
         return json(['code' => 200,'msg' => '用户状态切换成功']);
     }

@@ -17,7 +17,7 @@ class Users extends Model
      * @param $password
      * @throws Exception
      */
-    public function register($username,$email,$password){
+    public function register($username,$email,$password,$group){
 
         if(self::where('username',$username)->count() > 0){
             throw new Exception('当前帐号已被注册');
@@ -30,9 +30,10 @@ class Users extends Model
         $en_password = md5($password . config('app.pass_salt'));
 
         $user = [
+            'nickname' => ucfirst($username),
             'username' => $username,
             'email' => $email,
-            'group' => 3,
+            'group' => $group,
             'password' => $en_password,
             'create_time' => time(),
             'status' => 1

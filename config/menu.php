@@ -21,7 +21,7 @@ return [
                 'title' => '用户列表',
                 'type' => 1,
                 'openType' => '_iframe',
-                'href' => url('admin/users/index')
+                'href' => url('admin/user/index')
             ],
             [
                 'id' => 122,

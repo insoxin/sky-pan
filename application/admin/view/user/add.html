@@ -9,11 +9,25 @@
   <div class="mainBox">
     <div class="main-container">
       <div class="layui-form-item">
-        <label class="layui-form-label">手机号码</label>
+        <label class="layui-form-label">用户帐号</label>
         <div class="layui-input-block">
-          <input type="text" maxlength="11" name="phone" lay-verify="required" placeholder="请输入手机号码" autocomplete="off" class="layui-input">
+          <input type="text" name="username" lay-verify="required" placeholder="请输入用户帐号" autocomplete="off" class="layui-input">
         </div>
       </div>
+
+
+      <div class="layui-form-item">
+        <label class="layui-form-label">当前用户组</label>
+        <div class="layui-input-block">
+          <select name="group" lay-verify="required">
+            {volist name="$group" id="vo"}
+            <option value="{$vo.id}" {eq name="$default_group" value="$vo.id"}selected{/eq}>{$vo.group_name}</option>
+            {/volist}
+          </select>
+        </div>
+      </div>
+
+
       <div class="layui-form-item">
         <label class="layui-form-label">登录密码</label>
         <div class="layui-input-block">
