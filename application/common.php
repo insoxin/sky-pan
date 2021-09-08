@@ -39,3 +39,37 @@ function PolicyType($d): string
 
     return $type[$d] ?? '未知';
 }
+
+function getFileIcon($file_ext): string
+{
+    $file_types = [
+        'video' => ['mp4','avi','mov','rmvb','rm','asf','divx','mpg','mpeg','mpe','wmv','mp4','mkv','vob','swf','flv'],
+        'music' => ['cd','mp3','flac','ape','wma','mid','midi','mmf','ncm','wav','dts','dsf'],
+        'code' => ['c','php','py','py3','cpp','h','jar','html','hta','chm','css','js','htm','asp','aspx','jsp','dll','cs','go','sql','xml','vb','java','lib','e','ec','db','bat','vbs','cmd','json','vbe','ocx','conf','sh','dat'],
+        'zip' => ['zip','tar','gz','rar','7z','arj','z','iso','gho'],
+        'ps' => ['ps','psd','pdd','eps','iff','tdi','pcx','raw'],
+        'img' => ['png','bmp','rle','dib','gif','ico','jpeg','jpe','jff','jps','jpg','psb','svg','pbm','mp0'],
+        'fonts' => ['ttf','eot','woff','otf','woff2'],
+        'text' => ['txt','md','rtf','ini'],
+        'word' => ['doc','docx','docm'],
+        'excel' => ['xls','xlsx','xlsm'],
+        'ppt' => ['ppt','pptx','pdf','pdp'],
+        'links' => ['url','lnk'],
+        'exe' => ['exe','msi'],
+        'ipa' => ['ipa'],
+        'apk' => ['apk']
+    ];
+
+    $file_mime = 'unknown';
+
+    foreach ($file_types as $mime_name => $item){
+        foreach ($item as $ext){
+            if($ext == $file_ext){
+                $file_mime = $mime_name;
+                break;
+            }
+        }
+    }
+
+    return '/static/admin/images/file_ext/'.$file_mime.'.png';
+}
