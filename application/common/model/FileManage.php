@@ -7,6 +7,12 @@ use think\Exception;
 class FileManage
 {
 
+    /**
+     * 获取上级目录ID
+     * @param $folder_id
+     * @param $uid
+     * @return mixed
+     */
     public static function getFolderPid($folder_id,$uid){
         if(empty($folder_id)){
             $folder_id = Folders::where('uid',$uid)->where('parent_folder',$folder_id)->value('id');
@@ -14,6 +20,29 @@ class FileManage
         return $folder_id;
     }
 
+    /**
+     * 获取有效的目录ID
+     * @param $folder_id
+     * @param $uid
+     * @return mixed
+     */
+    public static function getFolderAllowPid($folder_id,$uid){
+        if(empty($folder_id)){
+            $folder_id = Folders::where('uid',$uid)->where('parent_folder',$folder_id)->value('id');
+        }else{
+            $folder_id = Folders::where('uid',$uid)->where('id',$folder_id)->value('id');
+        }
+
+        return $folder_id;
+    }
+
+    /**
+     * 获取文件列表
+     * @param $folder_id
+     * @param $search
+     * @param $uid
+     * @return array|array[]
+     */
     public static function ListFile($folder_id,$search,$uid){
 
         //获取当前根目录
@@ -34,29 +63,29 @@ class FileManage
                 <div class="gengduo" onclick="clickGengduo(event,'.$item['id'].')">  
                     <span><em class="icon icon-more icon-color" title="更多"></em></span>
                 </div>',
-                'file_size' => '',
+                'file_size' => '-',
                 'url' => '',
                 'url_pass' => '',
-                'count_down' => '<font color="#f81" size="4">0</font>',
-                'count_open' => 0,
-                'update_time' => date('Y-m-d H:i',$item['create_time'])
+                'count_down' => '<font color="#f81" size="4">'.$item['count_down'].'</font>',
+                'count_open' => $item['count_open'],
+                'update_time' => date('Y-m-d H:i',$item['update_time'])
             ];
         }
 
         foreach ($files->toArray() as $item){
             $data['data'][] = [
                 'file_name' => '
-                <img class="file-icon" src="/static/user/file/code.png" />
-                <text class="filename" id="t3080" data-id="3080"  data-filename="QQBrowserConfig.dat" data-folder="0">QQBrowserConfig.dat</text>
-                <div class="gengduo" onclick="clickGengduo(event,3080)">  
-                    <span><em class="icon icon-more icon-color" title="更多"></span>
+                <img class="file-icon" src="'.getFileIcon($item['ext'],'index').'" />
+                <text class="filename" id="t'.$item['id'].'" data-id="'.$item['id'].'"  data-filename="'.$item['origin_name'].'" data-folder="0">'.$item['origin_name'].'</text>
+                <div class="gengduo" onclick="clickGengduo(event,'.$item['id'].')">  
+                    <span><em class="icon icon-more icon-color" title="更多"></em></span>
                 </div>',
-                'file_size' => '114B',
+                'file_size' => countSize($item['size']),
                 'url' => '',
                 'url_pass' => '',
-                'count_down' => '<font color="#f81" size="4">0</font>',
-                'count_open' => 0,
-                'update_time' => $item['update_time']
+                'count_down' => '<font color="#f81" size="4">'.$item['count_down'].'</font>',
+                'count_open' => $item['count_open'],
+                'update_time' => date('Y-m-d H:i',$item['update_time'])
             ];
         }
 
@@ -79,6 +108,7 @@ class FileManage
     }
 
     /**
+     * 创建目录
      * @throws Exception
      */
     public static function createFolder($folder_pid, $folder_name, $folder_desc, $uid){
@@ -113,16 +143,29 @@ class FileManage
             'folder_name' => $folder_name,
             'parent_folder' => $folder_pid,
             'desc' => $folder_desc,
-            'create_time' => time()
+            'create_time' => time(),
+            'update_time' => time()
         ]);
     }
 
+    /**
+     * 获取用户上级目录列表
+     * @param $uid
+     * @param $folder_id
+     * @return array
+     */
     protected static function getUserDirParents($uid,$folder_id): array
     {
         $folders = self::getUserDirs($uid);
         return self::getDirParents($folders,$folder_id);
     }
 
+    /**
+     * 递归获取上级目录
+     * @param $folders
+     * @param $folder_id
+     * @return array
+     */
     protected static function getDirParents($folders,$folder_id): array
     {
         $ids = [];
@@ -137,6 +180,11 @@ class FileManage
         return $ids;
     }
 
+    /**
+     * 获取用户目录
+     * @param $uid
+     * @return array
+     */
     protected static function getUserDirs($uid): array
     {
         return Folders::where('uid',$uid)->field('id,parent_folder as pid')->select()->toArray();

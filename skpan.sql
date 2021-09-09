@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version: 5.5.29)
-# Date: 2021-09-09 21:47:25
+# Date: 2021-09-09 23:51:38
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
@@ -31,7 +31,7 @@ CREATE TABLE `sk_folders` (
 #
 
 /*!40000 ALTER TABLE `sk_folders` DISABLE KEYS */;
-INSERT INTO `sk_folders` VALUES (1,4,0,'根目录',0,'.','/',NULL,0,0,1631186682,0,NULL),(3,4,0,'asdsdsd',1,'','','',0,0,1631192692,0,NULL),(4,4,0,'测试文件',1,'','','',0,0,1631195016,0,NULL),(5,4,0,'ABC',3,'','','',0,0,1631195067,0,NULL);
+INSERT INTO `sk_folders` VALUES (1,4,0,'根目录',0,'.','/',NULL,0,0,1631186682,0,NULL),(6,4,0,'源码文件',1,'','','',0,0,1631201152,0,'0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `sk_folders` ENABLE KEYS */;
 
 #
@@ -127,6 +127,7 @@ DROP TABLE IF EXISTS `sk_stores`;
 CREATE TABLE `sk_stores` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) NOT NULL DEFAULT '0' COMMENT '所属用户',
+  `shares_id` int(11) NOT NULL DEFAULT '0' COMMENT '分享id',
   `origin_name` varchar(255) NOT NULL DEFAULT '' COMMENT '源文件名',
   `file_name` text NOT NULL COMMENT '存储文件名',
   `size` bigint(20) NOT NULL DEFAULT '0' COMMENT '文件大小',
@@ -135,19 +136,22 @@ CREATE TABLE `sk_stores` (
   `ext` varchar(60) NOT NULL DEFAULT '' COMMENT '文件后缀',
   `parent_folder` int(11) NOT NULL DEFAULT '0' COMMENT '所属目录',
   `policy_id` int(11) NOT NULL DEFAULT '0' COMMENT '存储策略',
+  `count_down` int(11) NOT NULL DEFAULT '0' COMMENT '下载量',
+  `count_open` int(11) NOT NULL DEFAULT '0' COMMENT '浏览量',
   `dir` text NOT NULL COMMENT '文件目录',
   `desc` text COMMENT '文件描述',
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
   `delete_time` timestamp NULL DEFAULT NULL COMMENT '软删除',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='储存文件';
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='储存文件';
 
 #
 # Data for table "sk_stores"
 #
 
 /*!40000 ALTER TABLE `sk_stores` DISABLE KEYS */;
+INSERT INTO `sk_stores` VALUES (1,4,0,'navi2.ico','20210909\\4\\file_613a2671e5faf1631200881.ico',117271,'','image/x-icon','ico',1,1,0,0,'',NULL,1631200881,1631200881,'0000-00-00 00:00:00'),(3,4,0,'app.ico','20210909\\4\\file_613a2833432371631201331.ico',114595,'','image/x-icon','ico',6,1,0,0,'',NULL,1631201331,1631201331,NULL);
 /*!40000 ALTER TABLE `sk_stores` ENABLE KEYS */;
 
 #

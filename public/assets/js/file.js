@@ -422,7 +422,7 @@ $(".context-menu .list li").click(function(){
         }
         case "删除":{
                 
-            var url = "/user/files/toDelete.html?id="+id+"&isFolder="+is_folder;
+            var url = "/file/delete.html?id="+id+"&is_folder="+is_folder;
             layer.confirm('确定要删除（'+filename+"）吗？", 
             {
                 shadeClose: true,

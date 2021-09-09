@@ -4,6 +4,8 @@ namespace app\index\controller;
 
 use app\common\controller\Home;
 use app\common\model\FileManage;
+use app\common\model\Folders;
+use app\common\model\Stores;
 
 class File extends Home
 {
@@ -36,6 +38,29 @@ class File extends Home
         }catch (\Throwable $e){
             return json(['status' => 0,'msg' => $e->getMessage()]);
         }
+    }
+
+    public function delete(){
+        $id = input('get.id');
+        $is_folder = input('get.is_folder');
+        $uid = $this->userInfo['id'];
+
+        if(empty($id)){
+            return json(['status' => 0,'msg' => '删除错误，参数缺失']);
+        }
+
+        //删除目录
+        if(boolval($is_folder)){
+            Folders::destroy(function($query) use($id,$uid){
+                $query->where('id','=',$id)->where('uid','=',$uid);
+            });
+        }else{
+            Stores::destroy(function($query) use($id,$uid){
+                $query->where('id','=',$id)->where('uid','=',$uid);
+            });
+        }
+
+        return json(['status' => 1,'msg' => '删除成功']);
     }
 
 }

@@ -3,6 +3,8 @@
 namespace app\index\controller;
 
 use app\common\controller\Home;
+use app\common\model\FileManage;
+use app\common\model\Stores;
 
 class Upload extends Home
 {
@@ -15,8 +17,28 @@ class Upload extends Home
         // 超时时间5分钟
         @set_time_limit(5 * 60);
 
+        //目录校验获取
+
+        $folder_id = input('post.folder_id',0);
+
+        $folder_id = FileManage::getFolderAllowPid($folder_id,$this->userInfo['id']);
+
+        if(empty($folder_id)){
+            return json(['code' => 0,'msg' => '上传目标文件夹不存在']);
+        }
+
+        //文件获取
+
+        $files = request()->file('file');
+
+        if(empty($files)){
+            return json(['code' => 0,'msg' => '请选择上传的文件']);
+        }
+
+
         // 存储策略
         $policy = $this->getPolicy();
+
 
         // 判断存储类型
         if($policy['type'] != 'local'){
@@ -25,12 +47,6 @@ class Upload extends Home
 
         //判断存储类型
         $paths = $this->getUploadPaths($policy);
-
-        $files = request()->file('file');
-
-        if(empty($files)){
-            return json(['code' => 0,'msg' => '请选择上传的文件']);
-        }
 
         $file_validate = [];
 
@@ -44,10 +60,28 @@ class Upload extends Home
 
         $info = $files->validate($file_validate)->move($paths['path'],$paths['name']);
 
+        // 保存结果
         if($info){
-            echo $info->getExtension();
-            echo $info->getSaveName();
-            echo $info->getFilename();
+
+            // 加入数据库
+            $data = [
+                'uid' => $this->userInfo['id'],
+                'origin_name' => $info->getInfo('name'),
+                'file_name' => $paths['file'] . $info->getFilename(),
+                'size' => $info->getInfo('size'),
+                'meta' => '',
+                'mime_type' => $info->getMime(),
+                'ext' => $info->getExtension(),
+                'parent_folder' => $folder_id,
+                'policy_id' => $policy['id'],
+                'dir' => '',
+                'create_time' => time(),
+                'update_time' => time()
+            ];
+
+            Stores::create($data);
+
+            return json(['code' => 1,'msg' => '文件上传成功']);
 
         }else{
             return json(['code' => 0,'msg' => $files->getError()]);
@@ -70,7 +104,6 @@ class Upload extends Home
 
         //文件名
         $file_name = uniqid( "file_") . time();
-
 
         return [
             'root' => $root_path,
