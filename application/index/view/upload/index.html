@@ -30,11 +30,9 @@
                 <div id="dndArea" class="placeholder">
                     <div id="filePicker" class="webuploader-container">
                         <div class="webuploader-pick">点击选择文件</div>
-                        <div id="rt_rt_1es7kh60dsi0109el3h10nf1d961"
-                             style="position: absolute; top: 0px; left: 0px; width: 118px; height: 38px; overflow: hidden; bottom: auto; right: auto;">
-                            <input type="file" name="file" class="webuploader-element-invisible" multiple="multiple"
-                                   accept=""><label
-                                style="opacity: 0; width: 100%; height: 100%; display: block; cursor: pointer; background: rgb(255, 255, 255);"></label>
+                        <div id="rt_rt_1es7kh60dsi0109el3h10nf1d961" style="position: absolute; top: 0px; left: 0px; width: 118px; height: 38px; overflow: hidden; bottom: auto; right: auto;">
+                            <input type="file" name="file" class="webuploader-element-invisible" multiple="multiple" accept="">
+                            <label style="opacity: 0; width: 100%; height: 100%; display: block; cursor: pointer; background: rgb(255, 255, 255);"></label>
                         </div>
                     </div>
                     <p class="filep">或将文件拖到这里，单次最多可选20个</p>
@@ -140,7 +138,7 @@
 
             duplicate: false,
 
-            server: 'https://down.skpan.cn/api/upload/post?userid=3218&time=709efcde33eb335c591540ef17ac64bd&endtime=1631123526&key=74ea89ffc958b970c4a81f23ca52e0feea33d814&vip_time=0&bucharu=1',
+            server: "{:url('upload/file')}",
             fileVal: 'file',
 
             formData: { //自定义参数
@@ -441,29 +439,29 @@
                 return false;
             }
             else {
-                var xxx = null;
-                $.ajax({
-                    type: "post",
-                    async: false, //这句必须写，同步处理
-                    url: '/user/upload/post',
-                    data: response.data,
-                    dataType: "json",
-                    success: function (data) {
-                        xxx = data;
-                    }, error: function (error) {
-                        console.log(error);
-                    }
-                });
-                if (!xxx) {
-                    uploadError = "回调失败";
-                    return false;
-                }
-
-                if (!xxx.status) {
-                    console.log(xxx);
-                    uploadError = xxx.msg;
-                    return false;
-                }
+                // var xxx = null;
+                // $.ajax({
+                //     type: "post",
+                //     async: false, //这句必须写，同步处理
+                //     url: '/user/upload/post',
+                //     data: response.data,
+                //     dataType: "json",
+                //     success: function (data) {
+                //         xxx = data;
+                //     }, error: function (error) {
+                //         console.log(error);
+                //     }
+                // });
+                // if (!xxx) {
+                //     uploadError = "回调失败";
+                //     return false;
+                // }
+                //
+                // if (!xxx.status) {
+                //     console.log(xxx);
+                //     uploadError = xxx.msg;
+                //     return false;
+                // }
             }
         });
 

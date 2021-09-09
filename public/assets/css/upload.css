@@ -7,7 +7,7 @@ a:link {color: #3377FF;}a:visited {color: #3377FF;}a:hover {color: #FF6666;}a:ac
 .aspanlink{cursor: pointer;color: #3377FF;}
 .aspanlink:hover{color: #FF6666;}
 .toplink{display: block;height: 45px;width: 127px;position: absolute;}
-.toum{background-image: url(/img/logo7.gif);background-repeat: no-repeat;border-bottom: 1px solid #EEEEEE;border-top: 1px solid #FF7868;}
+.toum{background-image: url(../image/logo7.gif);background-repeat: no-repeat;border-bottom: 1px solid #EEEEEE;border-top: 1px solid #FF7868;}
 .n1{width: 860px;margin-left: 16px;margin-top: 17px;padding: 12px 13px 9px 13px;}
 .footm{text-align: center;padding-top: 50px;font-size: 12px;color: #93D393;}
 ul{padding:0; margin:0;}
@@ -84,7 +84,7 @@ textarea:focus{outline: none;box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.375);}
 .progressBarComplete {width: 100%;background-color: green;visibility: hidden;}
 .progressBarError {width: 100%;background-color: red;visibility: hidden;}
 .progressBarStatus {}
-a.progressCancel {font-size: 0;display: block;height: 13px;width: 13px;background-image: url(img/upload_cancel.gif);background-repeat: no-repeat;background-position: -13px 0px;float: right;}
+a.progressCancel {font-size: 0;display: block;height: 13px;width: 13px;background-image: url(../image/upload_cancel.gif);background-repeat: no-repeat;background-position: -13px 0px;float: right;}
 a.progressCancel:hover {background-position: 0px 0px;}
 .upload_style{margin-left:10px;float:left;padding:7px \9;border: 1px solid #209EFF;background-image: url(/img/up.gif);background-repeat: no-repeat;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);}
 .upload_style:hover{border: 1px solid #ccc;}
@@ -257,7 +257,7 @@ animation-duration: 0.7s;animation-iteration-count: 1;animation-delay: 0s;}
 .filelist li .progress span{display: none;overflow: hidden;width:0;height: 100%;background-color: #8cea7f;}
 .title{padding-top: 10px;padding-left: 10px;position: absolute;overflow: hidden;}
 .fsize{color: #95C5A9;padding-left: 38px;position: absolute;overflow: hidden;top: 30px;}
-.fdecs{position: absolute;top: 22px;right: 15px;height: 14px;width: 14px;background-image: url(img/upload_cancel.gif);font-size: 0;opacity: 0.39;}
+.fdecs{position: absolute;top: 22px;right: 15px;height: 14px;width: 14px;background-image: url(../image/upload_cancel.gif);font-size: 0;opacity: 0.39;}
 .fdecs:hover{cursor: pointer;opacity: 1;}
 .fdecs2{position: absolute;right: 36px;top: 0;bottom: 0;font-size: 12px;color: #E84545;line-height: 56px;}
 .fload{color:#000}
@@ -338,9 +338,9 @@ box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.15);float: right;}
 .f_midf6:hover{color:#08f;    cursor: pointer;    background-color: #F3F5F9;    box-shadow: inset 1px 1px 0px rgba(0, 0, 0, 0.05);}
 .f_midf6 .f_midf5:hover{border: 2px solid #209EFF;}
 .f_midf5:active{    background-color: #209EFF;}
-.fkey{display:none;background: url(/images/filetype/keyicon.gif) -45px 1px no-repeat;margin-left: 6px;padding: 0px 8px;border-radius: 3px;border: 1px solid #eee;}
+.fkey{display:none;margin-left: 6px;padding: 0px 8px;border-radius: 3px;border: 1px solid #eee;}
 .fkey:hover{    border: 1px solid #aaa;}
-.finfo{display:none;background: url(/images/filetype/keyicon.gif) 2px 1px no-repeat;margin-left: 6px;padding: 0px 8px;border-radius: 3px;border: 1px solid #eee;}
+.finfo{display:none;margin-left: 6px;padding: 0px 8px;border-radius: 3px;border: 1px solid #eee;}
 .finfo:hover{    border: 1px solid #aaa;}
 .finfos{display:none;position: absolute;background: #fff;border-radius: 3px;border: 1px solid #ddd;margin-top: 10px;padding: 7px 10px;   color: #333;    max-width: 300px;}
 .finfost{ color: #5E9039;}

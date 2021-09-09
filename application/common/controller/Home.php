@@ -3,6 +3,7 @@
 namespace app\common\controller;
 
 use app\common\model\Groups;
+use app\common\model\Policys;
 use app\common\model\Users;
 use think\Controller;
 
@@ -22,6 +23,15 @@ class Home extends Controller
 
         $this->groupData = Groups::where('id',$this->userInfo['group'])->find();
 
+    }
+
+    protected function getPolicy(): array
+    {
+        $policy = Policys::where('id',$this->groupData['policy_id'])->find()->toArray();
+
+        $policy['config'] = json_decode($policy['config'],true);
+
+        return $policy;
     }
 
 

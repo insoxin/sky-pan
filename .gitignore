@@ -7,3 +7,4 @@ thinkphp
 .DS_Store
 /tp.com
 /public/nginx.htaccess
+/public/default
