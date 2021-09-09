@@ -74,7 +74,7 @@ function moveFiles(ids="",idFs=""){
         area: ['510px', '355px'],
         offset: ['15%','13%'],
         shadeClose: true,   // 是否点击遮罩关闭
-        content: '/user/files/moveFiles.html?ids='+ids+"&idFs="+idFs,
+        content: '/file/move_files?ids='+ids+"&idFs="+idFs,
         end:function () {
             //getTable(); //刷新数据
         }
@@ -210,7 +210,9 @@ function CheckDelete()
                         $("text[data-id='"+data[i]+"']").parent().parent().remove();
                     }
 
-                    layer.msg(data2.msg, {time:1500, icon:1, shift:4});
+                    layer.msg(data2.msg, {time:1500, icon:1, shift:4},function(){
+                        window.location.reload();
+                    });
                 }else{
                     layer.alert(data2.msg,{icon:2});
                 }

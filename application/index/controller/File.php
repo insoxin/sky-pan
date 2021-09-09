@@ -14,7 +14,10 @@ class File extends Home
         $folder_id = input('get.folder_id',0);
         $search = input('get.search','');
 
-        $file_list = FileManage::ListFile($folder_id,$search,$this->userInfo['id']);
+        $page = input('get.page',1);
+        $limit = input('get.rows',20);
+
+        $file_list = FileManage::ListFile($folder_id,$search,$this->userInfo['id'],$page,$limit);
 
         return json($file_list);
     }
@@ -119,5 +122,61 @@ class File extends Home
         return json(['status' => 1,'msg' => '成功删除 '.count($success_ids).' 个文件(夹)~','data' => $success_ids]);
     }
 
+    public function move_files(){
+        $ids = input('get.ids');
+        $idFs = input('get.idFs');
 
+        $this->assign('ids',$ids);
+        $this->assign('idFs',$idFs);
+        return $this->fetch();
+    }
+
+    public function folder_list(){
+        $folder_id = input('post.folder_id',0);
+        $folder = FileManage::FolderList($folder_id,$this->userInfo['id']);
+        return json(['status' => 1,'msg' => 'ok','data' => $folder]);
+    }
+
+    public function move_to_file(){
+        $folder_id = input('post.folder_id',0);
+        $ids = input('post.ids');
+        $idFs = input('post.idFs');
+
+        $uid = $this->userInfo['id'];
+
+        if(empty($ids) && empty($idFs)){
+            return json(['status' => 0,'msg' => '请选择需要移动的文件或者文件夹']);
+        }
+
+        $folder_id = FileManage::getFolderPid($folder_id,$uid);
+
+        $root_folder = FileManage::getFolderPid(0,$uid);
+
+        $ids_list = array_filter(explode(',',trim($ids)));
+        $idFs_list = array_filter(explode(',',trim($idFs)));
+
+        $success = [];
+
+        //移动目录
+        if(!empty($idFs_list)){
+            foreach ($idFs_list as $dir){
+                if($dir != $root_folder && $dir != $folder_id && !empty($dir)){
+                    Folders::where('id',$dir)->where('uid',$uid)->update(['parent_folder' => $folder_id]);
+                    $success[] = $dir;
+                }
+            }
+        }
+
+        //移动文件
+        if(!empty($idFs_list)){
+            foreach ($ids_list as $file){
+               if(!empty($file)){
+                   Folders::where('id',$file)->where('uid',$uid)->update(['parent_folder' => $folder_id]);
+                   $success[] = $file;
+               }
+            }
+        }
+
+        return json(['status' => 1,'msg' => '成功移动 '.count($success).' 个文件(夹)~','data' => $success]);
+    }
 }

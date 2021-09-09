@@ -41,12 +41,14 @@ class FileManage
      * @param $folder_id
      * @param $search
      * @param $uid
+     * @param $page
+     * @param $limit
      * @return array|array[]
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public static function ListFile($folder_id,$search,$uid): array
+    public static function ListFile($folder_id,$search,$uid,$page,$limit): array
     {
 
         //获取当前根目录
@@ -72,8 +74,20 @@ class FileManage
             ->where('folder_name','like','%'.$search.'%')
             ->field('id,shares_id,folder_name as name,ext,size,count_down,count_open,update_time')
             ->union($files_sql,true)
-            ->page(1,20)
+            ->page($page,$limit)
             ->select();
+
+        $files_count = db('stores')
+            ->where($maps)
+            ->where('origin_name','like','%'.$search.'%')
+            ->field('id')
+            ->count();
+
+        $folder_count = db('folders')
+            ->where($maps)
+            ->where('folder_name','like','%'.$search.'%')
+            ->field('id')
+            ->count();
 
         $data = ['data' => []];
 
@@ -119,13 +133,39 @@ class FileManage
                 $data['parent'] = Folders::where('id','in',$parent_ids)
                     ->where('uid',$uid)
                     ->field('id,folder_name')
+                    ->order('id desc')
                     ->select()->toArray();
             }
         }
 
-        $data['total'] = count($list);
+        $data['total'] = $files_count + $folder_count;
 
         return $data;
+    }
+
+
+    public static function FolderList($folder_id,$uid): array
+    {
+        //获取当前根目录
+        $folder_id = self::getFolderPid($folder_id,$uid);
+
+        $maps = [
+            ['uid','=',$uid],
+            ['parent_folder','=',$folder_id],
+            ['delete_time','null','']
+        ];
+
+        return Folders::withTrashed()
+            ->where($maps)
+            ->field('id,folder_name')
+            ->select()->each(function($item) use ($uid){
+                if(Folders::withTrashed()->where('parent_folder',$item['id'])->where('uid',$uid)->count() > 0){
+                    $item['down'] = 1;
+                }else{
+                    $item['down'] = 0;
+                }
+                return $item;
+            })->toArray();
     }
 
     /**

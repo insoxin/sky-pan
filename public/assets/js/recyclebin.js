@@ -16,7 +16,10 @@ function Recyclebin(ids,idFs,action)
                 {
                     $("text[data-id='"+data[i]+"']").parent().parent().remove();
                 }
-                layer.msg(data2.msg, {time:1500, icon:1, shift:4});
+
+                layer.msg(data2.msg, {time:1500, icon:1, shift:4},function(){
+                    window.location.reload();
+                });
             }else{
                 layer.alert(data2.msg,{icon:2});
             }

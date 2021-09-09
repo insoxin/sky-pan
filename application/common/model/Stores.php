@@ -12,4 +12,5 @@ class Stores extends Model
 
     protected $deleteTime = 'delete_time';
 
+    protected $autoWriteTimestamp = true;
 }

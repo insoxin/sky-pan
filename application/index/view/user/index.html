@@ -202,7 +202,7 @@
                     method: 'GET', //请求方式（*）
                     pageNumber: 1,     //初始化加载第一页1
                     pagination: true,   //是否显示分页条1
-                    pageSize: 10,      //单页显示条数1
+                    pageSize: 20,      //单页显示条数1
 
                     striped: true, //是否显示行间隔色
                     sortable: true, //是否启用排序
@@ -210,8 +210,15 @@
                     dataField: "data", //Json数据的字段
                     // clickToSelect: true,    //点击选中
                     height: $(window).height() - 171, //高度
-                    sidePagination: "client", //分页方式：client客户端分页，server服务端分页（*）
+                    sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
                     classes: "table table-hover",
+
+                    queryParams : function (params) {
+                        return {
+                            rows: params.limit,                         //页面大小
+                            page: (params.offset / params.limit) + 1,   //页码
+                        };
+                    },
 
                     //无内容时
                     formatNoMatches: function () {
