@@ -196,8 +196,7 @@ function CheckDelete()
 
         //console.log(ids,idFs);
 
-        
-        var url = "/user/files/toDeleteAll.html?ids="+ids+"&idFs="+idFs;
+        var url = "/file/delete_all?ids="+ids+"&idFs="+idFs;
         $.ajax({
             type: "get",
             url: url,

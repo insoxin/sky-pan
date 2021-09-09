@@ -71,4 +71,53 @@ class File extends Home
         return json(['status' => 1,'msg' => '删除成功']);
     }
 
+    public function delete_all(){
+        $ids = input('get.ids');
+        $idFs = input('get.idFs');
+
+        $uid = $this->userInfo['id'];
+        $success_ids = [];
+
+        if(empty($ids) && empty($idFs)){
+            return json(['status' => 0,'msg' => '请选择需要删除的文件(夹)~']);
+        }
+
+        if(!empty($ids)){
+            $ids_list = explode(',',$ids);
+            try {
+                foreach ($ids_list as $file){
+                    //删除
+                    Stores::destroy(function($query) use($file,$uid){
+                        $query->where('id','=',$file)->where('uid','=',$uid);
+                    });
+                    $success_ids[] = $file;
+                }
+            }catch (\Throwable $e){
+                return json(['status' => 0,'msg' => $e->getMessage()]);
+            }
+        }
+
+        if(!empty($idFs)){
+            $idFs_list = explode(',',$idFs);
+            try {
+                foreach ($idFs_list as $dir){
+                    $pid = Folders::where('id',$dir)->value('parent_folder');
+                    if($pid == 0){
+                        return json(['status' => 0,'msg' => '删除失败，目录操作异常']);
+                    }
+                    //删除
+                    Folders::destroy(function($query) use($dir,$uid){
+                        $query->where('id','=',$dir)->where('uid','=',$uid);
+                    });
+                    $success_ids[] = $dir;
+                }
+            }catch (\Throwable $e){
+                return json(['status' => 0,'msg' => $e->getMessage()]);
+            }
+        }
+
+        return json(['status' => 1,'msg' => '成功删除 '.count($success_ids).' 个文件(夹)~','data' => $success_ids]);
+    }
+
+
 }

@@ -14,6 +14,7 @@ class Recycle extends Home
         return $this->fetch();
     }
 
+
     public function list(){
 
         $limit = input('get.rows',20);
@@ -24,13 +25,41 @@ class Recycle extends Home
         return json($file_list);
     }
 
-    public function clear(){
 
+    public function clear(){
+        // 清空回收站
+        $uid = $this->userInfo['id'];
+
+        $success_ids = [];
+
+        try {
+            $stores = Stores::onlyTrashed()->where('uid',$uid)->select();
+            foreach ($stores as $file){
+                // 删除文件
+                $file->delete(true);
+                $success_ids[] = $file['id'];
+            }
+
+            $folders = Folders::onlyTrashed()->where('uid',$uid)->select();
+            foreach ($folders as $dir){
+                // 删除文件
+                $dir->delete(true);
+                $success_ids[] = $dir['id'];
+            }
+
+            return json(['status' => 1,'msg' => '成功清空回收站，共删除 '.count($success_ids).' 个文件(夹)~']);
+
+        }catch (\Throwable $e){
+            return json(['status' => 0,'msg' => $e->getMessage()]);
+        }
     }
+
 
     public function restore(){
         $ids = input('get.ids');
         $idFs = input('get.idFs');
+
+        $uid = $this->userInfo['id'];
 
         $success_ids = [];
 
@@ -40,7 +69,7 @@ class Recycle extends Home
 
         if(!empty($ids)){
             try {
-                $stores = Stores::onlyTrashed()->where('id','in',$ids)->select();
+                $stores = Stores::onlyTrashed()->where('id','in',$ids)->where('uid',$uid)->select();
                 foreach ($stores as $file){
                     //还原文件
                     $file->restore();
@@ -53,7 +82,7 @@ class Recycle extends Home
 
         if(!empty($idFs)){
             try {
-                $folders = Folders::onlyTrashed()->where('id','in',$idFs)->select();
+                $folders = Folders::onlyTrashed()->where('id','in',$idFs)->where('uid',$uid)->select();
                 foreach ($folders as $dir){
                     //还原文件
                     $dir->restore();
@@ -67,8 +96,45 @@ class Recycle extends Home
         return json(['status' => 1,'msg' => '成功还原 '.count($success_ids).' 个文件(夹)~','data' => $success_ids]);
     }
 
-    public function delete(){
 
+    public function delete(){
+        $ids = input('get.ids');
+        $idFs = input('get.idFs');
+
+        $uid = $this->userInfo['id'];
+        $success_ids = [];
+
+        if(empty($ids) && empty($idFs)){
+            return json(['status' => 0,'msg' => '请选择需要删除的文件(夹)~']);
+        }
+
+        if(!empty($ids)){
+            try {
+                $stores = Stores::onlyTrashed()->where('id','in',$ids)->where('uid',$uid)->select();
+                foreach ($stores as $file){
+                    // 删除文件
+                    $file->delete(true);
+                    $success_ids[] = $file['id'];
+                }
+            }catch (\Throwable $e){
+                return json(['status' => 0,'msg' => $e->getMessage()]);
+            }
+        }
+
+        if(!empty($idFs)){
+            try {
+                $folders = Folders::onlyTrashed()->where('id','in',$idFs)->where('uid',$uid)->select();
+                foreach ($folders as $dir){
+                    // 删除文件
+                    $dir->delete(true);
+                    $success_ids[] = $dir['id'];
+                }
+            }catch (\Throwable $e){
+                return json(['status' => 0,'msg' => $e->getMessage()]);
+            }
+        }
+
+        return json(['status' => 1,'msg' => '成功彻底删除 '.count($success_ids).' 个文件(夹)~','data' => $success_ids]);
     }
 
 }
