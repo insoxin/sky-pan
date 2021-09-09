@@ -4,20 +4,18 @@
  */
 function Recyclebin(ids,idFs,action)
 {
-    var url = "/user/recyclebin/to"+action+"All.html?ids="+ids+"&idFs="+idFs;
+    var url = "/recycle/"+action+"?ids="+ids+"&idFs="+idFs;
     $.ajax({
         type: "get",
         url: url,
         dataType: "json",
         success: function (data2) {
-            if(data2.status)
-            {
+            if(data2.status){
                 data = data2.data;
                 for(var i=0;i<data.length;i++)
                 {
                     $("text[data-id='"+data[i]+"']").parent().parent().remove();
                 }
-
                 layer.msg(data2.msg, {time:1500, icon:1, shift:4});
             }else{
                 layer.alert(data2.msg,{icon:2});
@@ -47,7 +45,7 @@ function CheckDelete()
         var data = getCheckIds();
         var ids = data['ids'];
         var idFs = data['idFs'];
-        Recyclebin(ids,idFs,"Delete");
+        Recyclebin(ids,idFs,"delete");
     },
     function(){
     });
@@ -59,7 +57,7 @@ function CheckBack()
     var data = getCheckIds();
     var ids = data['ids'];
     var idFs = data['idFs'];
-    Recyclebin(ids,idFs,"Back");
+    Recyclebin(ids,idFs,"restore");
 }
 
 
@@ -74,7 +72,7 @@ function CheckEmpty()
         btn: ['确定','取消'] //按钮
     },
     function(index){
-        var url = "/user/recyclebin/toEmpay.html";
+        var url = "/recycle/clear";
         $.ajax({
             type: "get",
             url: url,

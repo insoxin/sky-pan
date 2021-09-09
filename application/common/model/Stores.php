@@ -10,5 +10,6 @@ class Stores extends Model
 
     use SoftDelete;
 
+    protected $deleteTime = 'delete_time';
 
 }

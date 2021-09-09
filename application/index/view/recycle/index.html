@@ -1,0 +1,236 @@
+{extend name="layout/user" /}
+{block name="main"}
+<div class="all-box">
+
+    <div class="top space-between">
+        <div class="top-left align-center">
+            <!--[if lte IE 9]><div style="color: #FFFFFF;width: 770px;text-align: center;background: #FF4949;margin: auto;">升级提示：当您看到此信息，说明您的浏览器不支持上传接口，请使用360（极速模式），QQ（新版），Chrome等新一代浏览器。</div><![endif]-->
+
+            <div id="CilckCheck2" class="top-item flex-box upload " onclick="CheckEmpty()" style="background-color: #d9534f;">
+                <em class="icon icon-delete"></em><p class="text">清空回收站</p>
+            </div>
+
+            <div id="CilckCheck" style="display: none;" class="align-center">
+                <div id="CheckTmp" style="display: none;"></div>
+                <div class="top-item flex-box upload" onclick="CheckBack()">
+                    <em class="icon icon-disk" title="收集文件"></em>
+                    <p class="text">还原文件</p>
+                </div>
+                <div class="top-item flex-box" onclick="CheckDelete()" style="margin-right: 0px;padding: 0 8px 0 8px;border-radius: 0px;">
+                    <em class="icon icon-delete" title="删除"></em>
+                    <p class="text">彻底删除</p>
+                </div>
+            </div>
+        </div>
+        <div class="top-right space-between">
+            <div class="el-input">
+                <input id="sousuo" type="text" autocomplete="off" placeholder="搜索您的文件" class="el-input__inner">
+                <span class="icon icon-search" onclick="getTable($('#sousuo').val())"></span>
+            </div>
+        </div>
+    </div>
+
+    <div id="emptyFile" style="display: none;">
+        <div class="emptyFile" style="visibility: visible;">
+            <div class="emptyFile2 emptyRecyclebin">
+                <div class="img">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="daohang">
+            <span class="daohang-all" style="display: block;">
+                <span onclick="getTable()" style="cursor:pointer;">放到回收站中的文件，外链无法分享不可下载。重要文件不要放到回收站！</span>
+                <span style="float:right;top: 1px;">
+                    <span style="color: #f0ad4e;font-size: 12px;margin-right: 5px;" title="鼠标右键文件去试试~">
+                        <span class="icon icon-tips-caution"></span>
+                        文件操作可使用右键
+                    </span>
+                    <span>已全部加载，共<span class="daohang-count">-</span>个</span>
+                </span>
+            </span>
+        <ul class="daohang-path" style="display: none;">
+            <li>
+                <a id="daohang-shangyiji" onclick="getTable()" href="javascript:;">返回上一级</a>
+                <span class="fuhao">|</span>
+            </li>
+            <li>
+                <a href="javascript:;" onclick="getTable()">全部文件</a>
+                <span class="fuhao">&gt;</span>
+                <span id="daohang">
+                    </span>
+            </li>
+            <span style="float:right;">已全部加载，共<span class="daohang-count">-</span>个</span>
+        </ul>
+    </div>
+
+    <div class="context-menu">
+        <ul class="list" data-id="" data-filename="" data-folder=""
+            id="list1"
+            style="z-index: 100; left: 524px; top: 194px; display: none;">
+            <li>彻底删除</li>
+            <li class="separate"></li>
+            <li>还原</li>
+        </ul>
+        <ul class="list" id="list2" style="z-index: 100; left: 524px; top: 194px; display: none;">
+            <li>重新加载页面</li>
+            <li class="separate"></li>
+            <li>刷新</li>
+        </ul>
+    </div>
+
+    <script src="__STATIC__/js/recyclebin.js"></script>
+    <div class="table-box">
+
+        <table id="table"></table>
+
+        <script>
+
+            //table自适应
+            $(window).resize(function () {
+                $("#table").bootstrapTable('resetView', {
+                    height: $(window).height() - 171
+                });
+            });
+
+            //搜索回车
+            $("#sousuo").keydown(function(e){
+                if(e.keyCode==13){
+                    getTable($(this).val());
+                }
+            });
+
+            function getTable(sousuo="") {
+                $('#table').bootstrapTable('destroy'); //销毁数据
+
+                var queryUrl = "{:url('recycle/list')}?rnd=" + Math.random() + "&search="+sousuo;
+                $("#table").bootstrapTable({
+                    url: queryUrl, //请求后台的URL（*）
+                    method: 'GET', //请求方式（*）
+                    striped: true, //是否显示行间隔色
+                    sortable: true, //是否启用排序
+                    sortOrder: "asc", //排序方式
+                    dataField: "data", //Json数据的字段
+
+                    pagination: true,
+                    pageNumber: 1,
+                    pageSize: 20,
+                    pageList: [10, 25, 50, 100],
+
+                    //clickToSelect: true,    //点击选中
+                    height: $(window).height() - 171, //高度
+                    sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+                    classes: "table table-hover",
+
+                    queryParams : function (params) {
+                        return {
+                            rows: params.limit,                         //页面大小
+                            page: (params.offset / params.limit) + 1,   //页码
+                        };
+                    },
+
+                    //无内容时
+                    formatNoMatches: function () {
+                        if(sousuo && 1==2){
+                            $(".emptyFile2").addClass("emptySousuo");
+                            var msg = '<p title="为什么不去问问神奇的海螺呢">在您的网盘中，未搜索到相应的文件</p>';
+                        }else{
+                            $(".emptyFile2").addClass("emptyRecyclebin");
+                            var msg = '<p style="font-size: 16px;font-weight: 700;color: #03081a;">您的回收站是空的噢</p><p>建议您把网盘的文件都删除后再来，2333~</p>';
+                        }
+
+                        $(".emptyFile2 div").html(msg);
+                        $("#table").html($("#emptyFile").html());
+                        return "";
+                    },
+
+                    //加载动画
+                    loadingTemplate: function () {
+                        return "<span class=\"loading-wrap\">\n      <img src=\"//static.skpan.cn/user/img/loading.gif\"/>\n</span>";
+                    },
+
+                    //加载失败
+                    onLoadError: function () {
+                        // showTips("数据加载失败！");
+                    },
+
+                    //加载完成
+                    onLoadSuccess: function (data) {
+                        $(".fixed-table-loading").remove();
+                        daohang(data.parent,data.total,sousuo);     //修改导航
+                        HoverGengduo();     //鼠标悬浮显示更多按钮
+                        clickList();   //初始化右键菜单
+                    },
+
+                    //自定义css
+                    rowStyle: function (row, index) {
+                        var style = {};
+                        style = {
+                            css: {
+                                'font-size': '13px'
+                            }
+                        };
+                        return style;
+                    },
+
+                    //复选框点击事件
+                    onCheckAll:function(rows){
+                        CilckCheck();  //复选框选中 更新菜单栏
+                    },
+                    onCheck:function(row){
+                        CilckCheck();  //复选框选中 更新菜单栏
+                    },
+                    onUncheck:function(row){
+                        CilckCheck();  //复选框选中 更新菜单栏
+                    },
+                    onUncheckAll: function (row) {
+                        CilckCheck();  //复选框选中 更新菜单栏
+                    },
+
+                    //表头
+                    columns: [{
+                        checkbox: true,
+                        visible: true //是否显示复选框
+                    },
+                        {
+                            field: 'file_name',
+                            title: '文件名',
+                            sortable: true, //排序
+                            width:'500px',
+                            formatter: function (value, row, index) { //处理数据
+                                return value;
+                            },
+                        }, {
+                            field: 'file_size',
+                            title: '文件大小',
+                            sortable: true, //排序
+                        }, {
+                            field: 'count_open',
+                            title: '阅览',
+                            sortable: true, //排序
+                        }, {
+                            field: 'count_down',
+                            title: '下载',
+                            sortable: true, //排序
+                        }, {
+                            field: 'url',
+                            title: '分享链接',
+                        }, {
+                            field: 'update_time',
+                            title: '删除日期',
+                            sortable: true, //排序
+                        },
+                    ],
+
+                    //填入个数据，要不然会显示没文件
+                    data: [{
+                        "file_name": "",
+                    }],
+                })
+            }
+            getTable();
+        </script>
+    </div>
+</div>
+{/block}

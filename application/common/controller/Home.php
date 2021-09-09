@@ -23,6 +23,9 @@ class Home extends Controller
 
         $this->groupData = Groups::where('id',$this->userInfo['group'])->find();
 
+        $this->assign('group',$this->groupData);
+        $this->assign('info',$this->userInfo);
+        $this->assign('url_path',$this->request->path());
     }
 
     protected function getPolicy(): array

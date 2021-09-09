@@ -10,8 +10,6 @@ class User extends Home
 {
 
     public function index(){
-        $this->assign('group',$this->groupData);
-        $this->assign('info',$this->userInfo);
         return $this->fetch();
     }
 
@@ -71,10 +69,6 @@ class User extends Home
     public function logout(){
         (new Users)->logout('default');
         $this->success('退出登录成功','index/index');
-    }
-
-    public function recycle(){
-        return $this->fetch();
     }
 
     public function shouyi(){

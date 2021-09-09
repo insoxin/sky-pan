@@ -51,9 +51,17 @@ class File extends Home
 
         //删除目录
         if(boolval($is_folder)){
+
+            $pid = Folders::where('id',$id)->value('parent_folder');
+
+            if($pid == 0){
+                return json(['status' => 0,'msg' => '删除失败，您不能删除根目录']);
+            }
+
             Folders::destroy(function($query) use($id,$uid){
                 $query->where('id','=',$id)->where('uid','=',$uid);
             });
+
         }else{
             Stores::destroy(function($query) use($id,$uid){
                 $query->where('id','=',$id)->where('uid','=',$uid);

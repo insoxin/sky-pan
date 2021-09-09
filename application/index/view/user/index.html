@@ -1,147 +1,45 @@
-<!DOCTYPE html>
-<html>
+{extend name="layout/user" /}
+{block name="main"}
+<div class="all-box">
+    <div class="top space-between">
+        <div class="top-left align-center">
+            <!--[if lte IE 9]><div style="color: #FFFFFF;width: 770px;text-align: center;background: #FF4949;margin: auto;">升级提示：当您看到此信息，说明您的浏览器不支持上传接口，请使用360（极速模式），QQ（新版），Chrome等新一代浏览器。</div><![endif]-->
 
-<head>
-    <script>
-        //遮罩层
-        if (window != top) {
-            try {
-                var index = parent.layer.getFrameIndex(window.name);
-                parent.layer.close(index);
-            }
-            catch (err) {
-                //在此处理错误
-            }
-        }
-    </script>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-    <title>文件管理 - {$Think.config.basic.site_title}</title>
-    <link href="__STATIC__/css/bootstrap.min.css" rel="stylesheet">
-    <link href="__STATIC__/css/userapp.css" rel="stylesheet">
-    <link href="__STATIC__/icon/icon.css" rel="stylesheet">
-    <link href="__STATIC__/css/home.css" rel="stylesheet">
-    <link href="__STATIC__/css/elementui.css" rel="stylesheet">
-    <link href="__STATIC__/css/list.css" rel="stylesheet">    <!-- 放在最后 -->
-    <script src="__STATIC__/js/jquery.js"></script>
-    <script src="__STATIC__/js/bootstrap.min.js"></script>
-    <script src="__STATIC__/js/common.js"></script>
+            <div class="top-item flex-box upload" onclick="upload()">
+                <em class="icon icon-upload"></em>
+                <p class="text">上传</p>
+            </div>
 
-    <link href="__STATIC__/css/file.css" rel="stylesheet">
-    <link href="__STATIC__/css/bootstrap-table.min.css" rel="stylesheet">
-    <link href="__STATIC__/css/bootstrap-table-fixed-columns.css" rel="stylesheet">
-    <link href="__STATIC__/css/bootstrap-editable.css" rel="stylesheet">
-    <script src="__STATIC__/js/bootstrap-table.min.js" type="text/javascript"></script>
-    <script src="__STATIC__/js/bootstrap-table-fixed-columns.js" type="text/javascript"></script>
-    <script src="__STATIC__/js/bootstrap-editable.js" type="text/javascript"></script>
+            <div class="top-item flex-box" onclick="mkdir()">
+                <em class="icon icon-newfolder" title="新建文件夹"></em>
+                <p class="text">新建文件夹</p>
+            </div>
 
-    <script src="__STATIC__/js/lay/modules/layer.js"></script>
-    <script type="text/javascript" src="__STATIC__/viewer/viewer.min.js"></script>
-    <link rel="stylesheet" href="__STATIC__/viewer/viewer.min.css">
-</head>
-
-<body>
-<div class="app">
-    <div class="header">
-        <section class="el-container is-vertical">
-
-            <header class="el-header" style="height: 60px;">
-                <div class="pub-header space-between">
-                    <a href="/"><img src="{$Think.config.basic.site_logo}" class="logo"
-                                     style="width: 130px;height: 40px;"></a>
-
-                    <div class="pub-right flex">
-                            <span>
-                                <div class="head-box align-center el-popover__reference tan"
-                                     aria-describedby="el-popover-2040" tabindex="0" tan="VIP到期时间：未开通"><img
-                                        src="{:getUserHead($info.avatar)}" alt=""
-                                        class="head-img">
-                                    <p class="text" >
-                                        {$info.nickname} ({$group.group_name})
-                                    </p>
-                                    <p class="line"></p>
-                                </div>
-                            </span>
-                        <div class="pub-header1 align-center"><img
-                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAQCAYAAADJViUEAAABCUlEQVQokZXTvyvEYRwH8Nc9sbrtDJLVdl05qfMPKFaJzHSDwUJmZTEwCBnFJgOZUYorq8l2AxtXFkoZvs+Xb9e5H+/l8/S83+/n86PPkyuVSpowjTxOcIp5LKCBy6wwZM6DkZzATbwbiPEWk7iKOtAXYx5nWEWtuRTUsY4KzjGFRpp5D2v/GLO4wwb207LH8RaJbnCND5QDlrDbpTHFDpYDhvDco/kJIwGfPRpThOBv4q2w2Yb7Cm1IuO+U+QXDHR5pxijqAUeS5egFKzgMeEABY10aK5KNrKU9V7GNYgdjGVtR/zvpBuYkLTziAK8ZUyGWWsRs1Mu1+JIzWJT8qG/04x3HuMgKfwBDXy+/tOYcjQAAAABJRU5ErkJggg=="
-                                alt="" class="tc">
-                            <p class="text">
-                                <a href="{:url('user/logout')}" class="js-ajax-btn" style="color:#313131">退出登录</a>
-                            </p>
-                        </div>
-                    </div>
+            <div id="CilckCheck" style="display: none;" class="align-center">
+                <div id="CheckTmp" style="display: none;"></div>
+                <div class="top-item flex-box" onclick="CheckDelete()"
+                     style="margin-right: 0px;padding: 0 8px 0 8px;border-radius: 0px;">
+                    <em class="icon icon-delete" title="删除"></em>
+                    <p class="text">删除</p>
                 </div>
-            </header>
-            <section class="el-container">
-
-                <aside class="el-aside">
-                    <div class="el-col el-col el-col-24">
-                        <ul id="menubar" class="el-menu-vertical-demo el-menu"
-                            style="background-color: rgb(247, 247, 247);margin-top: 8px;">
-                            <li role="menuitem" class="el-menu-item g-button-right select">
-                                <a href="{:url('user/index')}" style="display: block;text-decoration: none;color: #09AAFF">
-                                    <em class="icon icon-disk"></em>
-                                    <span>全部文件</span>
-                                </a>
-                            </li>
-                            <li role="menuitem" class="el-menu-item g-button-right ">
-                                <a href="{:url('user/recycle')}" style="display: block;text-decoration: none;color: #7e8c8d">
-                                    <em class="icon icon-delete"></em>
-                                    <span>回收站</span>
-                                </a>
-                            </li>
-                            <li role="menuitem" class="el-menu-item g-button-right">
-                                <a href="{:url('user/shouyi')}" style="display: block;text-decoration: none;color: #7e8c8d">
-                                    <em class="icon icon-my-share"></em>
-                                    <span>分享赚钱</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </aside>
-                <main class="el-main">
-
-                    <div class="all-box">
-                        <div class="top space-between">
-                            <div class="top-left align-center">
-                                <!--[if lte IE 9]><div style="color: #FFFFFF;width: 770px;text-align: center;background: #FF4949;margin: auto;">升级提示：当您看到此信息，说明您的浏览器不支持上传接口，请使用360（极速模式），QQ（新版），Chrome等新一代浏览器。</div><![endif]-->
-
-                                <div class="top-item flex-box upload" onclick="upload()">
-                                    <em class="icon icon-upload"></em>
-                                    <p class="text">上传</p>
-                                </div>
-
-                                <div class="top-item flex-box" onclick="mkdir()">
-                                    <em class="icon icon-newfolder" title="新建文件夹"></em>
-                                    <p class="text">新建文件夹</p>
-                                </div>
-
-                                <div id="CilckCheck" style="display: none;" class="align-center">
-                                    <div id="CheckTmp" style="display: none;"></div>
-                                    <div class="top-item flex-box" onclick="CheckDelete()"
-                                         style="margin-right: 0px;padding: 0 8px 0 8px;border-radius: 0px;">
-                                        <em class="icon icon-delete" title="删除"></em>
-                                        <p class="text">删除</p>
-                                    </div>
-                                    <div class="top-item flex-box" onclick="moveFiles()"
-                                         style="padding: 0 8px 0 8px;border-radius: 0px;">
-                                        <p class="text" style="margin-left: 0px;">移动到</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="top-right space-between">
-                                <div class="el-input">
-                                    <input id="sousuo" type="text" autocomplete="off" placeholder="搜索您的文件"
-                                           class="el-input__inner">
-                                    <span class="icon icon-search"
-                                          onclick="getTable('当前文件夹',$('#sousuo').val())"></span>
-                                </div>
-                            </div>
-                        </div>
+                <div class="top-item flex-box" onclick="moveFiles()"
+                     style="padding: 0 8px 0 8px;border-radius: 0px;">
+                    <p class="text" style="margin-left: 0px;">移动到</p>
+                </div>
+            </div>
+        </div>
+        <div class="top-right space-between">
+            <div class="el-input">
+                <input id="sousuo" type="text" autocomplete="off" placeholder="搜索您的文件"
+                       class="el-input__inner">
+                <span class="icon icon-search"
+                      onclick="getTable('当前文件夹',$('#sousuo').val())"></span>
+            </div>
+        </div>
+    </div>
 
 
-                        <div class="daohang">
+    <div class="daohang">
                                 <span class="daohang-all" style="display: block;">
                                     <span onclick="getTable()" style="cursor:pointer;">全部文件</span>
                                     <span style="float:right;top: 1px;">
@@ -153,409 +51,277 @@
                                         <span>已全部加载，共<span class="daohang-count">0</span>个</span>
                                     </span>
                                 </span>
-                            <ul class="daohang-path" style="display: none;">
-                                <li>
-                                    <a id="daohang-shangyiji" onclick="getTable()" href="javascript:;">返回上一级</a>
-                                    <span class="fuhao">|</span>
-                                </li>
-                                <li>
-                                    <a href="javascript:;" onclick="getTable()">全部文件</a>
-                                    <span class="fuhao">&gt;</span>
-                                    <span id="daohang">
+        <ul class="daohang-path" style="display: none;">
+            <li>
+                <a id="daohang-shangyiji" onclick="getTable()" href="javascript:;">返回上一级</a>
+                <span class="fuhao">|</span>
+            </li>
+            <li>
+                <a href="javascript:;" onclick="getTable()">全部文件</a>
+                <span class="fuhao">&gt;</span>
+                <span id="daohang">
                                         </span>
-                                </li>
-                                <span style="float:right;">已全部加载，共<span class="daohang-count">0</span>个</span>
-                            </ul>
-                        </div>
+            </li>
+            <span style="float:right;">已全部加载，共<span class="daohang-count">0</span>个</span>
+        </ul>
+    </div>
 
 
-                        <input style="display: none;" id="folder_id" value="0" />
+    <input style="display: none;" id="folder_id" value="0" />
 
 
-                        <div id="emptyFile" style="display: none;">
-                            <div class="emptyFile" style="visibility: visible;">
-                                <div class="emptyFile2">
-                                    <div class="img">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="context-menu">
-                            <ul class="list" data-id="" data-filename="" data-folder="" id="list1"
-                                style="z-index: 100; left: 524px; top: 194px; display: none;">
-                                <li>下载</li>
-                                <li class="separate"></li>
-                                <li>设置提取码</li>
-                                <li>复制链接</li>
-                                <li class="separate"></li>
-                                <li>编辑文件</li>
-                                <li>移动到</li>
-                                <li class="separate"></li>
-                                <li>重命名</li>
-                                <li>删除</li>
-                            </ul>
-                            <ul class="list" id="list2"
-                                style="z-index: 100; left: 524px; top: 194px; display: none;">
-                                <li>重新加载页面</li>
-                                <li class="separate"></li>
-                                <li>新建文件夹</li>
-                                <li class="separate"></li>
-                                <li>刷新数据</li>
-                            </ul>
-                        </div>
-
-
-
-
-                        <div id="mkdir" style="display: none;">
-                            <div style='width:350px;'>
-                                <div style='width:320px;margin-left: 3%;margin-top: 3%;'
-                                     class='form-group has-feedback'>
-                                    <span style="color: red;">*</span>文件夹名称
-                                    <input style="margin-top: 3%;" id='dirName' class='form-control' type='text'
-                                           placeholder="请输入文件夹名称..." value="" />
-                                </div>
-                                <div style='width:320px;margin-left: 3%;' class='form-group has-feedback'>
-                                    <p>文件夹描述</p>
-                                    <textarea style="margin-top: 3%;" id='dirMiaoshu' class='form-control' rows="3"
-                                              placeholder="(可选) 请输入文件夹描述..."></textarea>
-                                </div>
-                                <div style='width:320px;margin-left: 3%;' class='form-group has-feedback'>
-                                    <button style='margin-top:5%;' type='button' class='btn btn-block btn-success'
-                                            onclick='mkdirTo()'>保存</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="setPass" style="display: none;">
-                            <div class="modal-body" style="font-size: 14px;">
-                                <form class="form-horizontal" role="form">
-                                    <fieldset>
-                                        <div class="form-group" style="margin-left: -3%;">
-                                            <label class="col-sm-7" style="font-size: 12px;"
-                                                   style="margin-left: -2%;">Ps: 双击编辑框自动复制</label>
-                                            <textarea class="form-control" id="setPassUrl"
-                                                      style="width: 300px;font-size: 13px;margin-top: 15px;margin-left: 2%;"
-                                                      readonly="readonly"></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-1 control-label"
-                                                   style="margin-left: -1%;width: 88px;">提取码：</label>
-                                            <div class="col-sm-1" style="margin-left: -9%;">
-                                                <input class="form-control" id="setPassPass" type="text"
-                                                       style="width: 80px;" maxlength="6" />
-                                            </div>
-                                            <label class="col-sm-1 control-label"
-                                                   style="margin-left: 18%;width: 90px;">密码开关</label>
-                                            <div class="col-sm-3" style="margin-left: -18px;">
-                                                <label class="switch">
-                                                    <input type="checkbox" id="setPassClick">
-                                                    <div class="slider round"></div>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div style='width:300px;margin-left: -1%;margin-top: 10%;'
-                                             class='form-group has-feedback'>
-                                            <button type='button' class='btn btn-block btn-success'
-                                                    id="setPassBtn">保存</button>
-                                        </div>
-                                    </fieldset>
-                                </form>
-                            </div>
-                        </div>
-
-
-                        <div class="table-box">
-
-                            <table id="table"></table>
-
-                            <script src="__STATIC__/js/file.js"></script>
-                            <script>
-
-                                //table自适应
-                                $(window).resize(function () {
-                                    $("#table").bootstrapTable('resetView', {
-                                        height: $(window).height() - 171
-                                    });
-                                });
-
-                                //搜索回车
-                                $("#sousuo").keydown(function (e) {
-                                    if (e.keyCode == 13) {
-                                        getTable('当前文件夹', $(this).val());
-                                    }
-                                });
-
-                                function getTable(folder_id, sousuo) {
-                                    var folder_id = folder_id || 0;
-                                    var sousuo = sousuo || "";
-                                    if (folder_id == "当前文件夹") {
-                                        folder_id = $('#folder_id').val();
-                                    }
-
-                                    $("#folder_id").val(folder_id); //更新当前文件夹ID
-                                    $('#table').bootstrapTable('destroy'); //销毁数据
-
-                                    var queryUrl = "{:url('file/list')}?rnd=" + Math.random() + "&folder_id=" + folder_id + "&search=" + sousuo;
-                                    $("#table").bootstrapTable({
-                                        url: queryUrl, //请求后台的URL（*）
-                                        method: 'GET', //请求方式（*）
-
-                                        pageNumber: 1,     //初始化加载第一页1
-                                        pagination: true,   //是否显示分页条1
-                                        pageSize: 20,      //单页显示条数1
-                                        pageList: [10, 20, 30, 50],//可选择单页记录数1
-
-                                        striped: true, //是否显示行间隔色
-                                        sortable: true, //是否启用排序
-                                        sortOrder: "asc", //排序方式
-                                        dataField: "data", //Json数据的字段
-                                        // clickToSelect: true,    //点击选中
-                                        height: $(window).height() - 171, //高度
-                                        sidePagination: "client", //分页方式：client客户端分页，server服务端分页（*）
-                                        classes: "table table-hover",
-
-                                        //无内容时
-                                        formatNoMatches: function () {
-                                            if (sousuo) {
-                                                $(".emptyFile2").addClass("emptySousuo");
-                                                var msg = '<p  title="为什么不去问问神奇的海螺呢">在您的网盘中，未搜索到相应的文件</p>';
-                                            } else {
-                                                var msg = '<p>您还没上传过文件哦，点击<span style="cursor: pointer;color:#09AAFF;" onclick="upload()">上传</span>按钮～</p>';
-                                            }
-
-                                            $(".emptyFile2 div").html(msg);
-                                            $("#table").html($("#emptyFile").html());
-                                            return "";
-                                        },
-
-                                        //加载动画
-                                        loadingTemplate: function () {
-                                            return "<span class=\"loading-wrap\">\n      <img src=\"__STATIC__/image/loading.gif\"/>\n</span>";
-                                        },
-
-                                        //加载失败
-                                        onLoadError: function () {
-                                            // layer.msg("数据加载失败！",{
-                                            //     icon:2
-                                            // })
-                                        },
-
-                                        //加载完成
-                                        onLoadSuccess: function (data) {
-                                            $(".fixed-table-loading").remove();
-                                            daohang(data.parent, data.total, sousuo);     //修改导航
-                                            rename();      //初始化行内编辑框
-                                            clickList();   //初始化右键菜单
-                                            clickFolder(); //初始化文件夹点击事件
-                                            HoverGengduo(); //鼠标悬浮显示更多按钮
-
-                                        },
-
-                                        //自定义css
-                                        rowStyle: function (row, index) {
-                                            var style = {};
-                                            style = {
-                                                css: {
-                                                    'font-size': '13px'
-                                                }
-                                            };
-                                            return style;
-                                        },
-
-                                        //复选框点击事件
-                                        onCheckAll: function (rows) {
-                                            CilckCheck();  //复选框选中 更新菜单栏
-                                        },
-                                        onCheck: function (row) {
-                                            CilckCheck();  //复选框选中 更新菜单栏
-                                        },
-                                        onUncheck: function (row) {
-                                            CilckCheck();  //复选框选中 更新菜单栏
-                                        },
-                                        onUncheckAll: function (row) {
-                                            CilckCheck();  //复选框选中 更新菜单栏
-                                        },
-
-                                        //表头
-                                        columns: [{
-                                            checkbox: true,
-                                            visible: true //是否显示复选框
-                                        },
-                                            {
-                                                field: 'file_name',
-                                                title: '文件名',
-                                                sortable: true, //排序
-                                                width: '500px',
-                                                formatter: function (value, row, index) { //处理数据
-                                                    return value;
-                                                },
-                                            }, {
-                                                field: 'file_size',
-                                                title: '文件大小',
-                                                sortable: true, //排序
-                                            }, {
-                                                field: 'count_open',
-                                                title: '阅览',
-                                                sortable: true, //排序
-                                            }, {
-                                                field: 'count_down',
-                                                title: '下载',
-                                                sortable: true, //排序
-                                            }, {
-                                                field: 'url',
-                                                title: '分享链接',
-                                            }, {
-                                                field: 'url_pass',
-                                                title: '提取码',
-                                            }, {
-                                                field: 'update_time',
-                                                title: '修改日期',
-                                                sortable: true, //排序
-                                            },
-                                        ],
-
-                                        //填入个数据，要不然会显示没文件
-                                        data: [{
-                                            "file_name": "",
-                                        }],
-                                    })
-                                }
-                                getTable();
-                            </script>
-
-                        </div>
-                    </div>
-                </main>
-            </section>
-        </section>
-        <div class="el-dialog__wrapper" style="display: none;">
-            <div role="dialog" aria-modal="true" aria-label="更换手机号" class="el-dialog"
-                 style="margin-top: 15vh; width: 404px;">
-                <div class="el-dialog__header"><span class="el-dialog__title">更换手机号</span><button type="button"
-                                                                                                  aria-label="Close" class="el-dialog__headerbtn"><i
-                        class="el-dialog__close el-icon el-icon-close"></i></button></div>
-                <!---->
-                <!---->
-            </div>
-        </div>
-        <div class="el-dialog__wrapper" style="display: none;">
-            <div role="dialog" aria-modal="true" aria-label="修改密码" class="el-dialog"
-                 style="margin-top: 15vh; width: 404px;">
-                <div class="el-dialog__header"><span class="el-dialog__title">修改密码</span><button type="button"
-                                                                                                 aria-label="Close" class="el-dialog__headerbtn"><i
-                        class="el-dialog__close el-icon el-icon-close"></i></button></div>
-                <!---->
-                <!---->
+    <div id="emptyFile" style="display: none;">
+        <div class="emptyFile" style="visibility: visible;">
+            <div class="emptyFile2">
+                <div class="img">
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-<script type="text/javascript">
-
-    //全局变量
-    var GV = {
-        ROOT: "/",
-        WEB_ROOT: "/",
-        JS_ROOT: "./assets/js/",
-        APP: ''/*当前应用名*/
-    };
 
 
-    function vip() {
-        if (window.screen.width < 768) {
-            var w = '95%';
-        }
-        else {
-            var w = '723px';
-        }
-        layer.open({
-            type: 2,
-            shadeClose: true,
-            title: "在线开通VIP会员",
-            area: [w, '520px'], // 宽高
-            content: "/user/vip.html",
-            end: function () {
-                //location.reload();
-            },
-        });
-    }
+    <div class="context-menu">
+        <ul class="list" data-id="" data-filename="" data-folder="" id="list1"
+            style="z-index: 100; left: 524px; top: 194px; display: none;">
+            <li>下载</li>
+            <li class="separate"></li>
+            <li>设置提取码</li>
+            <li>复制链接</li>
+            <li class="separate"></li>
+            <li>编辑文件</li>
+            <li>移动到</li>
+            <li class="separate"></li>
+            <li>重命名</li>
+            <li>删除</li>
+        </ul>
+        <ul class="list" id="list2"
+            style="z-index: 100; left: 524px; top: 194px; display: none;">
+            <li>重新加载页面</li>
+            <li class="separate"></li>
+            <li>新建文件夹</li>
+            <li class="separate"></li>
+            <li>刷新数据</li>
+        </ul>
+    </div>
 
-    function vipOk() {
-        layer.alert('恭喜您开通VIP成功~ 感谢您的支持！',
-            {
-                icon: 1,
-                end: function () {
-                    location.reload();
-                },
+
+
+
+    <div id="mkdir" style="display: none;">
+        <div style='width:350px;'>
+            <div style='width:320px;margin-left: 3%;margin-top: 3%;'
+                 class='form-group has-feedback'>
+                <span style="color: red;">*</span>文件夹名称
+                <input style="margin-top: 3%;" id='dirName' class='form-control' type='text'
+                       placeholder="请输入文件夹名称..." value="" />
+            </div>
+            <div style='width:320px;margin-left: 3%;' class='form-group has-feedback'>
+                <p>文件夹描述</p>
+                <textarea style="margin-top: 3%;" id='dirMiaoshu' class='form-control' rows="3"
+                          placeholder="(可选) 请输入文件夹描述..."></textarea>
+            </div>
+            <div style='width:320px;margin-left: 3%;' class='form-group has-feedback'>
+                <button style='margin-top:5%;' type='button' class='btn btn-block btn-success'
+                        onclick='mkdirTo()'>保存</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="setPass" style="display: none;">
+        <div class="modal-body" style="font-size: 14px;">
+            <form class="form-horizontal" role="form">
+                <fieldset>
+                    <div class="form-group" style="margin-left: -3%;">
+                        <label class="col-sm-7" style="font-size: 12px;"
+                               style="margin-left: -2%;">Ps: 双击编辑框自动复制</label>
+                        <textarea class="form-control" id="setPassUrl"
+                                  style="width: 300px;font-size: 13px;margin-top: 15px;margin-left: 2%;"
+                                  readonly="readonly"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label"
+                               style="margin-left: -1%;width: 88px;">提取码：</label>
+                        <div class="col-sm-1" style="margin-left: -9%;">
+                            <input class="form-control" id="setPassPass" type="text"
+                                   style="width: 80px;" maxlength="6" />
+                        </div>
+                        <label class="col-sm-1 control-label"
+                               style="margin-left: 18%;width: 90px;">密码开关</label>
+                        <div class="col-sm-3" style="margin-left: -18px;">
+                            <label class="switch">
+                                <input type="checkbox" id="setPassClick">
+                                <div class="slider round"></div>
+                            </label>
+                        </div>
+                    </div>
+                    <div style='width:300px;margin-left: -1%;margin-top: 10%;'
+                         class='form-group has-feedback'>
+                        <button type='button' class='btn btn-block btn-success'
+                                id="setPassBtn">保存</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="table-box">
+
+        <table id="table"></table>
+
+        <script src="__STATIC__/js/file.js"></script>
+        <script>
+
+            //table自适应
+            $(window).resize(function () {
+                $("#table").bootstrapTable('resetView', {
+                    height: $(window).height() - 171
+                });
             });
-    }
 
-    $(".head-box").click(
-        function () {
-            vip();
-        }
-    );
+            //搜索回车
+            $("#sousuo").keydown(function (e) {
+                if (e.keyCode == 13) {
+                    getTable('当前文件夹', $(this).val());
+                }
+            });
 
-    $('.tan').on({
-        mouseenter: function () {
-            var nei = $(this).attr("tan");
-            if (nei) {
-                var that = $(this);
-                tips = layer.tips("<span style='color:#000;font-size:17px;'>" + nei + "</span>", that, { tips: [2, '#fff'], time: 0, area: 'auto', maxWidth: 700 });
+            function getTable(folder_id, sousuo) {
+                var folder_id = folder_id || 0;
+                var sousuo = sousuo || "";
+                if (folder_id == "当前文件夹") {
+                    folder_id = $('#folder_id').val();
+                }
+
+                $("#folder_id").val(folder_id); //更新当前文件夹ID
+                $('#table').bootstrapTable('destroy'); //销毁数据
+
+                var queryUrl = "{:url('file/list')}?rnd=" + Math.random() + "&folder_id=" + folder_id + "&search=" + sousuo;
+                $("#table").bootstrapTable({
+                    url: queryUrl, //请求后台的URL（*）
+                    method: 'GET', //请求方式（*）
+                    pageNumber: 1,     //初始化加载第一页1
+                    pagination: true,   //是否显示分页条1
+                    pageSize: 10,      //单页显示条数1
+
+                    striped: true, //是否显示行间隔色
+                    sortable: true, //是否启用排序
+                    sortOrder: "asc", //排序方式
+                    dataField: "data", //Json数据的字段
+                    // clickToSelect: true,    //点击选中
+                    height: $(window).height() - 171, //高度
+                    sidePagination: "client", //分页方式：client客户端分页，server服务端分页（*）
+                    classes: "table table-hover",
+
+                    //无内容时
+                    formatNoMatches: function () {
+                        if (sousuo) {
+                            $(".emptyFile2").addClass("emptySousuo");
+                            var msg = '<p  title="为什么不去问问神奇的海螺呢">在您的网盘中，未搜索到相应的文件</p>';
+                        } else {
+                            var msg = '<p>您还没上传过文件哦，点击<span style="cursor: pointer;color:#09AAFF;" onclick="upload()">上传</span>按钮～</p>';
+                        }
+
+                        $(".emptyFile2 div").html(msg);
+                        $("#table").html($("#emptyFile").html());
+                        return "";
+                    },
+
+                    //加载动画
+                    loadingTemplate: function () {
+                        return "<span class=\"loading-wrap\">\n      <img src=\"__STATIC__/image/loading.gif\"/>\n</span>";
+                    },
+
+                    //加载失败
+                    onLoadError: function () {
+                        // layer.msg("数据加载失败！",{
+                        //     icon:2
+                        // })
+                    },
+
+                    //加载完成
+                    onLoadSuccess: function (data) {
+                        $(".fixed-table-loading").remove();
+                        daohang(data.parent, data.total, sousuo);     //修改导航
+                        rename();      //初始化行内编辑框
+                        clickList();   //初始化右键菜单
+                        clickFolder(); //初始化文件夹点击事件
+                        HoverGengduo(); //鼠标悬浮显示更多按钮
+
+                    },
+
+                    //自定义css
+                    rowStyle: function (row, index) {
+                        var style = {};
+                        style = {
+                            css: {
+                                'font-size': '13px'
+                            }
+                        };
+                        return style;
+                    },
+
+                    //复选框点击事件
+                    onCheckAll: function (rows) {
+                        CilckCheck();  //复选框选中 更新菜单栏
+                    },
+                    onCheck: function (row) {
+                        CilckCheck();  //复选框选中 更新菜单栏
+                    },
+                    onUncheck: function (row) {
+                        CilckCheck();  //复选框选中 更新菜单栏
+                    },
+                    onUncheckAll: function (row) {
+                        CilckCheck();  //复选框选中 更新菜单栏
+                    },
+
+                    //表头
+                    columns: [{
+                        checkbox: true,
+                        visible: true //是否显示复选框
+                    },
+                        {
+                            field: 'file_name',
+                            title: '文件名',
+                            sortable: true, //排序
+                            width: '500px',
+                            formatter: function (value, row, index) { //处理数据
+                                return value;
+                            },
+                        }, {
+                            field: 'file_size',
+                            title: '文件大小',
+                            sortable: true, //排序
+                        }, {
+                            field: 'count_open',
+                            title: '浏览',
+                            sortable: true, //排序
+                        }, {
+                            field: 'count_down',
+                            title: '下载',
+                            sortable: true, //排序
+                        }, {
+                            field: 'url',
+                            title: '分享链接',
+                        }, {
+                            field: 'url_pass',
+                            title: '提取码',
+                        }, {
+                            field: 'update_time',
+                            title: '修改日期',
+                            sortable: true, //排序
+                        },
+                    ],
+
+                    //填入个数据，要不然会显示没文件
+                    data: [{
+                        "file_name": "",
+                    }],
+                })
             }
-        },
-        mouseleave: function () {
-            layer.close(tips);
-        }
-    });
-</script>
+            getTable();
+        </script>
 
-<script>
-    function tixianadd() {
-        if (window.screen.width < 768) {
-            var w = '95%';
-        }
-        else {
-            var w = '723px';
-        }
-        layer.open({
-            type: 2,
-            shadeClose: true,
-            title: "申请提现",
-            area: [w, '520px'], // 宽高
-            content: "/user/tixian/add.html",
-            end: function () {
-                //location.reload();
-            },
-        });
-    }
-
-    function shiming() {
-        if (window.screen.width < 768) {
-            var w = '95%';
-        }
-        else {
-            var w = '700px';
-        }
-        layer.open({
-            type: 2,
-            shadeClose: true,
-            title: "实名认证",
-            area: [w, '600px'], // 宽高
-            content: "/user/shiming/index.html",
-            end: function () {
-                //location.reload();
-            },
-        });
-    }
-</script>
-<script src="__STATIC__/js/wind.js"></script>
-<script src="__STATIC__/js/admin.js"></script>
-
-</body>
-
-</html>
+    </div>
+</div>
+{/block}

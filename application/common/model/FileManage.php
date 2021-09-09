@@ -42,27 +42,45 @@ class FileManage
      * @param $search
      * @param $uid
      * @return array|array[]
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
-    public static function ListFile($folder_id,$search,$uid){
+    public static function ListFile($folder_id,$search,$uid): array
+    {
 
         //获取当前根目录
         $folder_id = self::getFolderPid($folder_id,$uid);
 
-        $folders = Folders::where('uid',$uid)->where('parent_folder',$folder_id)->select();
-        $files = Stores::where('uid',$uid)->where('parent_folder',$folder_id)->select();
 
-        $data = [
-            'data' => []
+        $maps = [
+            ['uid','=',$uid],
+            ['parent_folder','=',$folder_id],
+            ['delete_time','null','']
         ];
 
-        foreach ($folders->toArray() as $item){
-            $data['data'][] = [
-                'file_name' => '
-                <img class="file-icon" src="'.getFileIcon('dir','index').'" />
-                <text class="filename folder" id="t'.$item['id'].'" data-id="'.$item['id'].'"  data-filename="'.$item['folder_name'].'" data-folder="1">'.$item['folder_name'].'</text>
-                <div class="gengduo" onclick="clickGengduo(event,'.$item['id'].')">  
-                    <span><em class="icon icon-more icon-color" title="更多"></em></span>
-                </div>',
+
+        $files_sql = db('stores')
+            ->where($maps)
+            ->where('origin_name','like','%'.$search.'%')
+            ->field('id,shares_id,origin_name as name,ext,size,count_down,count_open,update_time')
+            ->fetchSql(true)
+            ->select();
+
+        $list = db('folders')
+            ->where($maps)
+            ->where('folder_name','like','%'.$search.'%')
+            ->field('id,shares_id,folder_name as name,ext,size,count_down,count_open,update_time')
+            ->union($files_sql,true)
+            ->page(1,20)
+            ->select();
+
+        $data = ['data' => []];
+
+        foreach ($list as $item){
+
+            $file_item = [
+                'file_name' => '',
                 'file_size' => '-',
                 'url' => '',
                 'url_pass' => '',
@@ -70,23 +88,26 @@ class FileManage
                 'count_open' => $item['count_open'],
                 'update_time' => date('Y-m-d H:i',$item['update_time'])
             ];
-        }
 
-        foreach ($files->toArray() as $item){
-            $data['data'][] = [
-                'file_name' => '
-                <img class="file-icon" src="'.getFileIcon($item['ext'],'index').'" />
-                <text class="filename" id="t'.$item['id'].'" data-id="'.$item['id'].'"  data-filename="'.$item['origin_name'].'" data-folder="0">'.$item['origin_name'].'</text>
+            if($item['ext'] == 755){
+                $file_item['file_name'] = '
+                <img class="file-icon" src="'.getFileIcon('dir','index').'" />
+                <text class="filename folder" id="t'.$item['id'].'" data-id="'.$item['id'].'"  data-filename="'.$item['name'].'" data-folder="1">'.$item['name'].'</text>
                 <div class="gengduo" onclick="clickGengduo(event,'.$item['id'].')">  
                     <span><em class="icon icon-more icon-color" title="更多"></em></span>
-                </div>',
-                'file_size' => countSize($item['size']),
-                'url' => '',
-                'url_pass' => '',
-                'count_down' => '<font color="#f81" size="4">'.$item['count_down'].'</font>',
-                'count_open' => $item['count_open'],
-                'update_time' => date('Y-m-d H:i',$item['update_time'])
-            ];
+                </div>';
+            }else{
+                $file_item['file_name'] = '
+                <img class="file-icon" src="'.getFileIcon($item['ext'],'index').'" />
+                <text class="filename" id="t'.$item['id'].'" data-id="'.$item['id'].'"  data-filename="'.$item['name'].'" data-folder="0">'.$item['name'].'</text>
+                <div class="gengduo" onclick="clickGengduo(event,'.$item['id'].')">  
+                    <span><em class="icon icon-more icon-color" title="更多"></em></span>
+                </div>';
+
+                $file_item['file_size'] = countSize($item['size']);
+            }
+
+            $data['data'][] = $file_item;
         }
 
         //查询上级目录
@@ -102,9 +123,97 @@ class FileManage
             }
         }
 
-        $data['total'] = count($data['data']);
+        $data['total'] = count($list);
 
         return $data;
+    }
+
+    /**
+     * 回收站文件列表
+     * @param $search
+     * @param $uid
+     * @param $page
+     * @param $limit
+     * @return array|array[]
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public static function RecycleFile($search,$uid,$page,$limit){
+
+        $file_sql = db('stores')
+            ->where('uid',$uid)
+            ->where('delete_time','not null')
+            ->where('origin_name','like','%'.$search.'%')
+            ->field('id,shares_id,origin_name as name,ext,size,count_down,count_open,update_time')
+            ->fetchSql(true)
+            ->select();
+
+        $list = db('folders')
+            ->where('uid',$uid)
+            ->where('delete_time','not null')
+            ->where('folder_name','like','%'.$search.'%')
+            ->field('id,shares_id,folder_name as name,ext,size,count_down,count_open,update_time')
+            ->union($file_sql,true)
+            ->page($page,$limit)
+            ->select();
+
+        $stores_count = db('stores')
+            ->where('uid',$uid)
+            ->where('delete_time','not null')
+            ->where('origin_name','like','%'.$search.'%')
+            ->field('id')
+            ->count();
+
+        $folders_count = db('folders')
+            ->where('uid',$uid)
+            ->where('delete_time','not null')
+            ->where('folder_name','like','%'.$search.'%')
+            ->field('id')
+            ->count();
+
+        $data = ['data' => []];
+
+        foreach ($list as $item){
+
+            $file_item = [
+                'file_name' => '',
+                'file_size' => '-',
+                'url' => '',
+                'url_pass' => '',
+                'count_down' => '<font color="#f81" size="4">'.$item['count_down'].'</font>',
+                'count_open' => $item['count_open'],
+                'update_time' => date('Y-m-d H:i',$item['update_time'])
+            ];
+
+            if($item['ext'] == 755){
+                $file_item['file_name'] = '
+                <img class="file-icon" src="'.getFileIcon('dir','index').'" />
+                <text class="filename folder" id="t'.$item['id'].'" data-id="'.$item['id'].'"  data-filename="'.$item['name'].'" data-folder="1">'.$item['name'].'</text>
+                <div class="gengduo" onclick="clickGengduo(event,'.$item['id'].')">  
+                    <span><em class="icon icon-more icon-color" title="更多"></em></span>
+                </div>';
+            }else{
+                $file_item['file_name'] = '
+                <img class="file-icon" src="'.getFileIcon($item['ext'],'index').'" />
+                <text class="filename" id="t'.$item['id'].'" data-id="'.$item['id'].'"  data-filename="'.$item['name'].'" data-folder="0">'.$item['name'].'</text>
+                <div class="gengduo" onclick="clickGengduo(event,'.$item['id'].')">  
+                    <span><em class="icon icon-more icon-color" title="更多"></em></span>
+                </div>';
+
+                $file_item['file_size'] = countSize($item['size']);
+            }
+
+            $data['data'][] = $file_item;
+        }
+
+        //查询上级目录
+        $data['parent'] = "";
+
+        $data['total'] = $stores_count + $folders_count;
+
+        return $data;
+
     }
 
     /**

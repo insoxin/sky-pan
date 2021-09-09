@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version: 5.5.29)
-# Date: 2021-09-09 23:51:38
+# Date: 2021-09-10 03:38:12
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
@@ -18,20 +18,22 @@ CREATE TABLE `sk_folders` (
   `position` text NOT NULL COMMENT '路径',
   `position_absolute` text NOT NULL COMMENT '绝对路径',
   `desc` text COMMENT '描述',
+  `size` int(11) NOT NULL DEFAULT '0',
+  `ext` int(11) NOT NULL DEFAULT '755',
   `count_down` int(11) NOT NULL DEFAULT '0' COMMENT '下载统计',
   `count_open` int(11) NOT NULL DEFAULT '0' COMMENT '浏览统计',
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
-  `delete_time` timestamp NULL DEFAULT NULL COMMENT '软删除',
+  `delete_time` int(11) DEFAULT NULL COMMENT '软删除',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='文件夹';
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='文件夹';
 
 #
 # Data for table "sk_folders"
 #
 
 /*!40000 ALTER TABLE `sk_folders` DISABLE KEYS */;
-INSERT INTO `sk_folders` VALUES (1,4,0,'根目录',0,'.','/',NULL,0,0,1631186682,0,NULL),(6,4,0,'源码文件',1,'','','',0,0,1631201152,0,'0000-00-00 00:00:00');
+INSERT INTO `sk_folders` VALUES (1,4,0,'根目录',0,'.','/',NULL,0,755,0,0,1631186682,0,NULL),(6,4,0,'源码文件',1,'','','',0,755,0,0,1631201152,0,NULL),(7,4,0,'dddd',1,'','','',0,755,0,0,1631209622,1631209622,NULL),(8,5,0,'根目录',0,'.','/',NULL,0,755,0,0,1631210019,0,NULL),(9,5,0,'cc',8,'','','csac',0,755,0,0,1631210066,1631210066,1631211860);
 /*!40000 ALTER TABLE `sk_folders` ENABLE KEYS */;
 
 #
@@ -142,16 +144,16 @@ CREATE TABLE `sk_stores` (
   `desc` text COMMENT '文件描述',
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
-  `delete_time` timestamp NULL DEFAULT NULL COMMENT '软删除',
+  `delete_time` int(11) DEFAULT NULL COMMENT '软删除',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='储存文件';
+) ENGINE=MyISAM AUTO_INCREMENT=52 DEFAULT CHARSET=utf8 COMMENT='储存文件';
 
 #
 # Data for table "sk_stores"
 #
 
 /*!40000 ALTER TABLE `sk_stores` DISABLE KEYS */;
-INSERT INTO `sk_stores` VALUES (1,4,0,'navi2.ico','20210909\\4\\file_613a2671e5faf1631200881.ico',117271,'','image/x-icon','ico',1,1,0,0,'',NULL,1631200881,1631200881,'0000-00-00 00:00:00'),(3,4,0,'app.ico','20210909\\4\\file_613a2833432371631201331.ico',114595,'','image/x-icon','ico',6,1,0,0,'',NULL,1631201331,1631201331,NULL);
+INSERT INTO `sk_stores` VALUES (1,4,0,'navi2.ico','20210909\\4\\file_613a2671e5faf1631200881.ico',117271,'','image/x-icon','ico',1,1,0,0,'',NULL,1631200881,1631200881,NULL),(3,4,0,'app.ico','20210909\\4\\file_613a2833432371631201331.ico',114595,'','image/x-icon','ico',6,1,0,0,'',NULL,1631201331,1631201331,NULL),(4,4,0,'QQBrowser.exe','20210910\\4\\file_613a489f70caf1631209631.exe',1288264,'','application/x-dosexec','exe',7,1,0,0,'',NULL,1631209631,1631209631,NULL),(5,5,0,'BarClientView.exe','20210910\\5\\file_613a4a37add3f1631210039.exe',299200,'','application/x-dosexec','exe',8,1,0,0,'',NULL,1631210039,1631210039,0),(6,5,0,'Log.dll','20210910\\5\\file_613a4a37c21771631210039.dll',228064,'','application/x-dosexec','dll',8,1,0,0,'',NULL,1631210039,1631210039,0),(7,5,0,'4.ico','20210910\\5\\file_613a4a403826f1631210048.ico',22486,'','image/x-icon','ico',8,1,0,0,'',NULL,1631210048,1631210048,0),(8,5,0,'5.ico','20210910\\5\\file_613a4a404b7071631210048.ico',150146,'','image/x-icon','ico',8,1,0,0,'',NULL,1631210048,1631210048,0),(9,5,0,'6.ico','20210910\\5\\file_613a4a405ff271631210048.ico',298566,'','image/x-icon','ico',8,1,0,0,'',NULL,1631210048,1631210048,0),(10,5,0,'8.ico','20210910\\5\\file_613a4a4073b8f1631210048.ico',139094,'','image/x-icon','ico',8,1,0,0,'',NULL,1631210048,1631210048,0),(11,5,0,'10.ico','20210910\\5\\file_613a4a4087bdf1631210048.ico',139094,'','image/x-icon','ico',8,1,0,0,'',NULL,1631210048,1631210048,0),(12,5,0,'11.ico','20210910\\5\\file_613a4a409b0771631210048.ico',70124,'','image/x-icon','ico',8,1,0,0,'',NULL,1631210048,1631210048,0),(13,5,0,'10102.ico','20210910\\5\\file_613a4a40add3f1631210048.ico',9662,'','image/x-icon','ico',8,1,0,0,'',NULL,1631210048,1631210048,0),(14,5,0,'10102.png','20210910\\5\\file_613a4a40beac71631210048.png',6272,'','image/png','png',8,1,0,0,'',NULL,1631210048,1631210048,0),(15,5,0,'10130.ico','20210910\\5\\file_613a4a40d1f5f1631210048.ico',9662,'','image/x-icon','ico',8,1,0,0,'',NULL,1631210048,1631210048,0),(16,5,0,'10130.png','20210910\\5\\file_613a4a40e406f1631210048.png',6218,'','image/png','png',8,1,0,0,'',NULL,1631210048,1631210048,0),(17,5,0,'11004.ico','20210910\\5\\file_613a4a4102edf1631210049.ico',9662,'','image/x-icon','ico',8,1,0,0,'',NULL,1631210049,1631210049,0),(18,5,0,'11004.png','20210910\\5\\file_613a4a4114fef1631210049.png',7246,'','image/png','png',8,1,0,0,'',NULL,1631210049,1631210049,0),(19,5,0,'11701.ico','20210910\\5\\file_613a4a4128c571631210049.ico',9662,'','image/x-icon','ico',8,1,0,0,'',NULL,1631210049,1631210049,0),(20,5,0,'11701.png','20210910\\5\\file_613a4a413c4d71631210049.png',5820,'','image/png','png',8,1,0,0,'',NULL,1631210049,1631210049,0),(21,5,0,'11889.ico','20210910\\5\\file_613a4a414c2bf1631210049.ico',9662,'','image/x-icon','ico',8,1,0,0,'',NULL,1631210049,1631210049,0),(22,5,0,'11889.png','20210910\\5\\file_613a4a415ef871631210049.png',5894,'','image/png','png',8,1,0,0,'',NULL,1631210049,1631210049,0),(23,5,0,'13216.ico','20210910\\5\\file_613a4a41710971631210049.ico',9662,'','image/x-icon','ico',8,1,0,0,'',NULL,1631210049,1631210049,0),(24,5,0,'13216.png','20210910\\5\\file_613a4a41831a71631210049.png',25338,'','image/png','png',8,1,0,0,'',NULL,1631210049,1631210049,0),(25,5,0,'15700.ico','20210910\\5\\file_613a4a41962571631210049.ico',9662,'','image/x-icon','ico',8,1,0,0,'',NULL,1631210049,1631210049,0),(26,5,0,'15700.png','20210910\\5\\file_613a4a41a93071631210049.png',4942,'','image/png','png',8,1,0,0,'',NULL,1631210049,1631210049,0),(27,5,0,'17041.ico','20210910\\5\\file_613a4a41b98bf1631210049.ico',9662,'','image/x-icon','ico',8,1,0,0,'',NULL,1631210049,1631210049,0),(28,5,0,'17041.png','20210910\\5\\file_613a4a41cb9cf1631210049.png',4837,'','image/png','png',8,1,0,0,'',NULL,1631210049,1631210049,0),(29,5,0,'4.ico','20210910\\5\\file_613a4a5a41ac71631210074.ico',22486,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210074,1631210074,0),(30,5,0,'5.ico','20210910\\5\\file_613a4a5a5572f1631210074.ico',150146,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210074,1631210074,0),(31,5,0,'6.ico','20210910\\5\\file_613a4a5a66c871631210074.ico',298566,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210074,1631210074,0),(32,5,0,'8.ico','20210910\\5\\file_613a4a5a785c71631210074.ico',139094,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210074,1631210074,0),(33,5,0,'10.ico','20210910\\5\\file_613a4a5a897371631210074.ico',139094,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210074,1631210074,0),(34,5,0,'11.ico','20210910\\5\\file_613a4a5a9cbcf1631210074.ico',70124,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210074,1631210074,0),(35,5,0,'10102.ico','20210910\\5\\file_613a4a5aaf8971631210074.ico',9662,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210074,1631210074,0),(36,5,0,'10102.png','20210910\\5\\file_613a4a5ac15bf1631210074.png',6272,'','image/png','png',9,1,0,0,'',NULL,1631210074,1631210074,0),(37,5,0,'10130.ico','20210910\\5\\file_613a4a5ad42871631210074.ico',9662,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210074,1631210074,0),(38,5,0,'10130.png','20210910\\5\\file_613a4a5ae677f1631210074.png',6218,'','image/png','png',9,1,0,0,'',NULL,1631210074,1631210074,0),(39,5,0,'11004.ico','20210910\\5\\file_613a4a5b052071631210075.ico',9662,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210075,1631210075,0),(40,5,0,'11004.png','20210910\\5\\file_613a4a5b182b71631210075.png',7246,'','image/png','png',9,1,0,0,'',NULL,1631210075,1631210075,0),(41,5,0,'11701.ico','20210910\\5\\file_613a4a5b28c571631210075.ico',9662,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210075,1631210075,0),(42,5,0,'11701.png','20210910\\5\\file_613a4a5b3b91f1631210075.png',5820,'','image/png','png',9,1,0,0,'',NULL,1631210075,1631210075,0),(43,5,0,'11889.ico','20210910\\5\\file_613a4a5b4e1ff1631210075.ico',9662,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210075,1631210075,0),(44,5,0,'11889.png','20210910\\5\\file_613a4a5b60adf1631210075.png',5894,'','image/png','png',9,1,0,0,'',NULL,1631210075,1631210075,0),(45,5,0,'13216.ico','20210910\\5\\file_613a4a5b728071631210075.ico',9662,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210075,1631210075,0),(46,5,0,'13216.png','20210910\\5\\file_613a4a5b858b71631210075.png',25338,'','image/png','png',9,1,0,0,'',NULL,1631210075,1631210075,0),(47,5,0,'15700.ico','20210910\\5\\file_613a4a5b989671631210075.ico',9662,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210075,1631210075,0),(48,5,0,'15700.png','20210910\\5\\file_613a4a5bab62f1631210075.png',4942,'','image/png','png',9,1,0,0,'',NULL,1631210075,1631210075,0),(49,5,0,'17041.ico','20210910\\5\\file_613a4a5bbeeaf1631210075.ico',9662,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210075,1631210075,0),(50,5,0,'17041.png','20210910\\5\\file_613a4a5bcf07f1631210075.png',4837,'','image/png','png',9,1,0,0,'',NULL,1631210075,1631210075,0),(51,5,0,'icons32.mico','20210910\\5\\file_613a4a7c72fd71631210108.mico',235008,'','application/CDFV2','mico',8,1,0,0,'',NULL,1631210108,1631210108,0);
 /*!40000 ALTER TABLE `sk_stores` ENABLE KEYS */;
 
 #
@@ -182,5 +184,5 @@ CREATE TABLE `sk_users` (
 #
 
 /*!40000 ALTER TABLE `sk_users` DISABLE KEYS */;
-INSERT INTO `sk_users` VALUES (1,'admin','管理员','admin@skpan.net','3e9464c59cc03ef5f3c5ed555e2757e2',NULL,0.00,1,0,NULL,1631009197,0,'',1),(4,'1655545174','雷霆嘎巴','1655545174@qq.com','99c0342da49856be2e9f6fbf55116e57',NULL,0.00,3,0,NULL,1631186682,0,'',1);
+INSERT INTO `sk_users` VALUES (1,'admin','管理员','admin@skpan.net','3e9464c59cc03ef5f3c5ed555e2757e2',NULL,0.00,1,0,NULL,1631009197,0,'',1),(4,'1655545174','雷霆嘎巴','1655545174@qq.com','99c0342da49856be2e9f6fbf55116e57',NULL,0.00,3,0,NULL,1631186682,0,'',1),(5,'ceshi123','ceshi123','1950412285@qq.com','221da9e890927b42c61a73770d331f39',NULL,0.00,3,0,NULL,1631210019,0,'',1);
 /*!40000 ALTER TABLE `sk_users` ENABLE KEYS */;
