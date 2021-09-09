@@ -53,7 +53,11 @@
             <form onkeydown="if(event.keyCode==13){doReg();return false;}">
 
                 <div class="p3 pmob1">
-                    <input class="input" type="text" id="reg_username" name="username" tabindex="1" maxlength="20" placeholder="用户名 (支持中文)">
+                    <input class="input" type="text" id="reg_nickname" name="nickname" tabindex="1" maxlength="20" placeholder="昵称 (支持中文)">
+                </div>
+
+                <div class="p3 pmob1">
+                    <input class="input" type="text" id="reg_username" name="username" tabindex="1" maxlength="20" placeholder="登录帐号">
                 </div>
                 <div class="p3 pmob2">
                     <input class="input pwd" id="reg_pass1" type="password" name="password" value="" tabindex="2" maxlength="32" placeholder="密码">
@@ -61,6 +65,13 @@
                 <div class="p3 pmob2">
                     <input class="input pwd" id="reg_pass2" type="password" value="" tabindex="3" maxlength="32" placeholder="确认密码">
                 </div>
+
+                <br>
+
+                <div class="p3 pmob2">
+                    <input class="input" id="reg_email" type="email" value="" tabindex="3" maxlength="64" placeholder="安全邮箱">
+                </div>
+
                 <div class="p3">
                     <div class="errorBox">请输入密码</div>
                 </div>
@@ -71,6 +82,7 @@
             <div class="p3">
                 <input onclick="doReg()" class="btn" type="submit" tabindex="4" value="注 册">
             </div>
+
             <div class="p3" style="text-align:left;position:absolute">
                 <a onclick="login()" href="#">已有账号？点我登录</a>
             </div>
@@ -169,10 +181,8 @@
                 $('#pass').focus();
                 msg = "请输入密码";
 
-            }else if (pwd.length < 6 || pwd.length > 32) {
-                $('#pass').focus();
-                msg = "密码长度最短6位，最长32位！";
             }
+
             if(msg != ''){
                 return error(msg);
             }
@@ -203,11 +213,17 @@
             var sacct = $("#reg_username").val();
             var pwd1 = $("#reg_pass1").val();
             var pwd2 = $("#reg_pass2").val();
+            var nick = $("#reg_nickname").val();
+            var email = $("#reg_email").val();
+
             var msg = '';
-            if (!sacct) {
+
+            if(!nick){
+                $("#reg_nickname").focus();
+                msg = "请输入昵称";
+            } else if (!sacct) {
                 $("#reg_username").focus();
                 msg = "请输入账号";
-
             } else if (!pwd1) {
                 $('#reg_pass1').focus();
                 msg = "请输入密码";
@@ -221,10 +237,13 @@
                 msg = "请重复输入密码";
 
             }else if (pwd1 != pwd2) {
-
                 $('#reg_pass1').focus();
                 msg = "两次密码不一致！请检查";
+            }else if(!email){
+                $('#reg_email').focus();
+                msg = "请输入安全邮箱";
             }
+
             if(msg != ''){
                 return error(msg);
             }
@@ -233,12 +252,17 @@
             $.ajax({
                 type: "post",
                 url : "{:url('user/register')}",
-                data: {"username":sacct,"password":pwd1},
+                data: {
+                    "nickname":nick,
+                    "username":sacct,
+                    "password":pwd1,
+                    "email":email
+                },
                 dataType:'json',
                 success: function(data){
-                    if (data.status == 1) {
+                    if (data.code == 1) {
                         ok(data.msg);
-                    } else if (data.status == 0) {
+                    } else {
                         error(data.msg);
                     }
                 },
@@ -271,14 +295,14 @@
         //失败
         function error(msg)
         {
-            layer.msg(msg, function(){});
+            //layer.msg(msg, function(){});
             $(".errorBox").html(msg);
             $(".errorBox").show();
         }
     </script>
 </div>
 
-<div class="copyright">不得利用云存储发布，存储，传播违法信息<br> 投诉邮箱：skyunpan@qq.com</div>
+<div class="copyright">不得利用云存储发布，存储，传播违法信息</div>
 <div class="foot_info"> © 2021 {$Think.config.basic.site_title}    </div>
 </body>
 </html>

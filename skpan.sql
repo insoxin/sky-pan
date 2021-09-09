@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version: 5.5.29)
-# Date: 2021-09-09 07:01:35
+# Date: 2021-09-09 21:47:25
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
@@ -12,20 +12,26 @@ DROP TABLE IF EXISTS `sk_folders`;
 CREATE TABLE `sk_folders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) NOT NULL DEFAULT '0' COMMENT '目录所有人',
+  `shares_id` int(11) NOT NULL DEFAULT '0' COMMENT '分享id',
   `folder_name` text NOT NULL COMMENT '目录名称',
   `parent_folder` int(11) NOT NULL DEFAULT '0' COMMENT '上级目录',
   `position` text NOT NULL COMMENT '路径',
   `position_absolute` text NOT NULL COMMENT '绝对路径',
+  `desc` text COMMENT '描述',
+  `count_down` int(11) NOT NULL DEFAULT '0' COMMENT '下载统计',
+  `count_open` int(11) NOT NULL DEFAULT '0' COMMENT '浏览统计',
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
   `delete_time` timestamp NULL DEFAULT NULL COMMENT '软删除',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='文件夹';
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='文件夹';
 
 #
 # Data for table "sk_folders"
 #
 
 /*!40000 ALTER TABLE `sk_folders` DISABLE KEYS */;
+INSERT INTO `sk_folders` VALUES (1,4,0,'根目录',0,'.','/',NULL,0,0,1631186682,0,NULL),(3,4,0,'asdsdsd',1,'','','',0,0,1631192692,0,NULL),(4,4,0,'测试文件',1,'','','',0,0,1631195016,0,NULL),(5,4,0,'ABC',3,'','','',0,0,1631195067,0,NULL);
 /*!40000 ALTER TABLE `sk_folders` ENABLE KEYS */;
 
 #
@@ -49,7 +55,7 @@ CREATE TABLE `sk_groups` (
 #
 
 /*!40000 ALTER TABLE `sk_groups` DISABLE KEYS */;
-INSERT INTO `sk_groups` VALUES (1,'管理员',1,10737418240,'10',1,1),(2,'游客',0,10737418240,'',1,1),(3,'普通用户',0,104857600,'10',1,1);
+INSERT INTO `sk_groups` VALUES (1,'管理员',1,10737418240,'10',1,1),(2,'游客',1,10737418240,'',1,1),(3,'普通用户',1,104857600,'10',1,1);
 /*!40000 ALTER TABLE `sk_groups` ENABLE KEYS */;
 
 #
@@ -72,7 +78,7 @@ CREATE TABLE `sk_policys` (
 #
 
 /*!40000 ALTER TABLE `sk_policys` DISABLE KEYS */;
-INSERT INTO `sk_policys` VALUES (1,'默认存储','local','',10485760,'{\"save_dir\":\"\\/default\\/\",\"access_token\":\"\",\"server_uri\":\"\"}'),(3,'远程服务器一','remote','',10485760,'{\"save_dir\":\"\\/uploads\\/\",\"access_token\":\"asdasfasfasfasfasfa\",\"server_uri\":\"http:\\/\\/dev.com\\/\"}');
+INSERT INTO `sk_policys` VALUES (1,'默认存储','local','',10485760,'{\"save_dir\":\"\\/default\\/\",\"access_token\":\"\",\"server_uri\":\"\"}'),(3,'远程服务器一','remote','',512000,'{\"save_dir\":\"\\/uploads\\/\",\"access_token\":\"asdasfasfasfasfasfa\",\"server_uri\":\"http:\\/\\/dev.com\\/\"}');
 /*!40000 ALTER TABLE `sk_policys` ENABLE KEYS */;
 
 #
@@ -86,7 +92,7 @@ CREATE TABLE `sk_setting` (
   `set_value` text NOT NULL COMMENT '配置值',
   `set_type` varchar(60) NOT NULL DEFAULT '' COMMENT '配置类型',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='系统配置表';
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='系统配置表';
 
 #
 # Data for table "sk_setting"
@@ -130,6 +136,7 @@ CREATE TABLE `sk_stores` (
   `parent_folder` int(11) NOT NULL DEFAULT '0' COMMENT '所属目录',
   `policy_id` int(11) NOT NULL DEFAULT '0' COMMENT '存储策略',
   `dir` text NOT NULL COMMENT '文件目录',
+  `desc` text COMMENT '文件描述',
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
   `delete_time` timestamp NULL DEFAULT NULL COMMENT '软删除',
@@ -171,5 +178,5 @@ CREATE TABLE `sk_users` (
 #
 
 /*!40000 ALTER TABLE `sk_users` DISABLE KEYS */;
-INSERT INTO `sk_users` VALUES (1,'admin','管理员','admin@skpan.net','3e9464c59cc03ef5f3c5ed555e2757e2',NULL,0.00,1,0,NULL,1631009197,0,'',1),(3,'1655545174','1655545174','1655545174@qq.com','a99cc781713cee3057be007a9abe845c',NULL,0.00,3,0,NULL,1631120171,0,'',1);
+INSERT INTO `sk_users` VALUES (1,'admin','管理员','admin@skpan.net','3e9464c59cc03ef5f3c5ed555e2757e2',NULL,0.00,1,0,NULL,1631009197,0,'',1),(4,'1655545174','雷霆嘎巴','1655545174@qq.com','99c0342da49856be2e9f6fbf55116e57',NULL,0.00,3,0,NULL,1631186682,0,'',1);
 /*!40000 ALTER TABLE `sk_users` ENABLE KEYS */;

@@ -15,9 +15,11 @@ class Users extends Model
      * @param $username
      * @param $email
      * @param $password
+     * @param $group
+     * @param array $other
      * @throws Exception
      */
-    public function register($username,$email,$password,$group){
+    public function register($username, $email, $password, $group, array $other = []){
 
         if(self::where('username',$username)->count() > 0){
             throw new Exception('当前帐号已被注册');
@@ -29,8 +31,14 @@ class Users extends Model
 
         $en_password = md5($password . config('app.pass_salt'));
 
+        $nickname = ucfirst($username);
+
+        if(isset($other['nickname'])){
+            $nickname = $other['nickname'];
+        }
+
         $user = [
-            'nickname' => ucfirst($username),
+            'nickname' => $nickname,
             'username' => $username,
             'email' => $email,
             'group' => $group,
@@ -40,6 +48,20 @@ class Users extends Model
         ];
 
         self::insert($user);
+
+        $user_id = self::getLastInsID();
+
+        //添加基础目录
+        if($group != 1){
+            Folders::insert([
+                'uid' => $user_id,
+                'folder_name' => '根目录',
+				'parent_folder' => 0,
+				'position' => '.',
+				'position_absolute' => '/',
+                'create_time' => time()
+            ]);
+        }
 
     }
 
@@ -75,7 +97,7 @@ class Users extends Model
 
         // 登录成功
         Session::set($login_type .'_uid',$user['id']);
-        Session::set($login_type .'_lkey',md5($username . $password));
+        Session::set($login_type .'_lkey',md5($username . $password . $user['status']));
 
         return true;
     }
@@ -107,7 +129,7 @@ class Users extends Model
             return false;
         }
 
-        if($key != md5($user['username'] . $user['password'])){
+        if($key != md5($user['username'] . $user['password'] . $user['status'])){
             return false;
         }
 

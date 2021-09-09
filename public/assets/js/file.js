@@ -152,9 +152,10 @@ function mkdirTo(){
         layer.msg('请填写文件夹名称！', {time: 700});
         return;
     }
+
     $.ajax({
         type: "post",
-        url : "/user/folder/toMkdir.html",
+        url : "/file/mkdir",
         dataType:'json',
         data: {
             "folder_id": dirFolderId,

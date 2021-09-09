@@ -40,7 +40,7 @@ function PolicyType($d): string
     return $type[$d] ?? '未知';
 }
 
-function getFileIcon($file_ext): string
+function getFileIcon($file_ext,$type = 'admin'): string
 {
     $file_types = [
         'video' => ['mp4','avi','mov','rmvb','rm','asf','divx','mpg','mpeg','mpe','wmv','mp4','mkv','vob','swf','flv'],
@@ -62,14 +62,31 @@ function getFileIcon($file_ext): string
 
     $file_mime = 'unknown';
 
-    foreach ($file_types as $mime_name => $item){
-        foreach ($item as $ext){
-            if($ext == $file_ext){
-                $file_mime = $mime_name;
-                break;
+    if($file_ext == 'dir'){
+        $file_mime = 'folder';
+    }else{
+        foreach ($file_types as $mime_name => $item){
+            foreach ($item as $ext){
+                if($ext == $file_ext){
+                    $file_mime = $mime_name;
+                    break;
+                }
             }
         }
     }
 
-    return '/static/admin/images/file_ext/'.$file_mime.'.png';
+    if($type == 'admin'){
+        return '/static/admin/images/file_ext/'.$file_mime.'.png';
+    }else{
+        return '/assets/file_ext/'.$file_mime.'.png';
+    }
+}
+
+
+function getUserHead($user_head): string
+{
+    if(empty($user_head)){
+        return '/assets/image/userhead.png';
+    }
+    return '';
 }

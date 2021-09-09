@@ -55,10 +55,10 @@
                             <span>
                                 <div class="head-box align-center el-popover__reference tan"
                                      aria-describedby="el-popover-2040" tabindex="0" tan="VIP到期时间：未开通"><img
-                                        src="__STATIC__/image/user_logo.png" alt=""
+                                        src="{:getUserHead($info.avatar)}" alt=""
                                         class="head-img">
                                     <p class="text" >
-                                        Hudson Star (普通会员)
+                                        {$info.nickname} ({$group.group_name})
                                     </p>
                                     <p class="line"></p>
                                 </div>
@@ -67,7 +67,7 @@
                                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAQCAYAAADJViUEAAABCUlEQVQokZXTvyvEYRwH8Nc9sbrtDJLVdl05qfMPKFaJzHSDwUJmZTEwCBnFJgOZUYorq8l2AxtXFkoZvs+Xb9e5H+/l8/S83+/n86PPkyuVSpowjTxOcIp5LKCBy6wwZM6DkZzATbwbiPEWk7iKOtAXYx5nWEWtuRTUsY4KzjGFRpp5D2v/GLO4wwb207LH8RaJbnCND5QDlrDbpTHFDpYDhvDco/kJIwGfPRpThOBv4q2w2Yb7Cm1IuO+U+QXDHR5pxijqAUeS5egFKzgMeEABY10aK5KNrKU9V7GNYgdjGVtR/zvpBuYkLTziAK8ZUyGWWsRs1Mu1+JIzWJT8qG/04x3HuMgKfwBDXy+/tOYcjQAAAABJRU5ErkJggg=="
                                 alt="" class="tc">
                             <p class="text">
-                                <a href="/logout.html" class="js-ajax-btn" style="color:#313131">退出登录</a>
+                                <a href="{:url('user/logout')}" class="js-ajax-btn" style="color:#313131">退出登录</a>
                             </p>
                         </div>
                     </div>
@@ -86,13 +86,13 @@
                                 </a>
                             </li>
                             <li role="menuitem" class="el-menu-item g-button-right ">
-                                <a href="{:url('user/recycle')}" style="display: block;text-decoration: none;background: white;color: #7e8c8d">
+                                <a href="{:url('user/recycle')}" style="display: block;text-decoration: none;color: #7e8c8d">
                                     <em class="icon icon-delete"></em>
                                     <span>回收站</span>
                                 </a>
                             </li>
                             <li role="menuitem" class="el-menu-item g-button-right">
-                                <a href="{:url('user/shouyi')}" style="display: block;text-decoration: none;background: white;color: #7e8c8d">
+                                <a href="{:url('user/shouyi')}" style="display: block;text-decoration: none;color: #7e8c8d">
                                     <em class="icon icon-my-share"></em>
                                     <span>分享赚钱</span>
                                 </a>
@@ -298,7 +298,7 @@
                                     $("#folder_id").val(folder_id); //更新当前文件夹ID
                                     $('#table').bootstrapTable('destroy'); //销毁数据
 
-                                    var queryUrl = '/user/files/toData.html?rnd=' + Math.random() + "&folder_id=" + folder_id + "&sousuo=" + sousuo;
+                                    var queryUrl = "{:url('file/list')}?rnd=" + Math.random() + "&folder_id=" + folder_id + "&search=" + sousuo;
                                     $("#table").bootstrapTable({
                                         url: queryUrl, //请求后台的URL（*）
                                         method: 'GET', //请求方式（*）
@@ -312,7 +312,7 @@
                                         sortable: true, //是否启用排序
                                         sortOrder: "asc", //排序方式
                                         dataField: "data", //Json数据的字段
-                                        //clickToSelect: true,    //点击选中
+                                        // clickToSelect: true,    //点击选中
                                         height: $(window).height() - 171, //高度
                                         sidePagination: "client", //分页方式：client客户端分页，server服务端分页（*）
                                         classes: "table table-hover",
@@ -453,126 +453,6 @@
         </div>
     </div>
 </div>
-
-
-<script>
-    function getTable(sousuo="") {
-        $('#table').bootstrapTable('destroy'); //销毁数据
-
-        var queryUrl = '/user/files/toData.html?rnd=' + Math.random() + "&sousuo="+sousuo;
-        $("#table").bootstrapTable({
-            url: queryUrl, //请求后台的URL（*）
-            method: 'GET', //请求方式（*）
-            striped: true, //是否显示行间隔色
-            sortable: true, //是否启用排序
-            sortOrder: "asc", //排序方式
-            dataField: "data", //Json数据的字段
-
-            //clickToSelect: true,    //点击选中
-            height: $(window).height() - 171, //高度
-            sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
-            classes: "table table-hover",
-
-            //无内容时
-            formatNoMatches: function () {
-                if(sousuo && 1==2){
-                    $(".emptyFile2").addClass("emptySousuo");
-                    var msg = '<p title="为什么不去问问神奇的海螺呢">在您的网盘中，未搜索到相应的文件</p>';
-                }else{
-                    $(".emptyFile2").addClass("emptyRecyclebin");
-                    var msg = '<p style="font-size: 16px;font-weight: 700;color: #03081a;">您的回收站是空的噢</p><p>建议您把网盘的文件都删除后再来，2333~</p>';
-                }
-
-                $(".emptyFile2 div").html(msg);
-                $("#table").html($("#emptyFile").html());
-                return "";
-            },
-
-            //加载动画
-            loadingTemplate: function () {
-                return "<span class=\"loading-wrap\">\n      <img src=\"//static.skpan.cn/user/img/loading.gif\"/>\n</span>";
-            },
-
-            //加载失败
-            onLoadError: function () {
-                // showTips("数据加载失败！");
-            },
-
-            //加载完成
-            onLoadSuccess: function (data) {
-                $(".fixed-table-loading").remove();
-                daohang(data.parent,data.total,sousuo);     //修改导航
-                HoverGengduo();     //鼠标悬浮显示更多按钮
-                clickList();   //初始化右键菜单
-            },
-
-            //自定义css
-            rowStyle: function (row, index) {
-                var style = {};
-                style = {
-                    css: {
-                        'font-size': '13px'
-                    }
-                };
-                return style;
-            },
-
-            //复选框点击事件
-            onCheckAll:function(rows){
-                CilckCheck();  //复选框选中 更新菜单栏
-            },
-            onCheck:function(row){
-                CilckCheck();  //复选框选中 更新菜单栏
-            },
-            onUncheck:function(row){
-                CilckCheck();  //复选框选中 更新菜单栏
-            },
-            onUncheckAll: function (row) {
-                CilckCheck();  //复选框选中 更新菜单栏
-            },
-
-            //表头
-            columns: [{
-                checkbox: true,
-                visible: true //是否显示复选框
-            },
-                {
-                    field: 'file_name',
-                    title: '文件名',
-                    sortable: true, //排序
-                    width:'500px',
-                    formatter: function (value, row, index) { //处理数据
-                        return value;
-                    },
-                }, {
-                    field: 'file_size',
-                    title: '文件大小',
-                    sortable: true, //排序
-                }, {
-                    field: 'count_open',
-                    title: '阅览',
-                    sortable: true, //排序
-                }, {
-                    field: 'count_down',
-                    title: '下载',
-                    sortable: true, //排序
-                }, {
-                    field: 'url',
-                    title: '分享链接',
-                }, {
-                    field: 'update_time',
-                    title: '删除日期',
-                    sortable: true, //排序
-                },
-            ],
-
-            //填入个数据，要不然会显示没文件
-            data: [{
-                "file_name": "",
-            }],
-        })
-    }
-    getTable();</script>
 
 <script type="text/javascript">
 
