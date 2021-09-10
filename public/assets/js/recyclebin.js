@@ -126,14 +126,14 @@ $(".context-menu .list li").click(function(){
                 btn: ['确定','取消'] //按钮
             },
             function(index){
-                Recyclebin(ids,idFs,"Delete");
+                Recyclebin(ids,idFs,"delete");
             },
             function(){
             });
             break;
         }
         case "还原":{
-            Recyclebin(ids,idFs,"Back");
+            Recyclebin(ids,idFs,"restore");
         }
         default:{
             break;

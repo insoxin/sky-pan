@@ -222,10 +222,10 @@ class File extends Home
         }
 
         //移动文件
-        if(!empty($idFs_list)){
+        if(!empty($ids_list)){
             foreach ($ids_list as $file){
                if(!empty($file)){
-                   Folders::where('id',$file)->where('uid',$uid)->update(['parent_folder' => $folder_id]);
+                   Stores::where('id',$file)->where('uid',$uid)->update(['parent_folder' => $folder_id]);
                    $success[] = $file;
                }
             }
