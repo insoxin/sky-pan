@@ -1,0 +1,128 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="__STATIC__/js/jquery.js"></script>
+    <script src="__STATIC__/js/layer.js"></script>
+    <script src="__STATIC__/pay/js/ui-choose.js" type="text/javascript"></script>
+    <link rel='stylesheet' href='__STATIC__/pay/css/main.css' type='text/css' media='all' />
+</head>
+
+<body>
+<div class="pay">
+    <!--主内容开始编辑-->
+    <div class="tr_recharge">
+        <div class="tr_rechbox">
+            <div class="tr_rechhead">
+                <img src="{:getUserHead($info.avatar)}">
+                <p>开通账号：<a>{$info.nickname}</a>
+                </p>
+                <div class="tr_rechheadcion">
+                    <span style="color: #cc1f00;">开通VIP会员，畅享极速下载！</span>
+                </div>
+            </div>
+            <div class="tr_rechli am-form-group">
+                <ul class="ui-choose am-form-group" id="uc_01">
+                    {volist name="$rule" id="vo"}
+                    <li>
+                        <label class="am-radio-inline">
+                            <input type="radio" name="vip" value="day_{$vo.day}" money="{:number_format($vo.money,2)}">
+                            {$vo.name}
+                        </label>
+                    </li>
+                    {/volist}
+                </ul>
+            </div>
+            <div class="tr_rechcho am-form-group am-form-success">
+                <span>支付方式：</span>
+
+                <label class="am-radio" style="margin-right:30px;">
+                    <input type="radio" name="pay_type" value="alipay" checked="checked">
+                    <img src="__STATIC__/pay/images/zfbpay.png">
+                </label>
+                <!--官方支付宝-->
+
+                <label class="am-radio">
+                    <input type="radio" name="pay_type" value="wxpay">
+                    <img src="__STATIC__/pay/images/wechatpay.png">
+                </label>
+
+            </div>
+            <div class="tr_rechnum">
+                <span>应付金额：</span>
+                <p class="rechnum">0.00元</p>
+            </div>
+        </div>
+        <div class="tr_paybox">
+            <input type="submit" value="确认支付" class="tr_pay am-btn" onclick="zhifu()">
+            <span>网盘运营需要成本。您的支持，就是我们更好的动力！</span>
+        </div>
+    </div>
+</div>
+<script>
+    // 将所有.ui-choose实例化
+    $('.ui-choose').ui_choose();
+    // uc_01 ul 单选
+    var vip = "day_{$rule[0]['day']}";
+    var uc_01 = $('#uc_01').data('ui-choose'); // 取回已实例化的对象
+    uc_01.click = function (index, item) {
+        //console.log('click', index, vip)
+    }
+    uc_01.change = function (index, item) {
+        //console.log('change', index, item.text())
+    }
+    $(function () {
+
+        $('#uc_01 li').click(function () {
+            var vipObj = $(this).find("input");
+            vip = vipObj.val();
+            xxx(vipObj.attr('money'));
+        });
+
+        $(document).ready(function () {
+            $('.othbox').on('input propertychange', function () {
+                var num = $(this).val();
+                if (num.indexOf(".") == -1) {
+                    num += ".00";
+                }
+                $('.rechnum').html(num + "元");
+            });
+        });
+
+        //模拟点击
+        $("#uc_01 li:eq(0)").trigger("click");
+    })
+
+    function xxx(str) {
+        $('.tr_rechoth').hide();
+        $('.ui-choose').find("input").attr("name", "price");
+        $('.tr_rechoth').find("input").attr("name", "price2");
+        $('.rechnum').text(str + '元');
+    }
+    function zhifu() {
+        var pay_type = $(':radio[name="pay_type"]:checked').val();
+        parent.layer.open({
+            type: 2,
+            title: '支付页面',
+            closeBtn: 1,
+            area: ['650px', '774px'], // 宽高
+            content: "/user/vip/tiao?pay_type=" + pay_type + "&vip=" + vip,
+            end: function () {
+                //设置订单为已关闭
+                $.get("/user/vip/close");
+            },
+            cancel: function (index) {
+                parent.layer.confirm('确定要取消支付吗？', { icon: 3 }, function (index2) {
+                    parent.layer.close(index2);
+                    parent.layer.close(index);
+                    parent.layer.msg("支付已关闭");
+                });
+                return false;
+            },
+        });
+    }
+
+</script>
+</body>
+
+</html>

@@ -71,7 +71,9 @@ class User extends Home
         $this->success('退出登录成功','index/index');
     }
 
-    public function shouyi(){
+    public function vip(){
+        $rule = getVipRule();
+        $this->assign('rule',$rule);
         return $this->fetch();
     }
 

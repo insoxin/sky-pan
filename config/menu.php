@@ -131,6 +131,13 @@ return [
                 'type' => 1,
                 'openType' => '_iframe',
                 'href' => url('setting/email')
+            ],
+            [
+                'id' => 105,
+                'title' => 'VIP配置',
+                'type' => 1,
+                'openType' => '_iframe',
+                'href' => url('setting/vip')
             ]
         ]
     ]

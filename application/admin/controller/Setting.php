@@ -26,6 +26,19 @@ class Setting extends Admin
         return $this->fetch();
     }
 
+    public function pay(){
+        $this->saveOptions();
+        $this->assign('option',$this->getOptions());
+        return $this->fetch();
+    }
+
+    public function vip(){
+        $this->saveOptions();
+        $group = Groups::field('id,group_name')->select()->toArray();
+        $this->assign('group',$group);
+        $this->assign('option',$this->getOptions());
+        return $this->fetch();
+    }
 
     protected function saveOptions(){
         if($this->request->isPost()){

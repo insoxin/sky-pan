@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/component/pear/css/pear.css" />
+</head>
+<body>
+<form class="layui-form">
+    <div class="mainBox">
+        <div class="main-container">
+            <br>
+            <br>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">VIP用户组</label>
+                <div class="layui-input-block" style="max-width: 800px;">
+                    <select name="vip_group" lay-verify="required">
+                        {volist name="$group" id="vo"}
+                        <option value="{$vo.id}" {eq name="$option.vip_group" value="$vo.id"}selected{/eq}>{$vo.group_name}</option>
+                        {/volist}
+                    </select>
+                    <div class="layui-form-mid layui-word-aux">开通VIP后属于的用户组</div>
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">VIP价格规则</label>
+                <div class="layui-input-block" style="max-width: 800px;">
+                    <textarea name="vip_rule" placeholder="VIP价格规则" rows="10" class="layui-textarea">{$option.vip_rule}</textarea>
+                    <div class="layui-form-mid layui-word-aux">价格规则，一行一条，规则格式为：价格名称|开通价格|开通时长(单位天)|折扣显示|省钱显示|描述内容</div>
+                </div>
+            </div>
+
+            <br>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn layui-btn-normal" lay-submit lay-filter="save">保存设置</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+<script src="/static/component/layui/layui.js"></script>
+<script src="/static/component/pear/pear.js"></script>
+<script>
+    layui.use(['form','jquery'],function(){
+        let form = layui.form;
+        let $ = layui.jquery;
+
+        form.on('submit(save)', function(data){
+            $.ajax({
+                data:JSON.stringify(data.field),
+                dataType:'json',
+                contentType:'application/json',
+                type:'post',
+                success:function(res){
+                    //判断有没有权限
+                    if(res && res.code == 999){
+                        layer.msg(res.msg, {
+                            icon: 5,
+                            time: 2000,
+                        })
+                        return false;
+                    }else if(res.code == 200){
+                        layer.msg(res.msg,{icon:1,time:1000},function(){
+                            parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                        });
+                    }else{
+                        layer.msg(res.msg,{icon:2,time:1000});
+                    }
+                }
+            })
+            return false;
+        });
+    })
+</script>
+</body>
+</html>

@@ -90,3 +90,16 @@ function getUserHead($user_head): string
     }
     return '';
 }
+
+function getVipRule(){
+    $vip_rule = config('vip.vip_rule');
+
+    $rule_list = explode('<br />',nl2br($vip_rule));
+
+    foreach ($rule_list as $key => $item){
+        $keys = ['name', 'money', 'day', 'discount', 'discount_msg', 'desc'];
+        $rule_list[$key] = array_combine($keys,explode('|',trim($item)));
+    }
+
+    return $rule_list;
+}
