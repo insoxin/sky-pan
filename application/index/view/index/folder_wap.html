@@ -48,7 +48,7 @@
             {volist name="$share_list" id="vo"}
             <div id="ready">
                 <div class="mbx">
-                    <a href={$vo.url}" target="_blank" class="mlink">
+                    <a href={$vo.url}" {eq name="$vo.type" value="file"}target="_blank"{/eq} class="mlink">
                         <img src="{$vo.icon}" align="absmiddle" border="0">
                         &nbsp; {$vo.name}
                         <div class="mmr">

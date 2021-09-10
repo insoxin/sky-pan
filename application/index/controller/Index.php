@@ -52,7 +52,7 @@ class Index extends Home
         }
 
         $this->assign('share_id',$info['id']);
-        $this->assign('is_login',empty($this->userInfo) ? 0 : 1);
+        $this->assign('is_login',$this->is_login);
         $this->assign('url',getShareUrl($code));
 
         $share_pwd = Cookie::get('share_key_'.$code);
@@ -86,13 +86,29 @@ class Index extends Home
             return $this->fetch('folder');
         }else{
             // 文件显示
-            return ';';
+            $file_info = [
+                'username' => getSafeNickname($user['nickname']),
+                'file_name' => $storeInfo['origin_name'],
+                'size' => countSize($storeInfo['size']),
+                'create_time' => friendDate($storeInfo->getData('create_time'))
+            ];
+
+            // 获取VIP价格
+            $vip_rule = getVipRule();
+
+            // 获取最高价格
+            $vip_max = end($vip_rule)['id'];
+
+
+
+            $this->assign('vip_info',$this->vip_info);
+            $this->assign('is_login',$this->is_login);
+            $this->assign('vip_max',$vip_max);
+            $this->assign('vip_rule',$vip_rule);
+            $this->assign('user',$this->userInfo);
+            $this->assign('info',$file_info);
+            return $this->fetch('file');
         }
-
-
-
-//        var_dump($info);
-        //return $this->fetch();
     }
 
     public function report(){

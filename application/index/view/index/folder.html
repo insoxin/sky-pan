@@ -54,7 +54,7 @@
         <div id="ready">
             <div id="name">
                 &nbsp;<img src="{$vo.icon}" align="absmiddle" border="0">&nbsp;
-                <a href="{$vo.url}" target="_blank">{$vo.name}</a>
+                <a href="{$vo.url}" {eq name="$vo.type" value="file"}target="_blank"{/eq}>{$vo.name}</a>
             </div>
             <div id="size">{$vo.size}</div>
             <div id="time">{$vo.time}</div>

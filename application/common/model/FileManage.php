@@ -194,6 +194,7 @@ class FileManage
 
             $files = [
                 'id' => $item['id'],
+                'type' => $item['ext'] == 755 ? 'dir' : 'file',
                 'icon' => getFileIcon($type,'index'),
                 'name' => $item['name'],
                 'size' => empty($item['size']) ? '-' : countSize($item['size']),

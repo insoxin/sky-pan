@@ -97,8 +97,10 @@ function getVipRule(){
     $rule_list = explode('<br />',nl2br($vip_rule));
 
     foreach ($rule_list as $key => $item){
-        $keys = ['name', 'money', 'day', 'discount', 'discount_msg', 'desc'];
-        $rule_list[$key] = array_combine($keys,explode('|',trim($item)));
+        $keys = ['name', 'money', 'day','day_name', 'discount', 'discount_msg', 'desc','is_top'];
+        $rule = array_combine($keys,explode('|',trim($item)));
+        $rule['id'] = $key;
+        $rule_list[$key] = $rule;
     }
 
     return $rule_list;

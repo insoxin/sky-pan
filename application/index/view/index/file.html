@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html dir="ltr" class="fontawesome-i2svg-active fontawesome-i2svg-complete">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="referrer" content="always">
+    <title>{$info.file_name} - {$Think.config.basic.site_title}</title>
+    <link href="__STATIC__/pan/shouyi/theme.css" rel="stylesheet">
+    <script src="__STATIC__/js/jquery.js"></script>
+    <script src="__STATIC__/js/lay/modules/layer.js"></script>
+    <script src="__STATIC__/pan/shouyi/bootstrap.js"></script>
+</head>
+
+<body>
+<main class="main">
+    <div class="container">
+        <div class="content">
+            <nav class="navbar navbar-light navbar-glass fs--1 font-weight-semi-bold row navbar-top sticky-kit navbar-expand">
+                <button class="navbar-toggler collapsed" type="button" data-toggle="collapse"
+                        data-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <a class="navbar-brand text-left ml-3" href="/">
+                    <div class="d-flex align-items-center">
+                        <img class="mr-2" src="__STATIC__/pan/img/logo.png" alt="" width="40"><span>文件下载</span>
+                    </div>
+                </a>
+
+                <div class="collapse navbar-collapse">
+                    {eq name="$is_login" value="1"}
+                    <ul class="navbar-nav align-items-center ml-auto">
+                        <ul class="navbar-nav align-items-center ml-auto">
+                            <li class="nav-item mr-3" title="点击续费" onclick="vip()" style="cursor:pointer;color: red;">
+                                A00广州幽品化妆品 (VIP会员)
+                            </li>
+                            <li class="nav-item" title="点击开通" onclick="vip()" style="cursor:pointer;">
+                            <div class="avatar avatar-xl mt-2">
+                                <img class="rounded-circle"
+                                    src="{:getUserHead($user.avatar)}">
+                            </div>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="btn btn-falcon-default ml-2" href="{:url('user/logout')}">登出</a>
+                        </li>
+
+                    </ul>
+                    {else/}
+                    <ul class="navbar-nav align-items-center ml-auto">
+                        <li class="nav-item">
+                            <a class="btn btn-falcon-default ml-2 mr-2" onclick="login()" href="javascript:;">注册</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-falcon-default" onclick="login()" href="javascript:;">登录</a>
+                        </li>
+                    </ul>
+                    {/eq}
+                </div>
+            </nav>
+
+            <div class="card mb-3">
+                <div class="card-body rounded-soft bg-gradient">
+                    <div class="row text-white align-items-center no-gutters">
+                        <div class="col">
+                            <h4 class="text-white mb-2">文件下载：<span id="filename">{$info.file_name}</span></h4>
+                            <p class="fs--1 mb-1">
+                                <span class="text-300 mr-1">文件大小</span>{$info.size}
+                                <span class="text-300 mr-1 ml-2">上传时间</span>{$info.create_time}
+                                <span class="text-300 mr-1 ml-2">分享用户</span>{$info.username}
+                            </p>
+                        </div>
+                        <div class="col-auto d-none d-sm-block">
+                            <a class="btn btn-info" href="javascript:;" onclick="kefu()">联系客服</a>
+                            <a class="btn btn-warning ml-3" target="_blank" href="{:url('index/report')}?share_id={$share_id}">举报</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card-deck">
+                <div class="card mb-3 overflow-hidden" style="min-width: 12rem">
+                    <div class="bg-holder bg-card" style="background-image:url(__STATIC__/image/corner-1.png);"></div>
+                    <div class="card-body position-relative">
+                        <h5>普通下载<span class="badge badge-soft-warning rounded-capsule ml-2">低速</span></h5>
+                        <div class="display-4 fs-2 mb-3 mt-3 font-weight-normal text-warning">下载需时约 60 分钟</div>
+                        <button class="btn btn-outline-secondary fs--1" onclick="down()">立即下载</button>
+                    </div>
+                </div>
+                <div class="card mb-3 overflow-hidden" style="min-width: 12rem">
+                    <div class="bg-holder bg-card" style="background-image:url(__STATIC__/image/corner-2.png);">
+                    </div>
+
+                    <div class="card-body position-relative">
+                        <h5>登录下载<span class="badge badge-soft-info rounded-capsule ml-2">稳定</span></h5>
+                        <div class="display-4 fs-2 mb-3 mt-3 font-weight-normal text-info">下载需时约 5 分钟</div>
+                        <button class="btn btn-outline-info fs--1" onclick="down()">立即下载</button>
+                    </div>
+                </div>
+                <div class="card mb-3 overflow-hidden" style="min-width: 12rem">
+                    <div class="bg-holder bg-card" style="background-image:url(__STATIC__/image/corner-3.png);">
+                    </div>
+                    <div class="card-body position-relative">
+                        <h5>VIP极速下载<span class="badge badge-soft-success rounded-capsule ml-2">推荐</span></h5>
+                        <div class="display-4 fs-2 mb-3 mt-3 font-weight-normal">下载需时约 1 秒</div>
+                        <button class="btn btn-outline-dark fs--1 " onclick="vip()">立即升级</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="h-100 card mb-3">
+                <div class="card-body">
+                    <div class="row no-gutters">
+                        <div class="col-12 mb-3">
+                            <div class="row justify-content-center justify-content-sm-between">
+                                <div class="col-sm-auto text-center">
+                                    <h5 class="d-inline-block">升级会员尊享极速下载</h5><span
+                                        class="badge badge-soft-success badge-pill ml-2">永久更省83%</span>
+                                </div>
+                                <div class="col-sm-auto d-flex flex-center fs-1 mt-1 mt-sm-0">
+                                        <span class="badge badge-pill badge-danger">
+                                            限时大促 最后一天！仅剩
+                                            <span id="ctp_time_left">2 小时 20 分钟 17 秒</span>
+                                        </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {php}
+                        $vip_list_num = 0;
+                        {/php}
+
+                        {volist name="$vip_rule" id="vo" key="k"}
+                        {eq name="$vo.is_top" value="1"}
+                        <div class="col-lg-4 border-top border-bottom">
+                            {php}
+                            $vip_list_num++;
+                            $is_hot = intval(($vip_list_num % 3) == 2);
+                            {/php}
+                            <div class="h-100" {eq name="$is_hot" value="1"}style="background-color: rgba(115, 255, 236, 0.18)"{/eq}>
+                                <div class="text-center p-4">
+                                    <h3 class="font-weight-normal my-0">{$vo.name}</h3>
+                                    <span class="badge badge-soft-success badge-pill ml-1">限时{$vo.discount}折</span>
+                                    <p class="mt-3">
+                                        {$vo.desc}
+                                    </p>
+                                    <h2 class="font-weight-medium my-4">
+                                        {$vo.money}
+                                        <small class="fs--1 text-700">元 / {$vo.day_name}</small>
+                                        <br>
+                                        <span class="fs--1 badge badge-info badge-pill">{$vo.discount_msg}</span>
+                                    </h2>
+                                    <button class="btn btn-outline-primary" onclick="vip({$vo.id})">立即购买</button>
+                                </div>
+                            </div>
+                        </div>
+                        {/eq}
+                        {/volist}
+
+                        <div class="col-12 text-center px-3 px-sm-4 py-4">
+                            <h5 class="font-weight-medium fs-0">所有会员均尊享以下特权：</h5>
+                            <svg class="svg-inline--fa fa-check fa-w-16 mr-2 text-success" aria-hidden="true"
+                                 focusable="false" data-prefix="fas" data-icon="check" role="img"
+                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
+                                <path fill="currentColor"
+                                      d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z">
+                                </path>
+                            </svg> VIP极速下载通道
+                            <svg class="svg-inline--fa fa-check fa-w-16 ml-5 mr-2 text-success" aria-hidden="true"
+                                 focusable="false" data-prefix="fas" data-icon="check" role="img"
+                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
+                                <path fill="currentColor"
+                                      d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z">
+                                </path>
+                            </svg> 多文件同时下载
+                            <svg class="svg-inline--fa fa-check fa-w-16 ml-5 mr-2 text-success" aria-hidden="true"
+                                 focusable="false" data-prefix="fas" data-icon="check" role="img"
+                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
+                                <path fill="currentColor"
+                                      d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z">
+                                </path>
+                            </svg> 去除弹窗广告
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="card bg-light mb-3">
+                <div class="card-body p-3">
+                    <div class="row justify-content-center justify-content-sm-between">
+                        <div class="col-sm-auto text-center">
+                            <p class="fs--1 mb-0">谨防刷单兼职，网贷，金融，裸聊敲诈，赌博等诈骗，请立即举报</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <footer>
+            <div class="row no-gutters justify-content-between fs--1 mt-4 mb-3">
+                <div class="col-12 col-sm-auto text-center">
+                    <p class="mb-0 text-600">版权声明：不得利用云存储发布，存储，淫秽，诈骗等违法信息。
+                        <a href="{:url('index/report')}?share_id={$share_id}">侵权/违法投诉</a>
+                        或者投诉邮箱：{$Think.config.basic.site_email}</p>
+                </div>
+                <div class="col-12 col-sm-auto text-center">
+                    <p class="mb-0 text-600">© 2018-2021 {$Think.config.basic.site_title}</p>
+                </div>
+            </div>
+        </footer>
+
+
+        <div class="modal fade hide" id="infoModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="true"></div>
+        <script>
+
+            var down_info = {
+                is_login:{$is_login},
+                is_vip:{$vip_info.is_vip},
+                link:'',
+                kefu:'客服QQ：<span style=\'color:red;font-size:15px\'>1665555255</span><br/><br/>客服在线时间：早上9点-晚上22点<br/><br/>如遇到任何问题请联系客服处理<br/>对此给您带来的不便深感抱歉',
+                vip_max:{$vip_max},
+                vip_expire:{$vip_info.expire_time}
+            }
+
+            var second_left = 8035;
+
+            function isMobile(){
+                return /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent);
+            }
+
+            function formatTime(second) {
+                return (parseInt(second / 60 / 60) + " 小时 " + parseInt(second / 60 % 60) + " 分钟 " + parseInt(
+                    second % 60) + " 秒")
+                    .replace(/\b(\d)\b/g, "0$1");
+            }
+
+            function updateTimeInfo(){
+                second_left = second_left - 1;
+                $("#ctp_time_left").text(formatTime(second_left));
+            }
+
+            function kefu() {
+                layer.alert(down_info.kefu, { title: '联系客服' });
+            }
+
+            function vip(buy) {
+                buy = (buy === "" ? down_info.vip_max : buy);
+                if (down_info.is_login) {
+                    if (isMobile()) {
+                        $("#infoModal").load("/user/vip?buy=" + buy, function () {
+                            $(this).modal('toggle');
+                        });
+                    } else {
+                        layer.open({
+                            type: 2,
+                            shadeClose: true,
+                            title: down_info.is_vip ? ('续费VIP会员 到期时间：' + down_info.vip_expire) : "在线开通VIP会员",
+                            area: ['723px', '520px'], // 宽高
+                            content: "/user/vip?buy=" + buy,
+                            end: function () {
+                                location.reload();
+                            },
+                        });
+                    }
+                }else {
+                    login("抱歉您还未登录");
+                }
+            }
+
+            function vipOk() {
+                layer.alert('恭喜您开通VIP成功~ 感谢您的支持！<br><br/>请刷新页面重新点击下载~',
+                    {
+                        icon: 1,
+                        end: function () {
+                            location.reload();
+                        },
+                    });
+            }
+
+            function login(title) {
+                if(title === ''){
+                    title = '登录'
+                }
+                layer.open({
+                    type: 2,
+                    title: title,
+                    area: ['319px', '436px'],
+                    //shadeClose: true, // 是否点击遮罩关闭
+                    content: '/user/login?layer=1',
+                    end: function () {
+                        location.reload(); //刷新数据
+                    }
+                });
+            }
+
+            function down() {
+                //判断登录
+                if (down_info.is_login) {
+                    //判断VIP
+                    if (down_info.is_vip) {
+                        window.open(down_info.link);
+                    } else {
+                        layer.confirm('普通下载很慢，推荐您开通VIP极速下载，是否继续下载？', {
+                            icon: 2,
+                            btn: ['继续下载', '开通VIP'] //按钮
+                        }, function () {
+                            window.open(down_info.link);
+                        }, function () {
+                            vip();
+                        });
+                    }
+                    //未登录
+                } else {
+                    layer.confirm('未登录下载非常慢，推荐您登录下载，是否继续下载？', {
+                        icon: 3,
+                        btn: ['继续下载', '登录下载'] //按钮
+                    }, function () {
+                        window.open(down_info.link);
+                    }, function () {
+                        login();
+                    });
+                }
+            }
+
+            updateTimeInfo();
+
+            setInterval("updateTimeInfo()", 1000);
+        </script>
+    </div>
+</main>
+</body>
+
+</html>
