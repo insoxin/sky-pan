@@ -37,5 +37,4 @@ class Home extends Controller
         return $policy;
     }
 
-
 }

@@ -147,3 +147,52 @@ function getShareUrl($code): string
 {
     return url('index/share',['code' => $code],false,true);
 }
+
+function friendDate($time, $format='Y-m-d'){
+    if (!$time)
+        return '';
+
+    $nowtime = time();
+    if ($time > $nowtime){
+        return date($format, $time);
+    }
+
+    $Y = date('Y', $time);//年份
+    $z = date('z', $time);//当前的第几天
+    $nowY = date('Y', $nowtime);
+    $nowz = date('z', $nowtime);
+
+    if ($z > $nowz){
+        $nowz += 365;
+    }
+    $diffz = $nowz - $z;//获取差异天
+    $diffs = $nowtime - $time;//获取差异秒
+
+    if ($diffz >= 365){
+        return ($nowY-$Y).'年前';
+    } elseif ($diffz >= 30){
+        return floor($diffz / 30).'个月前';
+    } elseif ($diffz >= 7){
+        return floor($diffz / 7).'个星期前';
+    } elseif ($diffz >= 1){
+        return $diffz.'天前';
+    } elseif ($diffs >= 3600) {
+        return floor($diffs / 3600).'小时前';
+    } elseif ($diffs >= 300) {
+        return floor($diffs / 60).'分钟前';
+    } else {//五分钟内
+        return '刚刚'.$diffs.'秒';
+    }
+}
+
+function getSafeNickname($name): string
+{
+    if(mb_strlen($name) <= 2){
+        $name = mb_substr($name,0,1) . '*';
+    }else{
+        $len = mb_strlen($name);
+        $sub_len = $len - 2;
+        $name = mb_substr($name,0,1) . '*' . str_repeat('*',$sub_len) .  mb_substr($name,$len - 1,1);
+    }
+    return $name;
+}

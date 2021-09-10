@@ -1,0 +1,385 @@
+.cb {
+    width: 0;
+    height: 0;
+    clear: both
+}
+
+.clearfix {
+    zoom: 1
+}
+
+.footer {
+    text-align: center;
+    width: 100%;
+    overflow: hidden;
+    margin: 0 auto;
+    position: relative;
+    z-index: 0;
+    padding: 10px 0
+}
+
+.footer .footer-txt {
+    width: 100%;
+    height: 30px;
+    clear: both;
+    color: #424e67;
+    line-height: 30px;
+    position: absolute;
+    left: 0;
+    bottom: 13px;
+    font-size: 12px
+}
+
+.b-lnk-gy,
+.b-lnk-gy:link,
+.b-lnk-gy:visited {
+    font-size: 12px;
+    color: #424e67;
+    margin: 0 5px
+}
+
+.init-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 20
+}
+
+.init-footer .b-lnk-gy,
+.init-footer .b-lnk-gy:link,
+.init-footer .b-lnk-gy:visited,
+.init-footer .footer .footer-txt {
+    color: #999;
+    margin: 0 5px
+}
+
+.cb {
+    clear: both
+}
+
+.verify-form .g-button-blue-large {
+    border-radius: 4px;
+    margin-left: 14px;
+    height: 34px;
+    line-height: 34px
+}
+
+.verify-form .submit-a {
+    position: relative;
+    display: inline-block;
+    font-size: 14px;
+    border: 1px solid #09AAFF;
+    background: #09AAFF;
+    padding-left: 10px;
+    text-decoration: none;
+    vertical-align: top;
+    white-space: nowrap;
+    outline: 0
+}
+
+.verify-form .submit-a .g-button-right {
+    padding-right: 10px
+}
+
+.submit-a.g-button-blue-large:hover {
+    border: 1px solid #0098EA;
+    background: #0098EA
+}
+
+.verify-form .submit-a:hover {
+    color: #0098EA !important;
+    border: 1px solid #0098EA;
+    background: #0098EA
+}
+
+.verify-form .submit-a .text {
+    width: auto;
+    color: #fff;
+    display: inline-block;
+    font-size: 13px;
+    margin-left: 2px;
+    margin-right: 2px;
+    vertical-align: baseline;
+    height: 32px;
+    line-height: 32px
+}
+
+.verify-form .g-button-blue-large .g-button-right {
+    height: 34px;
+    line-height: 34px
+}
+
+.acss-header {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -240px 0 0 -230px;
+    z-index: 1;
+    *left: 0;
+    *margin-left: 0
+}
+
+.acss-header .CMxQsC {
+    background: url(https://pan.baidu.com/sns/box-static/disk-share/widget/pageModule/init/image/share_tit_bg_5855301.png?t=1611893514972) no-repeat;
+    background-size: 100% 100%;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px
+}
+
+.verify-form {
+    margin: 0 auto;
+    width: 455px;
+    text-align: left;
+    font-size: 14px;
+    position: relative;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(171, 198, 235, .3)
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden
+}
+
+.avatar,
+.verify-property,
+.LxgeIt {
+    float: left
+}
+
+.LxgeIt {
+    width: 280px;
+    border: 1px solid #f2f2f2;
+    padding: 8px 10px;
+    height: 19px;
+    line-height: 19px;
+    border-radius: 4px
+}
+
+.QKKaIE {
+    width: 280px
+}
+
+.LIztsC {
+    width: 80px;
+    border: 1px solid #ccc;
+    padding: 8px 10px;
+    height: 19px;
+    line-height: 14px;
+    border-radius: 4px
+}
+
+.acss_banner {
+    width: 212px;
+    height: 55px;
+    margin: 0 auto 30px
+}
+
+.verify-property {
+    width: 275px;
+    color: #fff;
+    margin: 10px 0;
+    overflow: hidden
+}
+
+.verify-property .username {
+    _display: inline;
+    display: inline-block;
+    font-size: 16px;
+    font-family: PingFangSC-Semibold
+}
+
+.verify-input {
+    float: left;
+    width: 400px
+}
+
+.ac-close {
+    padding: 20px 30px 40px
+}
+
+.ac-close .pickcode {
+    display: none
+}
+
+.verify-input .pickpw {
+    padding: 0 0 15px
+}
+
+.verify-input .pickcode {
+    margin: 10px 0 0
+}
+
+.verify-input dt {
+    padding: 0 0 5px;
+    margin: 20px 0 10px;
+    color: #666;
+    font-weight: 500
+}
+
+.avatar {
+    padding: 15px 10px 15px 25px
+}
+
+.photo-frame {
+    padding: 3px;
+    background: #9ADAF2
+}
+
+.photo-frame,
+.photo-frame>span {
+    width: 44px;
+    height: 44px;
+    overflow: hidden;
+    border-radius: 60px
+}
+
+.photo-frame span {
+    line-height: 1;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center
+}
+
+.photo-frame img {
+    width: 100%;
+    vertical-align: middle
+}
+
+.verify-user-avatar .v-icon em {
+    width: 19px;
+    height: 19px;
+    background: url(https://pan.baidu.com/sns/box-static/disk-share/widget/pageModule/init/image/p-vip-icon-all_be8d2cb.png?t=1611893514972) no-repeat;
+    display: block
+}
+
+.verify-user-avatar .unvip-icon em {
+    background-position: -1px 0
+}
+
+.verify-user-avatar {
+    display: inline-block;
+    vertical-align: middle
+}
+
+.verify-input .input-area {
+    position: relative
+}
+
+.QKKaIE:focus {
+    outline: 0
+}
+
+.change-code {
+    line-height: 37px;
+    padding-left: 10px;
+    display: inline-block;
+    vertical-align: top;
+    font-size: 12px;
+    color: #438aee
+}
+
+#passCuowu {
+    color: #ff5858;
+    position: absolute;
+    top: 205px;
+    left: 30px;
+    font-size: 12px
+}
+
+#gsxl4Am4 {
+    vertical-align: top;
+    height: 35px;
+    border: 1px solid #CCC;
+    width: 91px;
+    margin: 0 5px;
+    border-radius: 4px
+}
+
+.init-docs .cloud-bg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 400px
+}
+
+.init-docs .cloud-bg .bg1 {
+    position: absolute;
+    width: 100%;
+    height: 400px;
+    background: url(https://pan.baidu.com/sns/box-static/disk-share/widget/pageModule/init/image/footer-cloud_0e0a657.png?t=1611893514972);
+    background-repeat: repeat-x;
+    background-position: 0 bottom;
+    bottom: 0
+}
+
+.verify-property .verify-user {
+    height: 30px;
+    line-height: 30px;
+    overflow: hidden
+}
+
+@font-face {
+    font-family: yunfont;
+    src: url(https://pan.baidu.com/box-static/disk-header/header/css/fonts/yunfont.eot?t=1561549926223?fo24w5);
+    src: url(https://pan.baidu.com/box-static/disk-header/header/css/fonts/yunfont.eot?t=1561549926223?fo24w5#iefix) format("embedded-opentype"), url(https://pan.baidu.com/box-static/disk-header/header/css/fonts/yunfont.ttf?t=1561549926223?fo24w5) format("truetype"), url(https://pan.baidu.com/box-static/disk-header/header/css/fonts/yunfont.woff?t=1561549926223?fo24w5) format("woff"), url(https://pan.baidu.com/box-static/disk-header/header/css/fonts/yunfont.svg?t=1561549926223?fo24w5#yunfont) format("svg");
+    font-weight: 400;
+    font-style: normal
+}
+
+.verify-btn {
+    float: right;
+    margin: 30px 32px 0 0
+}
+
+.verify-btn .verify-friend {
+    width: 62px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    background: #fff;
+    font-size: 12px;
+    color: #06A7FF;
+    border-radius: 3.6px;
+    cursor: pointer
+}
+
+.verify-property .author-desc {
+    display: -webkit-box;
+    word-break: break-all;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    color: #E1F5FF;
+    overflow: hidden;
+    font-size: 10px;
+    width: 248px;
+    font-family: PingFangSC-Regular
+}
+
+.verify-desc-protect-share {
+    height: 12px;
+    position: absolute;
+    top: 130px;
+    right: 35px
+}
+
+body,
+html {
+    width: 100%;
+}
+
+.cb {
+    clear: both
+}
+
+.cb {
+    clear: both
+}

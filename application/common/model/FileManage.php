@@ -142,15 +142,74 @@ class FileManage
         if($folder_id != 0){
             $parent_ids  = self::getUserDirParents($uid,$folder_id);
             if(!empty($parent_ids)){
-                $data['parent'] = Folders::where('id','in',$parent_ids)
+                $folder_parents = Folders::where('id','in',$parent_ids)
                     ->where('uid',$uid)
                     ->field('id,folder_name')
                     ->order('id desc')
                     ->select()->toArray();
+
+                $folder_parents = array_reverse($folder_parents);
+                $data['parent'] = $folder_parents;
             }
         }
 
         $data['total'] = $files_count + $folder_count;
+
+        return $data;
+    }
+
+
+    public static function ShareListFile($folder_id,$uid){
+        //获取当前根目录
+        $folder_id = self::getFolderPid($folder_id,$uid);
+
+        $maps = [
+            ['uid','=',$uid],
+            ['parent_folder','=',$folder_id],
+            ['delete_time','null','']
+        ];
+
+        $files_sql = db('stores')
+            ->where($maps)
+            ->field('id,uid,shares_id,origin_name as name,ext,size,update_time')
+            ->fetchSql(true)
+            ->select();
+
+        $list = db('folders')
+            ->where($maps)
+            ->field('id,uid,shares_id,folder_name as name,ext,size,update_time')
+            ->union($files_sql,true)
+            ->select();
+
+
+        $share_ids = array_column($list,'shares_id');
+        // 查询分享代码
+        $share_list = Shares::where('id','in',$share_ids)->column('code','id');
+
+        // 返回数据
+        $data = [];
+
+        foreach ($list as $item){
+            $type = $item['ext'] == 755 ? 'dir' : $item['ext'];
+
+            $files = [
+                'id' => $item['id'],
+                'icon' => getFileIcon($type,'index'),
+                'name' => $item['name'],
+                'size' => empty($item['size']) ? '-' : countSize($item['size']),
+                'time' => friendDate($item['update_time'])
+            ];
+
+            $code = $share_list[$item['shares_id']] ?? '';
+
+            if(empty($code)){
+                $files['url'] = 'javascript:;';
+            }else{
+                $files['url'] = getShareUrl($code);
+            }
+
+            $data[] = $files;
+        }
 
         return $data;
     }

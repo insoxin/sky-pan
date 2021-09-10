@@ -9,7 +9,11 @@ class UserLoginCheck
     protected $except = [
         'User/login',
         'User/register',
-        'Index/index'
+        'Index/index',
+        'Index/share',
+        'Index/report',
+        'Index/share_pass',
+        'Index/qrcode'
     ];
 
     public function handle($request, \Closure $next){

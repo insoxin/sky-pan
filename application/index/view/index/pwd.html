@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <title>请输入提取码 - {$Think.config.basic.site_title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+    <meta content="{$Think.config.basic.site_keywords}" name="keywords">
+    <meta content="{$Think.config.basic.site_desc}" name="description">
+    <link href="__STATIC__/css/t0.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/pass/base.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/pass/pc.css">
+    <script type="text/javascript" src="__STATIC__/js/jquery.js"></script>
+</head>
+<body style="background-color: #eef2f6;">
+<div class="top">
+    <div class="d1">
+        <div class="d11" style="background-image: url({$Think.config.basic.site_logo});height: 18px; background-repeat: no-repeat; background-position: 15px 5px;">
+            <a href="{:url('index/index')}" class="d7">&nbsp;</a></div>
+        <div class="d12">
+            <a href="{:url('user/login')}">登录</a>
+        </div>
+    </div>
+</div>
+<div class="pc bgimg"></div>
+<div class="docs init-docs">
+    <div class="acss-header" id="mweul5Yl">
+        <div class="acss_banner"></div>
+        <div class="verify-form">
+            <div class="clearfix">
+                <div class="CMxQsC">
+                    <div class="avatar">
+                        <div class="photo-frame">
+                                <span class="radius-3">
+                                    <img src="//static.skpan.cn/avatar/fa8c6a353520fcfcebdc65323bec7ff8.jpeg" width="44">
+                                    <span class="cert-info"></span>
+                                </span>
+                        </div>
+                    </div>
+                    <div class="verify-property">
+                        <div class="verify-user">
+                            <div class="username">A********品</div>
+                        </div>
+                        <div class="author-desc">暂无签名</div>
+                    </div>
+                    <div class="cb"></div>
+                </div>
+                <div class="verify-input ac-close clearfix">
+                    <dl class="pickpw clearfix">
+                        <dt><strong style="font-size: 15px;">请输入提取码：</strong></dt>
+                        <dd class="clearfix input-area">
+                            <input type="hidden" id="urlId" value="{$share_id}">
+                            <input class="QKKaIE LxgeIt" id="accessCode" tabindex="1" type="text">
+                            <div id="submitBtn">
+                                <a class="submit-a g-button-blue-large" href="javascript:;" title="提取文件">
+                                        <span class="g-button-right">
+                                            <span class="text" style="width: auto;">提取文件</span>
+                                        </span>
+                                </a>
+                            </div>
+                        </dd>
+                    </dl>
+                    <dl class="pickcode clearfix">
+                        <dt>
+                            验证码：</dt>
+                        <dd class="clearfix">
+                            <input class="LIztsC QKKaIE" id="wu4Lbl" tabindex="2" type="text">
+                            <img alt="验证码" id="gsxl4Am4"><a class="change-code" href="javascript:;">换一张</a>
+                        </dd>
+                    </dl>
+                    <div class="verify-desc-protect-share">
+                    </div>
+                </div>
+            </div>
+            <div id="passCuowu" style="display: block;"></div>
+        </div>
+    </div>
+    <div class="cloud-bg">
+        <div class="bg1"></div>
+        <div class="bg2"></div>
+        <div class="bg3"></div>
+    </div>
+    <div class="init-footer">
+        <div class="footer" id="footer" style="height: 40px;">
+            <div class="footer-txt">
+
+                © 2018-2021 {$Think.config.basic.site_title} | 版权声明：不得利用云存储发布，存储，淫秽，诈骗等违法信息。
+                <a href="{:url('index/report')}?share_id={$share_id}" target="_blank">侵权/违法投诉</a>或者投诉邮箱：{$Think.config.basic.site_email}
+
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="__STATIC__/pass/api.js"></script>
+</body>
+</html>

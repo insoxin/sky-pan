@@ -1,0 +1,96 @@
+.rets {
+    text-align: center;
+    font-size: 14px;
+    color: #aaa;
+    padding-top: 6px;
+}
+
+.retspan {
+    margin-left: 18px;
+    opacity: .5;
+}
+
+.tet {
+    margin-bottom: 28px;
+    line-height: 34px;
+    padding: 8px;
+}
+
+.teta {
+    padding: 5px;
+    background: #de5823;
+    color: #fff;
+    border-radius: 3px 0 0 3px;
+}
+
+.tetb {
+    background: #666;
+    margin-right: 15px;
+    border-radius: 0 3px 3px 0;
+}
+
+.nameh {
+    font-weight: 700;
+    float: left;
+    width: 523px;
+}
+
+.sizeh {
+    font-weight: 700;
+    float: left;
+    width: 280px;
+    text-align: center;
+}
+
+.timeh {
+    font-weight: 700;
+    float: left;
+    width: 150px;
+    text-align: center;
+}
+
+#infos {
+    clear: both;
+}
+
+#ready {
+    clear: both;
+    line-height: 43px;
+    padding: 0 10px;
+    text-align: center;
+}
+
+#name {
+    float: left;
+    width: 523px;
+    text-align: left;
+}
+
+#size {
+    float: left;
+    width: 280px;
+}
+
+#time {
+    float: left;
+    width: 150px;
+}
+
+.nosha {
+    clear: both;
+    text-align: center;
+}
+
+#infomores {
+    clear: both;
+    padding-top: 38px;
+}
+
+.s_ad {
+    color: #fff;
+    background: #a4df70;
+    font-size: 12px;
+    margin-left: 5px;
+    padding: 1px 2px;
+    border-radius: 3px;
+}

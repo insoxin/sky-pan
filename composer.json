@@ -20,7 +20,9 @@
         "topthink/framework": "5.1.*",
       "ext-json": "*",
         "topthink/think-captcha": "2.0.*",
-      "ext-fileinfo": "*"
+      "ext-fileinfo": "*",
+        "aferrandini/phpqrcode": "^1.0",
+      "ext-mbstring": "*"
     },
     "autoload": {
         "psr-4": {

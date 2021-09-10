@@ -26,12 +26,6 @@ class Shares extends Model
 
         $pwd = getRndSharePwd();
 
-        if(!$type){
-            $status = 0;
-        }else{
-            $status = 1;
-        }
-
         $data = [
             'uid' => $uid,
             'source_id' => $source,
@@ -39,7 +33,7 @@ class Shares extends Model
             'speed' => 0,
             'code' => $code,
             'pwd' => $pwd,
-            'pwd_status' => $status
+            'pwd_status' => 0
         ];
 
         return self::insertGetId($data);

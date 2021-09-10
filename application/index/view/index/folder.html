@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+    <title>{$info.folder_name} - {$Think.config.basic.site_title}</title>
+    <link href="__STATIC__/pan/t0.css" rel="stylesheet" type="text/css">
+    <link href="__STATIC__/pan/t1.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div class="top">
+    <div class="d1">
+        <div class="d11" style="background-image: url({$Think.config.basic.site_logo});height: 18px; background-repeat: no-repeat; background-position: 15px 5px;">
+            <a href="/" class="d7">&nbsp;</a>
+        </div>
+        <div class="d12">
+            {eq name="$is_login" value="1"}
+            <a href="{:url('user/index')}">前往我的网盘</a>
+            {else/}
+            <a href="{:url('user/login')}">登录</a>
+            {/eq}
+        </div>
+    </div>
+</div>
+<div class="pc bgimg"></div>
+
+<div class="d" id="info">
+    <div class="b">
+        <div id="filename">{$info.folder_name}</div>
+        <div class="rets">
+            <span class="mt2" style="padding-right: 3px;">分享者:</span>
+            <span style="color:#000">{$info.username}</span>
+            <span style="padding-left: 20px;">{$info.create_time|date="Y-m-d H:i"}</span>
+            <a href="{:url('index/report')}?share_id={$share_id}" target="_blank"><span class="retspan">文件投诉</span></a>
+        </div>
+    </div>
+
+    {eq name="$info.is_desc" value="1"}
+    <div class="tet">
+        <span class="teta">描</span><span class="teta tetb">述</span>
+        <span id="miaoshu">{$info.desc}</span>
+    </div>
+    {/eq}
+
+    <div class="d2">
+        <div class="nameh">文件名</div>
+        <div class="sizeh">大小</div>
+        <div class="timeh">时间</div>
+    </div>
+    <div id="infos">
+        {volist name="$share_list" id="vo"}
+        <div id="ready">
+            <div id="name">
+                &nbsp;<img src="{$vo.icon}" align="absmiddle" border="0">&nbsp;
+                <a href="{$vo.url}" target="_blank">{$vo.name}</a>
+            </div>
+            <div id="size">{$vo.size}</div>
+            <div id="time">{$vo.time}</div>
+        </div>
+        {/volist}
+    </div>
+</div>
+
+<div class="n_bot" style="margin-top: 10%;">
+    <div class="wap-down">手机可扫描二维码下载</div>
+    <div id="code">
+        <img src="{:url('index/qrcode')}?url={$url}" style="width: 218px;height: 218px;">
+    </div>
+    <div class="foot_info">
+        <div class="shenmin">
+            谨防刷单兼职，网贷，金融，裸聊敲诈，赌博等诈骗，请立即举报
+        </div>
+        <div class="foot_copy">版权声明：不得利用云存储发布，存储，淫秽，诈骗等违法信息。
+            <a href="{:url('index/report')}?share_id={$share_id}" target="_blank">侵权/违法投诉</a><br>或者投诉邮箱：{$Think.config.basic.site_email}</div>
+        © 2021 <a href="/">{$Think.config.basic.site_title}</a>
+    </div>
+</div>
+</body>
+
+</html>

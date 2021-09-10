@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <title>{$info.folder_name} - {$Think.config.basic.site_title}</title>
+    <link href="__STATIC__/pan/t0.css" rel="stylesheet" type="text/css">
+    <link href="__STATIC__/pan/t2.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div class="top">
+    <div class="d1">
+        <div class="d11" style="background-image: url({$Think.config.basic.site_logo});height: 18px; background-repeat: no-repeat; background-position: 15px 5px;">
+            <a href="/" class="d7">&nbsp;</a>
+        </div>
+        <div class="d12">
+            {eq name="$is_login" value="1"}
+            <a href="{:url('user/index')}">前往我的网盘</a>
+            {else/}
+            <a href="{:url('user/login')}">登录</a>
+            {/eq}
+        </div>
+    </div>
+</div>
+<div class="pc bgimg"></div>
+<div class="md" id="info">
+
+    <div class="tet">
+        <div class="md2" id="filename">{$info.folder_name}</div>
+        <div class="mf">
+            <span class="mt2">分享者:</span>{$info.username}
+            <span class="mt2"></span>{$info.create_time|date="Y-m-d"}
+            <span class="mt2">
+                <a href="{:url('index/report')}?share_id={$share_id}" target="_blank">举报文件</a>
+            </span>
+        </div>
+
+        {eq name="$info.is_desc" value="1"}
+        <span class="teta">描</span><span class="teta tetb">述</span>
+        {$info.desc}
+        {/eq}
+    </div>
+
+    <div class="tbale">
+        <div>文件名</div>
+        <div id="infos">
+            {volist name="$share_list" id="vo"}
+            <div id="ready">
+                <div class="mbx">
+                    <a href={$vo.url}" target="_blank" class="mlink">
+                        <img src="{$vo.icon}" align="absmiddle" border="0">
+                        &nbsp; {$vo.name}
+                        <div class="mmr">
+                            <span>&nbsp;{$vo.time}</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {/volist}
+        </div>
+    </div>
+</div>
+
+
+<div class="foot_info" style="color:#939393">© 2018-2021 {$Think.config.basic.site_title}</div>
+
+
+</body>
+</html>

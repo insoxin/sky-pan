@@ -69,6 +69,16 @@
             <br>
 
             <div class="layui-form-item">
+                <label class="layui-form-label">站点邮箱</label>
+                <div class="layui-input-block" style="max-width: 800px;">
+                    <input type="text" name="site_email" value="{$option.site_email}" required  lay-verify="required" autocomplete="off" class="layui-input">
+                    <div class="layui-form-mid layui-word-aux">站点的用户投诉举报邮箱</div>
+                </div>
+            </div>
+
+            <br>
+
+            <div class="layui-form-item">
                 <div class="layui-input-block">
                     <button class="layui-btn layui-btn-normal" lay-submit lay-filter="save">保存设置</button>
                 </div>

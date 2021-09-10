@@ -14,4 +14,7 @@ use think\facade\Route;
 if(ENTRY_MODULE == 'index'){
     Route::any('/','index/index');
     Route::any('/s/:code','index/share');
+    Route::any('/file_share/file_report','index/report');
+    Route::any('/file_share/pass','index/share_pass');
+    Route::any('/file_share/qrcode','index/qrcode');
 }
