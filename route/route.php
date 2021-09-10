@@ -13,4 +13,5 @@ use think\facade\Route;
 
 if(ENTRY_MODULE == 'index'){
     Route::any('/','index/index');
+    Route::any('/s/:code','index/share');
 }

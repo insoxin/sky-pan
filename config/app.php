@@ -17,7 +17,7 @@ return [
     // 应用名称
     'app_name'               => 'SkyPan',
     // 应用地址
-    'app_host'               => 'https://gitee.com/tobugnet/sky-pan.git',
+    'app_host'               => '',
     // 应用调试模式
     'app_debug'              => true,
     // 应用Trace

@@ -9,5 +9,8 @@ class Index extends Home
     {
         return $this->fetch();
     }
-    
+
+    public function share(){
+        return $this->fetch();
+    }
 }

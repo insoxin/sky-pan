@@ -5,7 +5,9 @@ namespace app\index\controller;
 use app\common\controller\Home;
 use app\common\model\FileManage;
 use app\common\model\Folders;
+use app\common\model\Shares;
 use app\common\model\Stores;
+use think\Exception;
 
 class File extends Home
 {
@@ -37,7 +39,51 @@ class File extends Home
 
         try {
             $dir_id = FileManage::createFolder($data['folder_id'],$data['folder_name'],$data['folder_miaoshu'],$this->userInfo['id']);
+
             return json(['status' => 1,'msg' => '新建文件夹成功~','data' => $dir_id]);
+        }catch (\Throwable $e){
+            return json(['status' => 0,'msg' => $e->getMessage()]);
+        }
+    }
+
+    public function rename(){
+        $id = input('get.id');
+        $file_name = input('get.file_name');
+        $is_folder = input('get.is_folder');
+
+        $is_folder = intval($is_folder);
+
+        try {
+            if($is_folder){
+                $result = $this->validate(['file_name' => $file_name],[
+                    'file_name' => 'require|chsDash|max:255',
+                ],[
+                    'file_name.chsDash' => '文件(夹)名只能是汉字、字母、数字和下划线_及破折号-'
+                ]);
+
+                $info = Folders::where('id',$id)->where('uid',$this->userInfo['id'])->find();
+                if(empty($info)){
+                    throw new Exception('文件数据不存在');
+                }
+                $info['folder_name'] = $file_name;
+                $info->save();
+            }else{
+                $result = $this->validate(['file_name' => $file_name],['file_name' => 'require|max:255',]);
+
+                $info = Stores::where('id',$id)->where('uid',$this->userInfo['id'])->find();
+                if(empty($info)){
+                    throw new Exception('文件数据不存在');
+                }
+                $info['origin_name'] = $file_name;
+                $info->save();
+            }
+
+            if($result !== true){
+                throw new Exception($result);
+            }
+
+            return json(['status' => 1,'msg' => '重命名成功']);
+
         }catch (\Throwable $e){
             return json(['status' => 0,'msg' => $e->getMessage()]);
         }
@@ -72,6 +118,14 @@ class File extends Home
         }
 
         return json(['status' => 1,'msg' => '删除成功']);
+    }
+
+    public function edit_folder(){
+
+    }
+
+    public function edit_file(){
+
     }
 
     public function delete_all(){
@@ -179,4 +233,47 @@ class File extends Home
 
         return json(['status' => 1,'msg' => '成功移动 '.count($success).' 个文件(夹)~','data' => $success]);
     }
+
+    public function set_share_pass(){
+        $id = input('get.id');
+        $pass = input('get.pass');
+        $is_folder = input('get.is_folder');
+        $pass_status = input('get.pass_status');
+
+        $is_folder = intval($is_folder);
+        $pass_status = intval($pass_status);
+
+        $uid = $this->userInfo['id'];
+
+        if($is_folder){
+            $info = Folders::where('id',$id)->where('uid',$uid)->find();
+        }else{
+            $info = Stores::where('id',$id)->where('uid',$uid)->find();
+        }
+
+        if(empty($info)){
+            return json(['status' => 0,'msg' => '文件数据不存在']);
+        }
+
+        $result = $this->validate(['pass' => $pass],['pass|提取码' => 'require|alphaNum|length:4,6'],[
+            'pass.require' => '提取码必须填写',
+            'pass.alphaNum' => '提取码只能为字母或者数字',
+            'pass.length' => '提取码长度只能为 4 ~ 6 位字母或者数字'
+        ]);
+
+        if($result !== true) return json(['status' => 0,'msg' => $result]);
+
+        Shares::updateShare($info['shares_id'],[
+            'pwd' => $pass,
+            'pwd_status' => $pass_status
+        ]);
+
+        return json(['status' => 1,'msg' => '设置提取码成功']);
+
+    }
+
+    public function user_download(){
+
+    }
+
 }

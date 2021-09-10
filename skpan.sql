@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version: 5.5.29)
-# Date: 2021-09-10 22:52:38
+# Date: 2021-09-11 02:07:14
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
@@ -15,8 +15,6 @@ CREATE TABLE `sk_folders` (
   `shares_id` int(11) NOT NULL DEFAULT '0' COMMENT '分享id',
   `folder_name` text NOT NULL COMMENT '目录名称',
   `parent_folder` int(11) NOT NULL DEFAULT '0' COMMENT '上级目录',
-  `position` text NOT NULL COMMENT '路径',
-  `position_absolute` text NOT NULL COMMENT '绝对路径',
   `desc` text COMMENT '描述',
   `size` int(11) NOT NULL DEFAULT '0',
   `ext` int(11) NOT NULL DEFAULT '755',
@@ -33,7 +31,7 @@ CREATE TABLE `sk_folders` (
 #
 
 /*!40000 ALTER TABLE `sk_folders` DISABLE KEYS */;
-INSERT INTO `sk_folders` VALUES (1,4,0,'根目录',0,'.','/',NULL,0,755,0,0,1631186682,0,NULL),(8,5,0,'根目录',0,'.','/',NULL,0,755,0,0,1631210019,0,NULL),(12,5,0,'ddd',8,'','','',0,755,0,0,1631283938,1631283938,NULL);
+INSERT INTO `sk_folders` VALUES (1,4,0,'根目录',0,NULL,0,755,0,0,1631186682,0,NULL),(8,5,0,'根目录',0,NULL,0,755,0,0,1631210019,0,NULL),(13,5,1,'源码文件AAA',8,'啊啊啊啊',0,755,0,0,1631292295,1631297177,NULL);
 /*!40000 ALTER TABLE `sk_folders` ENABLE KEYS */;
 
 #
@@ -110,15 +108,23 @@ INSERT INTO `sk_setting` VALUES (1,'site_name','闪客网盘 | 分享赚钱,让�
 
 DROP TABLE IF EXISTS `sk_shares`;
 CREATE TABLE `sk_shares` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='分享数据';
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NOT NULL DEFAULT '0' COMMENT '用户ID',
+  `source_id` int(11) NOT NULL DEFAULT '0' COMMENT '文件 / 目录ID',
+  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0 文件 1目录',
+  `speed` tinyint(1) NOT NULL DEFAULT '0' COMMENT '限速开关',
+  `code` varchar(10) NOT NULL DEFAULT '' COMMENT '短网址代码',
+  `pwd` varchar(8) DEFAULT NULL COMMENT '分享密码',
+  `pwd_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '密码状态',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='分享表';
 
 #
 # Data for table "sk_shares"
 #
 
 /*!40000 ALTER TABLE `sk_shares` DISABLE KEYS */;
+INSERT INTO `sk_shares` VALUES (1,5,13,1,0,'QVNbueubNW','fmrw',1),(4,5,54,0,0,'aYbA3iNCSk','kHIb',0),(5,5,55,0,0,'JJBjIvUM80','',0);
 /*!40000 ALTER TABLE `sk_shares` ENABLE KEYS */;
 
 #
@@ -153,7 +159,7 @@ CREATE TABLE `sk_stores` (
 #
 
 /*!40000 ALTER TABLE `sk_stores` DISABLE KEYS */;
-INSERT INTO `sk_stores` VALUES (3,4,0,'app.ico','20210909\\4\\file_613a2833432371631201331.ico',114595,'','image/x-icon','ico',6,1,0,0,'',NULL,1631201331,1631201331,NULL),(4,4,0,'QQBrowser.exe','20210910\\4\\file_613a489f70caf1631209631.exe',1288264,'','application/x-dosexec','exe',7,1,0,0,'',NULL,1631209631,1631209631,NULL),(29,5,0,'4.ico','20210910\\5\\file_613a4a5a41ac71631210074.ico',22486,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210074,1631210074,NULL),(30,5,0,'5.ico','20210910\\5\\file_613a4a5a5572f1631210074.ico',150146,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210074,1631210074,NULL),(31,5,0,'6.ico','20210910\\5\\file_613a4a5a66c871631210074.ico',298566,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210074,1631210074,NULL),(32,5,0,'8.ico','20210910\\5\\file_613a4a5a785c71631210074.ico',139094,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210074,1631210074,NULL),(33,5,0,'10.ico','20210910\\5\\file_613a4a5a897371631210074.ico',139094,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210074,1631210074,NULL),(34,5,0,'11.ico','20210910\\5\\file_613a4a5a9cbcf1631210074.ico',70124,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210074,1631210074,NULL),(35,5,0,'10102.ico','20210910\\5\\file_613a4a5aaf8971631210074.ico',9662,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210074,1631210074,NULL),(36,5,0,'10102.png','20210910\\5\\file_613a4a5ac15bf1631210074.png',6272,'','image/png','png',9,1,0,0,'',NULL,1631210074,1631210074,NULL),(37,5,0,'10130.ico','20210910\\5\\file_613a4a5ad42871631210074.ico',9662,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210074,1631210074,NULL),(38,5,0,'10130.png','20210910\\5\\file_613a4a5ae677f1631210074.png',6218,'','image/png','png',9,1,0,0,'',NULL,1631210074,1631210074,NULL),(39,5,0,'11004.ico','20210910\\5\\file_613a4a5b052071631210075.ico',9662,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210075,1631210075,NULL),(40,5,0,'11004.png','20210910\\5\\file_613a4a5b182b71631210075.png',7246,'','image/png','png',9,1,0,0,'',NULL,1631210075,1631210075,NULL),(41,5,0,'11701.ico','20210910\\5\\file_613a4a5b28c571631210075.ico',9662,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210075,1631210075,NULL),(42,5,0,'11701.png','20210910\\5\\file_613a4a5b3b91f1631210075.png',5820,'','image/png','png',9,1,0,0,'',NULL,1631210075,1631210075,NULL),(43,5,0,'11889.ico','20210910\\5\\file_613a4a5b4e1ff1631210075.ico',9662,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210075,1631210075,NULL),(44,5,0,'11889.png','20210910\\5\\file_613a4a5b60adf1631210075.png',5894,'','image/png','png',9,1,0,0,'',NULL,1631210075,1631210075,NULL),(45,5,0,'13216.ico','20210910\\5\\file_613a4a5b728071631210075.ico',9662,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210075,1631210075,NULL),(46,5,0,'13216.png','20210910\\5\\file_613a4a5b858b71631210075.png',25338,'','image/png','png',9,1,0,0,'',NULL,1631210075,1631210075,NULL),(47,5,0,'15700.ico','20210910\\5\\file_613a4a5b989671631210075.ico',9662,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210075,1631210075,NULL),(48,5,0,'15700.png','20210910\\5\\file_613a4a5bab62f1631210075.png',4942,'','image/png','png',9,1,0,0,'',NULL,1631210075,1631210075,NULL),(49,5,0,'17041.ico','20210910\\5\\file_613a4a5bbeeaf1631210075.ico',9662,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210075,1631210075,NULL),(50,5,0,'17041.png','20210910\\5\\file_613a4a5bcf07f1631210075.png',4837,'','image/png','png',9,1,0,0,'',NULL,1631210075,1631210075,NULL);
+INSERT INTO `sk_stores` VALUES (3,4,0,'app.ico','20210909\\4\\file_613a2833432371631201331.ico',114595,'','image/x-icon','ico',6,1,0,0,'',NULL,1631201331,1631201331,NULL),(4,4,0,'QQBrowser.exe','20210910\\4\\file_613a489f70caf1631209631.exe',1288264,'','application/x-dosexec','exe',7,1,0,0,'',NULL,1631209631,1631209631,NULL),(29,5,0,'4.ico','20210910\\5\\file_613a4a5a41ac71631210074.ico',22486,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210074,1631210074,NULL),(30,5,0,'5.ico','20210910\\5\\file_613a4a5a5572f1631210074.ico',150146,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210074,1631210074,NULL),(31,5,0,'6.ico','20210910\\5\\file_613a4a5a66c871631210074.ico',298566,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210074,1631210074,NULL),(32,5,0,'8.ico','20210910\\5\\file_613a4a5a785c71631210074.ico',139094,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210074,1631210074,NULL),(33,5,0,'10.ico','20210910\\5\\file_613a4a5a897371631210074.ico',139094,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210074,1631210074,NULL),(34,5,0,'11.ico','20210910\\5\\file_613a4a5a9cbcf1631210074.ico',70124,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210074,1631210074,NULL),(35,5,0,'10102.ico','20210910\\5\\file_613a4a5aaf8971631210074.ico',9662,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210074,1631210074,NULL),(36,5,0,'10102.png','20210910\\5\\file_613a4a5ac15bf1631210074.png',6272,'','image/png','png',9,1,0,0,'',NULL,1631210074,1631210074,NULL),(37,5,0,'10130.ico','20210910\\5\\file_613a4a5ad42871631210074.ico',9662,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210074,1631210074,NULL),(38,5,0,'10130.png','20210910\\5\\file_613a4a5ae677f1631210074.png',6218,'','image/png','png',9,1,0,0,'',NULL,1631210074,1631210074,NULL),(39,5,0,'11004.ico','20210910\\5\\file_613a4a5b052071631210075.ico',9662,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210075,1631210075,NULL),(40,5,0,'11004.png','20210910\\5\\file_613a4a5b182b71631210075.png',7246,'','image/png','png',9,1,0,0,'',NULL,1631210075,1631210075,NULL),(41,5,0,'11701.ico','20210910\\5\\file_613a4a5b28c571631210075.ico',9662,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210075,1631210075,NULL),(42,5,0,'11701.png','20210910\\5\\file_613a4a5b3b91f1631210075.png',5820,'','image/png','png',9,1,0,0,'',NULL,1631210075,1631210075,NULL),(43,5,0,'11889.ico','20210910\\5\\file_613a4a5b4e1ff1631210075.ico',9662,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210075,1631210075,NULL),(44,5,0,'11889.png','20210910\\5\\file_613a4a5b60adf1631210075.png',5894,'','image/png','png',9,1,0,0,'',NULL,1631210075,1631210075,NULL),(45,5,0,'13216.ico','20210910\\5\\file_613a4a5b728071631210075.ico',9662,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210075,1631210075,NULL),(46,5,0,'13216.png','20210910\\5\\file_613a4a5b858b71631210075.png',25338,'','image/png','png',9,1,0,0,'',NULL,1631210075,1631210075,NULL),(47,5,0,'15700.ico','20210910\\5\\file_613a4a5b989671631210075.ico',9662,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210075,1631210075,NULL),(48,5,0,'15700.png','20210910\\5\\file_613a4a5bab62f1631210075.png',4942,'','image/png','png',9,1,0,0,'',NULL,1631210075,1631210075,NULL),(49,5,0,'17041.ico','20210910\\5\\file_613a4a5bbeeaf1631210075.ico',9662,'','image/x-icon','ico',9,1,0,0,'',NULL,1631210075,1631210075,NULL),(50,5,0,'17041.png','20210910\\5\\file_613a4a5bcf07f1631210075.png',4837,'','image/png','png',9,1,0,0,'',NULL,1631210075,1631210075,NULL),(54,5,4,'bbb.html','20210911\\5\\file_613b92dcc1d2c1631294172.html',4776,'','text/html','html',8,1,0,0,'',NULL,1631294172,1631297169,NULL),(55,5,5,'aaa.html','20210911\\5\\file_613b932f6412c1631294255.html',6417,'','text/html','html',8,1,0,0,'',NULL,1631294255,1631297160,NULL);
 /*!40000 ALTER TABLE `sk_stores` ENABLE KEYS */;
 
 #

@@ -4,6 +4,7 @@ namespace app\index\controller;
 
 use app\common\controller\Home;
 use app\common\model\FileManage;
+use app\common\model\Shares;
 use app\common\model\Stores;
 
 class Upload extends Home
@@ -79,7 +80,11 @@ class Upload extends Home
                 'update_time' => time()
             ];
 
-            Stores::create($data);
+            $file_id = (new Stores)->insertGetId($data);
+
+            $share_id = Shares::addShare($this->userInfo['id'],$file_id,0);
+
+            Stores::where('id',$file_id)->update(['shares_id' => $share_id]);
 
             return json(['code' => 1,'msg' => '文件上传成功']);
 

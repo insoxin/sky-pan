@@ -65,14 +65,14 @@ class FileManage
         $files_sql = db('stores')
             ->where($maps)
             ->where('origin_name','like','%'.$search.'%')
-            ->field('id,shares_id,origin_name as name,ext,size,count_down,count_open,update_time')
+            ->field('id,uid,shares_id,origin_name as name,ext,size,count_down,count_open,update_time')
             ->fetchSql(true)
             ->select();
 
         $list = db('folders')
             ->where($maps)
             ->where('folder_name','like','%'.$search.'%')
-            ->field('id,shares_id,folder_name as name,ext,size,count_down,count_open,update_time')
+            ->field('id,uid,shares_id,folder_name as name,ext,size,count_down,count_open,update_time')
             ->union($files_sql,true)
             ->page($page,$limit)
             ->select();
@@ -110,6 +110,7 @@ class FileManage
                 <div class="gengduo" onclick="clickGengduo(event,'.$item['id'].')">  
                     <span><em class="icon icon-more icon-color" title="更多"></em></span>
                 </div>';
+                $share_info = Shares::getShare($item['uid'],$item['id'],1);
             }else{
                 $file_item['file_name'] = '
                 <img class="file-icon" src="'.getFileIcon($item['ext'],'index').'" />
@@ -117,8 +118,19 @@ class FileManage
                 <div class="gengduo" onclick="clickGengduo(event,'.$item['id'].')">  
                     <span><em class="icon icon-more icon-color" title="更多"></em></span>
                 </div>';
-
+                $share_info = Shares::getShare($item['uid'],$item['id'],0);
                 $file_item['file_size'] = countSize($item['size']);
+            }
+
+            $is_folder = $item['ext'] == 755 ? 1 : 0;
+
+            if(!empty($share_info)){
+                $share_url = getShareUrl($share_info['code']);
+                $file_item['url'] = '<a id="'.$item['id'].'-url" data-id="'.$item['id'].'" data-pass="'.$share_info['pwd'].'"  data-pass-status="'.$share_info['pwd_status'].'" href="'.$share_url.'" target="_blank">'.$share_url.'</a>';
+                if(empty($share_info['pwd']) || $share_info['pwd_status'] == 0){
+                    $share_info['pwd'] = '-';
+                }
+                $file_item['url_pass'] = '<a id="'.$item['id'].'-pass" onclick="if($(\'#'.$item['id'].'-pass\').html() != \'-\'){CopyText($(\'#'.$item['id'].'-pass\').html(),\'复制提取码成功~\')}else{setPass('.$item['id'].',$(\'#t'.$item['id'].'\').html(),'.$is_folder.')}">'.$share_info['pwd'].'</a>';
             }
 
             $data['data'][] = $file_item;
@@ -185,7 +197,7 @@ class FileManage
             ->where('uid',$uid)
             ->where('delete_time','not null')
             ->where('origin_name','like','%'.$search.'%')
-            ->field('id,shares_id,origin_name as name,ext,size,count_down,count_open,update_time')
+            ->field('id,uid,shares_id,origin_name as name,ext,size,count_down,count_open,update_time')
             ->fetchSql(true)
             ->select();
 
@@ -193,7 +205,7 @@ class FileManage
             ->where('uid',$uid)
             ->where('delete_time','not null')
             ->where('folder_name','like','%'.$search.'%')
-            ->field('id,shares_id,folder_name as name,ext,size,count_down,count_open,update_time')
+            ->field('id,uid,shares_id,folder_name as name,ext,size,count_down,count_open,update_time')
             ->union($file_sql,true)
             ->page($page,$limit)
             ->select();
@@ -233,6 +245,7 @@ class FileManage
                 <div class="gengduo" onclick="clickGengduo(event,'.$item['id'].')">  
                     <span><em class="icon icon-more icon-color" title="更多"></em></span>
                 </div>';
+                $share_info = Shares::getShare($item['uid'],$item['id'],1);
             }else{
                 $file_item['file_name'] = '
                 <img class="file-icon" src="'.getFileIcon($item['ext'],'index').'" />
@@ -240,8 +253,19 @@ class FileManage
                 <div class="gengduo" onclick="clickGengduo(event,'.$item['id'].')">  
                     <span><em class="icon icon-more icon-color" title="更多"></em></span>
                 </div>';
-
+                $share_info = Shares::getShare($item['uid'],$item['id'],0);
                 $file_item['file_size'] = countSize($item['size']);
+            }
+
+            $is_folder = $item['ext'] == 755 ? 1 : 0;
+
+            if(!empty($share_info)){
+                $share_url = getShareUrl($share_info['code']);
+                $file_item['url'] = '<a id="'.$item['id'].'-url" data-id="'.$item['id'].'" data-pass="'.$share_info['pwd'].'"  data-pass-status="'.$share_info['pwd_status'].'" href="'.$share_url.'" target="_blank">'.$share_url.'</a>';
+                if(empty($share_info['pwd']) || $share_info['pwd_status'] == 0){
+                    $share_info['pwd'] = '-';
+                }
+                $file_item['url_pass'] = '<a id="'.$item['id'].'-pass" onclick="if($(\'#'.$item['id'].'-pass\').html() != \'-\'){CopyText($(\'#'.$item['id'].'-pass\').html(),\'复制提取码成功~\')}else{setPass('.$item['id'].',$(\'#t'.$item['id'].'\').html(),'.$is_folder.')}">'.$share_info['pwd'].'</a>';
             }
 
             $data['data'][] = $file_item;
@@ -287,7 +311,7 @@ class FileManage
             throw new Exception('文件夹已存在');
         }
 
-        return (new Folders)->insertGetId([
+        $dir_id = (new Folders)->insertGetId([
             'uid' => $uid,
             'folder_name' => $folder_name,
             'parent_folder' => $folder_pid,
@@ -295,6 +319,12 @@ class FileManage
             'create_time' => time(),
             'update_time' => time()
         ]);
+
+        $share_id = Shares::addShare($uid,$dir_id,1);
+
+        (new Folders)->where('id',$dir_id)->update(['shares_id' => $share_id]);
+
+        return $dir_id;
     }
 
     /**

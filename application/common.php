@@ -103,3 +103,47 @@ function getVipRule(){
 
     return $rule_list;
 }
+
+function shortUrl($url){
+
+    $hex = md5($url);
+    $base32 = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    $hexLen = strlen($hex);
+    $subHexLen = $hexLen / 8;
+    $output = [];
+    for( $i = 0; $i < $subHexLen; $i++ ) {
+        $subHex = substr($hex, $i*8, 8);
+        $idx = 0x3FFFFFFF & (1 * hexdec('0x' . $subHex));
+        $out = '';
+        for( $j = 0; $j < 6; $j++ )
+        {
+            $out .= $base32[0x0000003D & $idx];
+            $idx = $idx >> 5;
+        }
+        $output[$i] = $out;
+    }
+
+    $code = array_shift($output);
+
+    $suc = substr(microtime(),2,4);
+
+    foreach (str_split($suc,1) as $k){
+        $code .= substr(str_shuffle($base32),$k,1);
+    }
+
+    return $code;
+}
+
+function getRndSharePwd($len = 4){
+    $string = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    $result = '';
+    for ($i = 0;$i < $len;$i++){
+        $result .= substr(str_shuffle($string),rand(0,strlen($string) - 1),1);
+    }
+    return $result;
+}
+
+function getShareUrl($code): string
+{
+    return url('index/share',['code' => $code],false,true);
+}

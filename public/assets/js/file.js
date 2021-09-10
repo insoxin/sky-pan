@@ -97,7 +97,7 @@ function rename(){
             if (filename != v) {
                 $.ajax({
                     type: "get",
-                    url: '/user/files/toReanme.html?id=' + id + "&file_name=" + v + "&is_folder="+is_folder,
+                    url: '/file/rename?id=' + id + "&file_name=" + v + "&is_folder="+is_folder,
                     dataType: "json",
                     success: function (data) {
                         
@@ -228,7 +228,7 @@ function CheckDelete()
 
 
 //设置提取码窗口
-function setPass(id,filename)
+function setPass(id,filename,is_folder)
 {
     var idU = "#"+id+"-url";
     var idP = "#"+id+"-pass";
@@ -301,7 +301,7 @@ function setPass(id,filename)
         }
 
         var passStatus = $("#setPassPass").attr("disabled") ? 0 : 1;
-        var url = "/user/files/toSetPass.html?id="+urlId+"&pass="+pass+"&pass_status="+passStatus;
+        var url = "/file/set_share_pass?id="+urlId+"&pass="+pass+"&pass_status="+passStatus + "&is_folder=" + is_folder;
         $.ajax({
             type: "get",
             url: url,
@@ -351,7 +351,7 @@ $(".context-menu .list li").click(function(){
             break;
         }
         case "设置提取码":{
-            setPass(id,filename);
+            setPass(id,filename,is_folder);
             break;
         }
         case "新建文件夹":{
@@ -371,7 +371,7 @@ $(".context-menu .list li").click(function(){
                 var Url2= $("#"+id+"-url").html();
                 window.open(Url2);
             }
-            window.open("/user/file/toDown.html?id="+id);
+            window.open("/file/user_download?id="+id);
             break;
         }
         case "重命名":{
@@ -399,12 +399,12 @@ $(".context-menu .list li").click(function(){
 
             if(is_folder=="1"){
                 var title = "编辑文件夹";
-                var url = '/user/folder/editFolder.html?id='+id;
+                var url = '/file/edit_folder?id='+id;
                 var area = ['342px', '350px'];
             }else{
                 
                 var title = "编辑文件";
-                var url = '/user/file/editFile.html?id='+id;
+                var url = '/file/edit_file?id='+id;
                 var area = ['450px', '460px'];
             }
 
@@ -423,7 +423,7 @@ $(".context-menu .list li").click(function(){
         }
         case "删除":{
                 
-            var url = "/file/delete.html?id="+id+"&is_folder="+is_folder;
+            var url = "/file/delete?id="+id+"&is_folder="+is_folder;
             layer.confirm('确定要删除（'+filename+"）吗？", 
             {
                 shadeClose: true,
