@@ -15,7 +15,12 @@
         <div class="tr_rechbox">
             <div class="tr_rechhead">
                 <img src="{:getUserHead($info.avatar)}">
-                <p>开通账号：<a>{$info.nickname}</a>
+                <p>开通账号：
+                    {eq name="$vip_info.is_vip" value="1"}
+                    <b style="color: red;">{$info.nickname}</b>
+                    {else/}
+                    {$info.nickname}
+                    {/eq}
                 </p>
                 <div class="tr_rechheadcion">
                     <span style="color: #cc1f00;">开通VIP会员，畅享极速下载！</span>

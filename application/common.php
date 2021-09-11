@@ -84,7 +84,6 @@ function getFileIcon($file_ext,$type = 'admin'): string
     }
 }
 
-
 function getUserHead($user_head): string
 {
     if(empty($user_head)){
@@ -185,7 +184,7 @@ function friendDate($time, $format='Y-m-d'){
     } elseif ($diffs >= 300) {
         return floor($diffs / 60).'分钟前';
     } else {//五分钟内
-        return '刚刚'.$diffs.'秒';
+        return '刚刚';
     }
 }
 

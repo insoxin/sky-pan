@@ -48,7 +48,7 @@ class Home extends Controller
                 $this->vip_info['expire_time'] = 0;
             }else{
                 $this->vip_info['is_vip'] = 1;
-                $this->vip_info['expire_time'] = date('Y-m-d H:i',$this->userInfo['group_expire']);
+                $this->vip_info['expire_time'] = date('Y-m-d',$this->userInfo['group_expire']);
             }
         }else{
             $this->vip_info['is_vip'] = 0;
@@ -57,6 +57,8 @@ class Home extends Controller
 
         $this->assign('group',$this->groupData);
         $this->assign('info',$this->userInfo);
+        $this->assign('is_login',$this->is_login);
+        $this->assign('vip_info',$this->vip_info);
         $this->assign('url_path',$this->request->path());
     }
 

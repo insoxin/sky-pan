@@ -100,9 +100,6 @@ class Index extends Home
             $vip_max = end($vip_rule)['id'];
 
 
-
-            $this->assign('vip_info',$this->vip_info);
-            $this->assign('is_login',$this->is_login);
             $this->assign('vip_max',$vip_max);
             $this->assign('vip_rule',$vip_rule);
             $this->assign('user',$this->userInfo);

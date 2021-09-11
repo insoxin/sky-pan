@@ -63,10 +63,12 @@
                     <div class="pub-right flex">
                             <span>
                                 <div class="head-box align-center el-popover__reference tan"
-                                     aria-describedby="el-popover-2040" tabindex="0" tan="VIP到期时间：未开通"><img
-                                        src="{:getUserHead($info.avatar)}" alt=""
-                                        class="head-img">
-                                    <p class="text" >
+                                     aria-describedby="el-popover-2040" tabindex="0"
+                                     {eq name="$vip_info.is_vip" value="0"}tan="VIP到期时间：未开通">{/eq}
+                                     {eq name="$vip_info.is_vip" value="1"}tan="VIP到期时间：{$vip_info.expire_time}">{/eq}
+
+                                    <img src="{:getUserHead($info.avatar)}" alt=""class="head-img">
+                                    <p class="text" {eq name="$vip_info.is_vip" value="1"}style="color: red;"{/eq}>
                                         {$info.nickname} ({$group.group_name})
                                     </p>
                                     <p class="line"></p>
@@ -155,10 +157,11 @@
         else {
             var w = '723px';
         }
+
         layer.open({
             type: 2,
             shadeClose: true,
-            title: "在线开通VIP会员",
+            title: {eq name="$vip_info.is_vip" value="0"}"在线开通VIP会员"{else/}"VIP到期时间：{$vip_info.expire_time}"{/eq},
             area: [w, '520px'], // 宽高
             content: "/user/vip",
             end: function () {

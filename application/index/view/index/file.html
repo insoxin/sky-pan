@@ -35,9 +35,11 @@
                     {eq name="$is_login" value="1"}
                     <ul class="navbar-nav align-items-center ml-auto">
                         <ul class="navbar-nav align-items-center ml-auto">
+                            {eq name="$vip_info.is_vip" value="1"}
                             <li class="nav-item mr-3" title="点击续费" onclick="vip()" style="cursor:pointer;color: red;">
-                                A00广州幽品化妆品 (VIP会员)
+                                {$user.nickname} ({$group.group_name})
                             </li>
+                            {/eq}
                             <li class="nav-item" title="点击开通" onclick="vip()" style="cursor:pointer;">
                             <div class="avatar avatar-xl mt-2">
                                 <img class="rounded-circle"
