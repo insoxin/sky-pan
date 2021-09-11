@@ -64,8 +64,6 @@ class Home extends Controller
     {
         $policy = Policys::where('id',$this->groupData['policy_id'])->find()->toArray();
 
-        $policy['config'] = json_decode($policy['config'],true);
-
         return $policy;
     }
 

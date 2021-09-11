@@ -91,13 +91,6 @@ return [
         'href' => url('report/index'),
     ],
     [
-        'id' => 9,
-        'title' => '模板管理',
-        'icon' => 'layui-icon layui-icon-theme',
-        'type' => 1,
-        'href' => url('template/index'),
-    ],
-    [
         'id' => 10,
         'title' => '系统设置',
         'icon' => 'layui-icon layui-icon-set-fill',

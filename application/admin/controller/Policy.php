@@ -4,6 +4,7 @@ namespace app\admin\controller;
 
 use app\common\controller\Admin;
 use app\common\model\Policys;
+use app\common\model\Stores;
 
 class Policy extends Admin
 {
@@ -17,8 +18,8 @@ class Policy extends Admin
             $list = Policys::page($page,$limit)->field('id,name,type,max_size')->select()->each(function($item){
                 $item['max_size'] = countSize($item['max_size']);
                 $item['type'] = PolicyType($item['type']);
-                $item['file_num'] = 0;
-                $item['store_num'] = '0B';
+                $item['file_num'] = Stores::where('policy_id',$item['id'])->count();
+                $item['store_num'] = countSize(Stores::where('policy_id',$item['id'])->sum('size'));
                 return $item;
             });
 

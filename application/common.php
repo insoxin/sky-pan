@@ -198,3 +198,7 @@ function getSafeNickname($name): string
     }
     return $name;
 }
+
+function getSafeDirSeparator($dir){
+    return str_replace(['/','\\','//','\\\\'],DIRECTORY_SEPARATOR,$dir);
+}

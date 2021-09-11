@@ -31,7 +31,7 @@
                     <label class="layui-form-label">排序字段</label>
                     <div class="layui-input-inline">
                         <select name="sort_key" lay-verify="required">
-                            <option value="create_time">上传时间排序</option>
+                            <option value="delete_time">删除时间排序</option>
                             <option value="update_time">更新时间排序</option>
                             <option value="id">ID排序</option>
                             <option value="size">文件大小排序</option>
@@ -105,17 +105,22 @@
 </div>
 
 <script type="text/html" id="user-toolbar">
+    <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="batchBack">
+        <i class="layui-icon layui-icon-time"></i>
+        批量还原
+    </button>
+
     <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
         <i class="layui-icon layui-icon-delete"></i>
-        批量删除
+        彻底删除
     </button>
 </script>
 
 <script type="text/html" id="user-bar">
-    <button class="pear-btn pear-btn-primary pear-btn-sm" title="下载文件" lay-event="download"><i class="layui-icon layui-icon-download-circle"></i></button>
-    <button class="pear-btn pear-btn-primary pear-btn-sm" title="查看文件" lay-event="info"><i class="layui-icon layui-icon-form"></i></button>
-    <button class="pear-btn pear-btn-danger pear-btn-sm" title="删除文件" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
+    <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="back"><i class="layui-icon layui-icon-time"></i></button>
+    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
 </script>
+
 
 <script type="text/html" id="file-icon">
     <img src="{{ d.icon }}">
@@ -146,14 +151,14 @@
                 {title: '文件后缀', field: 'ext', align: 'center'},
                 {title: '下载量', field: 'count_down', align: 'center'},
                 {title: '浏览量', field: 'count_open', align: 'center'},
-                {title: '上传时间', field: 'create_time', align: 'center'},
-                {title: '操作', toolbar: '#user-bar', align: 'center', width: 160}
+                {title: '删除时间', field: 'create_time', align: 'center'},
+                {title: '操作', toolbar: '#user-bar', align: 'center', width: 130}
             ]
         ]
 
         table.render({
             elem: '#user-table',
-            url: "{:url('file/index')}",
+            url: "{:url('recycle/index')}",
             page: true,
             cols: cols,
             skin: 'line',
@@ -169,10 +174,8 @@
         table.on('tool(user-table)', function(obj) {
             if (obj.event === 'remove') {
                 window.remove(obj);
-            } else if(obj.event === 'info'){
-                window.info(obj);
-            } else if (obj.event === 'download') {
-                window.download(obj);
+            }else if(obj.event === 'back'){
+                window.restore(obj);
             }
         });
 
@@ -181,6 +184,8 @@
                 window.refresh();
             } else if (obj.event === 'batchRemove') {
                 window.batchRemove(obj);
+            } else if (obj.event === 'batchBack'){
+                window.batchRecovery(obj);
             }
         });
 
@@ -192,29 +197,46 @@
         });
 
 
-        window.info = function(obj) {
-            layer.open({
-                type: 2,
-                title: '文件信息',
-                shade: 0.1,
-                area: ['600px', '600px'],
-                content: "{:url('file/info')}?id=" + obj.data['id']
-            });
-        }
-
-        window.download = function(obj) {
-            window.open("{:url('file/download')}?id=" + obj.data['id']);
-        }
-
-        window.remove = function(obj) {
-            layer.confirm('确定要删除该文件吗？', {
+        window.restore = function(obj){
+            layer.confirm('确认要恢复该文件吗？', {
                 icon: 3,
                 title: '提示'
             }, function(index) {
                 layer.close(index);
                 let loading = layer.load();
                 $.ajax({
-                    url: "{:url('file/delete')}?ids=" + obj.data['id'],
+                    url: "{:url('recycle/restore')}?ids=" + obj.data['id'],
+                    dataType: 'json',
+                    type: 'get',
+                    success: function(result) {
+                        layer.close(loading);
+                        if (result.code == 200) {
+                            layer.msg(result.msg, {
+                                icon: 1,
+                                time: 1000
+                            }, function() {
+                                obj.del();
+                            });
+                        } else {
+                            layer.msg(result.msg, {
+                                icon: 2,
+                                time: 1000
+                            });
+                        }
+                    }
+                })
+            });
+        }
+
+        window.remove = function(obj) {
+            layer.confirm('确定要彻底删除该文件吗？<b style="color: red">删除后储存数据会被清空，且不可恢复</b>', {
+                icon: 3,
+                title: '提示'
+            }, function(index) {
+                layer.close(index);
+                let loading = layer.load();
+                $.ajax({
+                    url: "{:url('recycle/delete')}?ids=" + obj.data['id'],
                     dataType: 'json',
                     type: 'get',
                     success: function(result) {
@@ -249,14 +271,55 @@
                 return false;
             }
 
-            layer.confirm('确定要删除这些文件[' + checkIds + ']吗?', {
+            layer.confirm('确定要删除这些文件[' + checkIds + ']吗，<b style="color: red">删除后数据不可恢复</b>', {
                 icon: 3,
                 title: '提示'
             }, function(index) {
                 layer.close(index);
                 let loading = layer.load();
                 $.ajax({
-                    url: "{:url('file/delete')}?ids=" + checkIds,
+                    url: "{:url('recycle/delete')}?ids=" + checkIds,
+                    dataType: 'json',
+                    type: 'get',
+                    success: function(result) {
+                        layer.close(loading);
+                        if (result.code == 200) {
+                            layer.msg(result.msg, {
+                                icon: 1,
+                                time: 1000
+                            }, function() {
+                                table.reload('user-table');
+                            });
+                        } else {
+                            layer.msg(result.msg, {
+                                icon: 2,
+                                time: 1000
+                            });
+                        }
+                    }
+                })
+            });
+        }
+
+        window.batchRestore = function(obj){
+            var checkIds = common.checkField(obj,'id');
+
+            if (checkIds === "") {
+                layer.msg("未选中数据", {
+                    icon: 3,
+                    time: 1000
+                });
+                return false;
+            }
+
+            layer.confirm('确定要恢复这些文件[' + checkIds + ']吗?', {
+                icon: 3,
+                title: '提示'
+            }, function(index) {
+                layer.close(index);
+                let loading = layer.load();
+                $.ajax({
+                    url: "{:url('recycle/restore')}?ids=" + checkIds,
                     dataType: 'json',
                     type: 'get',
                     success: function(result) {

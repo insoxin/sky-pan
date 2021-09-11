@@ -46,6 +46,17 @@ class Policys extends Model
         self::where('id',$id)->update($data);
     }
 
+    public function getConfigAttr($value){
+        return json_decode($value,true);
+    }
+
+    public static function getFileSavePath($id,$file){
+        $info = self::where('id',$id)->find();
+        if(empty($info)) return '';
+        $info['config'] = json_decode($info['config'],true);
+        return str_replace('\\','/',$info['config']['save_dir']) . str_replace('\\','/',$file);
+    }
+
     public static function getPolicyAll(): array
     {
         return self::field('id,name')->select()->toArray();

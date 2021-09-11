@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/component/pear/css/pear.css" />
+</head>
+<body>
+<form class="layui-form">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="layui-form-item">
+                <label class="layui-form-label">文件名</label>
+                <div class="layui-input-block">
+                    <div class="layui-form-mid">{$info.origin_name}</div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">文件大小</label>
+                <div class="layui-input-block">
+                    <div class="layui-form-mid">{:countSize($info.size)}</div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">文件类型</label>
+                <div class="layui-input-block">
+                    <div class="layui-form-mid">{$info.mime_type}</div>
+                </div>
+            </div>
+
+            <br>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">储存策略</label>
+                <div class="layui-input-block">
+                    <div class="layui-form-mid">{$policy_name}</div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">所属用户</label>
+                <div class="layui-input-block">
+                    <div class="layui-form-mid">{$username}</div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">储存地址</label>
+                <div class="layui-input-block">
+                    <div class="layui-form-mid">{$file_path}</div>
+                </div>
+            </div>
+
+            <br>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">上传时间</label>
+                <div class="layui-input-block">
+                    <div class="layui-form-mid">{$info.create_time}</div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">更新时间</label>
+                <div class="layui-input-block">
+                    <div class="layui-form-mid">{$info.update_time}</div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</form>
+<script src="/static/component/layui/layui.js"></script>
+<script src="/static/component/pear/pear.js"></script>
+</body>
+</html>
