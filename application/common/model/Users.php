@@ -154,9 +154,4 @@ class Users extends Model
         return $user;
     }
 
-
-    public function forget(){
-
-    }
-
 }

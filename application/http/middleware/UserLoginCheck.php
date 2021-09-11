@@ -9,6 +9,8 @@ class UserLoginCheck
     protected $except = [
         'User/login',
         'User/register',
+        'User/forget',
+        'User/reset',
         'Index/index',
         'Index/share',
         'Index/report',

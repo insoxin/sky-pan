@@ -53,7 +53,6 @@ class Policys extends Model
     public static function getFileSavePath($id,$file){
         $info = self::where('id',$id)->find();
         if(empty($info)) return '';
-        $info['config'] = json_decode($info['config'],true);
         return str_replace('\\','/',$info['config']['save_dir']) . str_replace('\\','/',$file);
     }
 

@@ -10,7 +10,9 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
-function getNotNullTime($time,$default = '',$format = 'Y-m-d H:i:s'){
+
+
+function getNotNullTime($time, $default = '', $format = 'Y-m-d H:i:s'){
     if($time > 0){
         return date($format,$time);
     }else{
@@ -201,4 +203,56 @@ function getSafeNickname($name): string
 
 function getSafeDirSeparator($dir){
     return str_replace(['/','\\','//','\\\\'],DIRECTORY_SEPARATOR,$dir);
+}
+
+function sendEmail($username,$url){
+    // 邮件配置
+    $config = config('email.');
+
+    // 获取模板变量
+    $temp_var = [
+        '{username}' => $username,
+        '{site_title}' => config('basic.site_title'),
+        '{url}' => $url
+    ];
+
+    // 邮件正文
+    $email_body = str_replace(array_keys($temp_var),array_values($temp_var),$config['template_forget']);
+
+    // php mail客户端
+    $mail = new PHPMailer\PHPMailer\PHPMailer();
+    // debug调试
+    $mail->SMTPDebug = 0;
+    //  使用smtp鉴权方式
+    $mail->isSMTP();
+    // SMTP鉴权
+    $mail->SMTPAuth = true;
+    // 邮箱服务器地址
+    $mail->Host = $config['smtp_host'];
+    // SSL加密
+    $mail->SMTPSecure = 'ssl';
+    // 端口
+    $mail->Port = $config['smtp_port'];
+    // 邮件的编码
+    $mail->CharSet = 'UTF-8';
+    // smtp账号
+    $mail->Username = $config['username'];
+    // smtp密码
+    $mail->Password = $config['password'];
+    // 设置发件人昵称
+    $mail->FromName = $config['nickname'];
+    // 设置发件人邮箱
+    $mail->From = $config['username'];
+    // 邮件正文为html编码
+    $mail->isHTML(true);
+    // 收件人邮箱
+    $mail->addAddress('1655545174@qq.com');
+    // 邮件标题
+    $mail->Subject = '【'.config('basic.site_title').'】找回密码邮件';
+
+    // 邮件正文
+    $mail->Body = $email_body;
+
+    // 发送邮件 返回状态
+    return $mail->send();
 }
