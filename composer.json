@@ -22,7 +22,8 @@
         "topthink/think-captcha": "2.0.*",
       "ext-fileinfo": "*",
         "aferrandini/phpqrcode": "^1.0",
-      "ext-mbstring": "*"
+      "ext-mbstring": "*",
+        "phpmailer/phpmailer": "^6.5"
     },
     "autoload": {
         "psr-4": {

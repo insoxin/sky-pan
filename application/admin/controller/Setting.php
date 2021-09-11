@@ -40,6 +40,12 @@ class Setting extends Admin
         return $this->fetch();
     }
 
+    public function email(){
+        $this->saveOptions();
+        $this->assign('option',$this->getOptions());
+        return $this->fetch();
+    }
+
     protected function saveOptions(){
         if($this->request->isPost()){
             $type = $this->request->action();

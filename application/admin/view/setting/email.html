@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/component/pear/css/pear.css" />
+</head>
+<body>
+<form class="layui-form">
+    <div class="mainBox">
+        <div class="main-container">
+            <br>
+            <br>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮件服务器</label>
+                <div class="layui-input-block" style="max-width: 800px;">
+                    <input type="text" name="smtp_host" value="{$option.smtp_host}" required  lay-verify="required" autocomplete="off" class="layui-input">
+                    <div class="layui-form-mid layui-word-aux">邮箱的SMTP服务器地址</div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">SMTP端口</label>
+                <div class="layui-input-block" style="max-width: 800px;">
+                    <input type="text" name="smtp_port" value="{$option.smtp_port}" required  lay-verify="required" autocomplete="off" class="layui-input">
+                    <div class="layui-form-mid layui-word-aux">SSL连接SMTP服务器的远程服务器端口号</div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">发信昵称</label>
+                <div class="layui-input-block" style="max-width: 800px;">
+                    <input type="text" name="nickname" value="{$option.nickname}" required  lay-verify="required" autocomplete="off" class="layui-input">
+                    <div class="layui-form-mid layui-word-aux">显示在收件人邮件的发件人邮箱地址前的发件人姓名</div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮箱帐号</label>
+                <div class="layui-input-block" style="max-width: 800px;">
+                    <input type="text" name="username" value="{$option.username}" required  lay-verify="required" autocomplete="off" class="layui-input">
+                    <div class="layui-form-mid layui-word-aux">SMTP登录的账号</div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮箱密码</label>
+                <div class="layui-input-block" style="max-width: 800px;">
+                    <input type="text" name="password" value="{$option.password}" required  lay-verify="required" autocomplete="off" class="layui-input">
+                    <div class="layui-form-mid layui-word-aux">SMTP登录的密码 使用生成的授权码</div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">找回密码模板</label>
+                <div class="layui-input-block" style="max-width: 800px;">
+                    <textarea name="template_forget" id="edit" cols="30" rows="10">{$option.template_forget}</textarea>
+                    <div class="layui-form-mid layui-word-aux">
+                        模板内变量：
+                        {nickname} 用户昵称
+                        {username} 用户帐号
+                        {code} 验证码
+                        {site_name} 站点名称
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn layui-btn-normal" lay-submit lay-filter="save">保存设置</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+<script src="/static/component/layui/layui.js"></script>
+<script src="/static/component/pear/pear.js"></script>
+<script>
+    layui.use(['form','jquery','tinymce'],function(){
+        let form = layui.form;
+        let $ = layui.jquery;
+
+        var tinymce = layui.tinymce
+        var edit = tinymce.render({
+            elem: "#edit",
+            height: 400,
+            menubar: false, //隐藏菜单栏
+            plugins: "code",
+            toolbar: "code",
+        });
+
+        form.on('submit(save)', function(data){
+            data.field['template_forget'] = edit.getContent()
+            $.ajax({
+                data:JSON.stringify(data.field),
+                dataType:'json',
+                contentType:'application/json',
+                type:'post',
+                success:function(res){
+                    //判断有没有权限
+                    if(res && res.code == 999){
+                        layer.msg(res.msg, {
+                            icon: 5,
+                            time: 2000,
+                        })
+                        return false;
+                    }else if(res.code == 200){
+                        layer.msg(res.msg,{icon:1,time:1000},function(){
+                            parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                        });
+                    }else{
+                        layer.msg(res.msg,{icon:2,time:1000});
+                    }
+                }
+            })
+            return false;
+        });
+    })
+</script>
+</body>
+</html>

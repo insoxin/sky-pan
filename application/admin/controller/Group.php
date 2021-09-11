@@ -5,6 +5,7 @@ namespace app\admin\controller;
 use app\common\controller\Admin;
 use app\common\model\Groups;
 use app\common\model\Policys;
+use app\common\model\Users;
 
 class Group extends Admin
 {
@@ -18,10 +19,10 @@ class Group extends Admin
             $list = Groups::page($page,$limit)->select()->each(function($item){
                 $item['max_storage'] = countSize($item['max_storage']);
                 $item['is_sys'] = $item['is_sys'] ? '<span class="layui-badge-rim">系统</span>' : '自定义';
-                $item['user_num'] = 0;
+                $item['user_num'] = Users::where('group',$item['id'])->count();
+                $item['policy_id'] = Policys::where('id',$item['policy_id'])->value('name');
                 return $item;
             });
-
 
             $count = Groups::count();
             $this->returnSuccessLayTable($count,$list->toArray());
