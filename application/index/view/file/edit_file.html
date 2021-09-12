@@ -1,0 +1,123 @@
+<html>
+
+<head>
+    <link href="__STATIC__/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="__STATIC__/js/jquery.js"></script>
+    <script src="__STATIC__/js/layer.js"></script>
+</head>
+
+<body>
+<div class="panel-body">
+    <div id="alert" class="alert alert-success alert-dismissable" style="display:none;">
+        <button type="button" class="close" onclick="$('#alert').hide();" aria-hidden="true">
+            ×
+        </button>
+        <span id="msg">上传成功</span>
+    </div>
+    <div id="alert2" class="alert alert-danger alert-dismissable" style="display:none;">
+        <button type="button" class="close" onclick="$('#alert2').hide();" aria-hidden="true">
+            ×
+        </button>
+        <span id="msg2">错误！请进行一些更改。</span>
+    </div>
+    <div class='form-group has-feedback'>
+        <span style="color: red;">*</span>
+        <font size="3">文件名称</font>
+        <input style="margin-top: 3%;" id='fileName' class='form-control' type='text' placeholder="请输入文件名称..."
+               value="{$info.origin_name}" />
+    </div>
+    <div class='form-group has-feedback'>
+        <font size="3">文件描述</font>
+        <textarea style="margin-top: 3%;" id='fileMiaoshu' class='form-control' rows="3"
+                  placeholder="(可选) 请输入文件描述...&#10;&#10;提示：文件编辑后分享链接不会变哦~">{$info.desc}</textarea>
+    </div>
+
+    <p class='help-block'>
+        &nbsp;
+    </p>
+    <div class='form-group has-feedback' style="margin-top: 5%;">
+        <button type='button' class='btn btn-block btn-success' onclick='upload()'>保存</button>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    var _fileName = $("#fileName").val();
+    var _fileMiaoshu = $("#fileMiaoshu").val();
+
+    //选择的文件发生修改时
+    $("#fileInput").change(function (e) {
+        var name = document.getElementById('fileInput').files[0].name;
+        $("#fileName").val(name);
+    });
+
+    function upload() {
+
+        var fileName = $("#fileName").val();
+        var fileMiaoshu = $("#fileMiaoshu").val();
+        if (fileName == "") {
+            $('#fileName').focus();
+            layer.msg('请填写文件名称！', { time: 700 });
+            return;
+        }
+
+        //判断数据是否更改
+        if (_fileName == fileName &&
+            _fileMiaoshu == fileMiaoshu
+        ) {
+            layer.msg('未作任何修改...', { time: 500 });
+            setTimeout(function () {
+                var index = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(index);
+            }, 500);
+            return;
+        }
+
+        //修改文件
+        var data2 = { 'file_name': fileName, 'file_miaoshu': fileMiaoshu};
+        update(data2);
+    }
+
+    //ajax请求数据
+    function update(data) {
+        $.ajax({
+            type: "post",
+            url: window.location.href,
+            dataType: 'json',
+            data: data,
+            success: function (data) {
+                msg(data.status, data.msg);
+            },
+            error: function (error) {
+                msg(0, "API请求失败，请联系客服");
+            }
+        });
+    }
+
+    //提示信息
+    function msg(status, msg) {
+
+        if (!status) {
+            $("#msg2").html(msg);
+            $("#alert2").show();
+            $("#alert").hide();
+        } else {
+            $("#msg").html(msg);
+            $("#alert").show();
+            $("#alert2").hide();
+
+            setTimeout(function () {
+                window.parent.getTable("当前文件夹");
+                var index = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(index);
+            }, 800);
+        }
+    }
+</script>
+</div>
+</body>
+
+</html>

@@ -5,9 +5,11 @@ namespace app\index\controller;
 use app\common\controller\Home;
 use app\common\model\FileManage;
 use app\common\model\Folders;
+use app\common\model\Policys;
 use app\common\model\Shares;
 use app\common\model\Stores;
 use think\Exception;
+use think\response\Download;
 
 class File extends Home
 {
@@ -121,11 +123,53 @@ class File extends Home
     }
 
     public function edit_folder(){
+        $id = input('get.id');
+        $info = Folders::get($id);
 
+        if(empty($info)){
+            $this->error('数据不存在');
+        }
+
+        if($this->request->isPost()){
+            $folder_name = input('post.folder_name');
+            $folder_miaoshu = input('post.folder_miaoshu');
+            $shouyi = input('post.shouyi');
+
+            Folders::where('id',$id)->update([
+               'folder_name' => $folder_name,
+                'desc' => $folder_miaoshu,
+                'size' => $shouyi
+            ]);
+
+            return json(['status' => 1,'msg' => '修改文件夹信息成功']);
+        }
+
+        $this->assign('info',$info);
+        return $this->fetch();
     }
 
     public function edit_file(){
+        $id = input('get.id');
+        $info = Stores::get($id);
 
+        if(empty($info)){
+            $this->error('数据不存在');
+        }
+
+        if($this->request->isPost()){
+            $file_name = input('post.file_name');
+            $file_miaoshu = input('post.file_miaoshu');
+
+            Stores::where('id',$id)->update([
+                'origin_name' => $file_name,
+                'desc' => $file_miaoshu
+            ]);
+
+            return json(['status' => 1,'msg' => '修改文件信息成功']);
+        }
+
+        $this->assign('info',$info);
+        return $this->fetch();
     }
 
     public function delete_all(){
@@ -273,7 +317,37 @@ class File extends Home
     }
 
     public function user_download(){
+        $id = input('get.id',0);
+        $info = Stores::where('id',$id)->where('uid',$this->userInfo['id'])->find();
 
+        if(empty($info)){
+            $this->error('数据不存在');
+        }
+
+        $policy = Policys::get($info['policy_id']);
+
+        if(empty($policy)){
+            $this->error('存储策略不存在');
+        }
+
+        // 判断策略类型
+        switch ($policy['type']){
+            case 'local':
+                //文件地址
+                $file_path = env('root_path').'public'.getSafeDirSeparator($policy->config['save_dir'] . $info['file_name']);
+                // 文件不存在
+                if(!is_file($file_path)){
+                    $this->error('存储文件不存在');
+                }
+                //下载对象
+                $down = new Download($file_path);
+                //下载文件
+                return $down->name($info['origin_name']);
+                break;
+            case 'remote':
+
+                break;
+        }
     }
 
 }

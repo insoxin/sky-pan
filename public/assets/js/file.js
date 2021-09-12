@@ -405,7 +405,7 @@ $(".context-menu .list li").click(function(){
                 
                 var title = "编辑文件";
                 var url = '/file/edit_file?id='+id;
-                var area = ['450px', '460px'];
+                var area = ['450px', '380px'];
             }
 
             layer.open({

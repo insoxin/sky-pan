@@ -1,0 +1,128 @@
+<html>
+<head>
+    <link href="__STATIC__/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__STATIC__/css/file.css" rel="stylesheet">
+    <script type="text/javascript" src="__STATIC__/js/jquery.js"></script>
+    <script src="__STATIC__/js/layer.js"></script>
+</head>
+
+<body>
+<div style='width:320px;margin-left: 3%;margin-top: 3%;display:none;' id="alert" class="alert alert-success alert-dismissable">
+    <button type="button" class="close" onclick="$('#alert').hide();" aria-hidden="true">
+        ×
+    </button>
+    <span id="msg">保存成功</span>
+</div>
+<div style='width:320px;margin-left: 3%;margin-top: 3%;display:none;' id="alert2" class="alert alert-danger alert-dismissable">
+    <button type="button" class="close" onclick="$('#alert2').hide();" aria-hidden="true">
+        ×
+    </button>
+    <span id="msg2">错误！请进行一些更改。</span>
+</div>
+
+<div style='width:320px;margin-left: 3%;margin-top: 3%;' class='form-group has-feedback'>
+    <span style="color: red;">*</span>文件夹名称
+    <input style="margin-top: 3%;" id='folderName' class='form-control' type='text' placeholder="请输入文件夹名称..." value="{$info.folder_name}"/>
+</div>
+<div style='width:320px;margin-left: 3%;' class='form-group has-feedback'>
+    <p>文件夹描述</p>
+    <textarea style="margin-top: 3%;" id='folderMiaoshu' class='form-control' rows="3" placeholder="(可选) 请输入文件夹描述...">{$info.desc}</textarea>
+</div>
+<label class="col-sm-1">限速收益开关</label>
+<div class="col-sm-4" style="margin-left: 100px;margin-top: -30px;">
+    <label class="switch">
+        <input type="checkbox" id="shouyi" value="{$info.size}">
+        <div class="slider round"></div>
+    </label>
+</div>
+<div style='width:320px;margin-left: 3%;' class='form-group has-feedback'>
+    <button style='margin-top:5%;' type='button' class='btn btn-block btn-success' onclick='upload()'>保存</button>
+</div>
+
+
+<script type="text/javascript">
+
+    var _folderName = $("#folderName").val();
+    var _folderMiaoshu = $("#folderMiaoshu").val();
+    var _shouyi = '{$info.size}';
+
+    $("#shouyi").val(_shouyi);
+    if(_shouyi == 1){
+        $("#shouyi").attr("checked","");
+    }
+
+    $("#shouyi").click(function(){
+        if($("#shouyi").val() == "0")  //是否禁用
+        {
+            $("#shouyi").val("1");
+        }else{
+            $("#shouyi").val("0");
+        }
+    });
+
+
+    function upload() {
+
+        var folderName = $("#folderName").val();
+        var folderMiaoshu = $("#folderMiaoshu").val();
+        var shouyi = $("#shouyi").val();
+
+        if(folderName == "")
+        {
+            $('#folderName').focus();
+            layer.msg('请填写文件夹名称！', {time: 700});
+            return;
+        }
+
+
+        //判断数据是否更改
+        if(folderName == _folderName &&
+            folderMiaoshu == _folderMiaoshu &&
+            shouyi == _shouyi
+        ){
+            layer.msg('未作任何修改...', {time: 500});
+            setTimeout(function (){
+                var index = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(index);
+            },500);
+            return;
+        }
+
+        var data2 = {'folder_name': folderName, 'folder_miaoshu': folderMiaoshu, "shouyi": shouyi};
+
+
+        $.ajax({
+            type: "post",
+            url : window.location.href,
+            dataType:'json',
+            data: data2,
+            success: function(data){
+                msg(data.status,data.msg);
+            },
+            error: function (error) {
+                msg(0,"API请求失败，请联系客服");
+            }
+        });
+    }
+
+    //提示信息
+    function msg(status,msg) {
+
+        if(!status){
+            $("#msg2").html(msg);
+            $("#alert2").show();
+            $("#alert").hide();
+        }else{
+            $("#msg").html(msg);
+            $("#alert").show();
+            $("#alert2").hide();
+
+            setTimeout(function (){
+                window.parent.getTable("当前文件夹");
+                var index = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(index);
+            },800);
+        }
+    }
+</script>
+</body>
