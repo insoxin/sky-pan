@@ -9,7 +9,9 @@ use app\common\model\Shares;
 use app\common\model\Stores;
 use app\common\model\Users;
 use Qrcode\Qrcode;
+use think\Exception;
 use think\facade\Cookie;
+use think\response\Download;
 
 class Index extends Home
 {
@@ -100,9 +102,11 @@ class Index extends Home
             // 获取最高价格
             $vip_max = end($vip_rule)['id'];
 
+            $download = getFileDownloadUrl($storeInfo['shares_id'],$storeInfo['id']);
 
             $this->assign('vip_max',$vip_max);
             $this->assign('vip_rule',$vip_rule);
+            $this->assign('download',$download);
             $this->assign('user',$this->userInfo);
             $this->assign('info',$file_info);
             return $this->fetch('file');
@@ -205,4 +209,96 @@ class Index extends Home
         return json(['status' => 1,'msg' => '提取码正确']);
     }
 
+    public function download(){
+        $file = input('get.file');
+        $shares_id = input('get.shares');
+        $timestamp = input('get.timestamp');
+        $sign = input('get.sign');
+
+        // 数据签名校验
+        if(!getDownloadFileSignVerify(['file' => $file,'shares' => $shares_id,'timestamp' => $timestamp],$sign)){
+            return $this->fetch('user/err',['msg' => '数据sign签名校验失败']);
+        }
+
+        try {
+
+            // 获取存储数据
+            $stores = Stores::get($file);
+
+            if(empty($stores)){
+                throw new Exception('文件数据不存在');
+            }
+
+            // 获取存储策略
+            $policy = $stores->getPolicy();
+
+            if(empty($policy)){
+                throw new Exception('文件数据存储策略不存在');
+            }
+
+            // 判断存储方式
+            switch ($policy->type){
+                case 'local':
+                    //存储文件地址
+                    $_file = $stores->getLocalSaveFilePath($policy->config['save_dir'],$stores['file_name']);
+
+                    // 文件不存在
+                    if(!is_file($_file)){
+                        throw new Exception('文件不存在，可能已被删除');
+                    }
+
+                    // 禁止下载
+                    if($this->groupData['speed'] === 0){
+                        throw new Exception('您当前的用户组禁止下载文件');
+                    }
+
+                    // 不限速下载
+                    if($this->groupData['speed'] === ""){
+                        $download = new Download($_file);
+                        return $download->name($stores['origin_name']);
+                    }
+
+
+                    // 关闭php超时限制
+                    ignore_user_abort(false);
+                    set_time_limit(0);
+                    session_write_close();
+
+                    // 写入文件头
+                    header('Cache-control: private');
+                    header('Content-Type: application/octet-stream');
+                    header('Content-Length: '.filesize($_file));
+                    $encoded_fname = rawurlencode($stores['origin_name']);
+                    header('Content-Disposition: attachment;filename="'.$encoded_fname.'";filename*=utf-8'."''".$encoded_fname);
+
+                    // 读取文件
+                    $fh = fopen($_file,"r");
+
+                    $i = 0;
+                    // 按照指定大小读取
+                    while (!feof($fh)){
+                        if($i < 1){
+                            echo fread($fh,round(100 * 1024));
+                        }else{
+                            echo fread($fh,round(intval($this->groupData['speed']) * 1024));
+                        }
+                        ob_flush();
+                        flush();
+                        $i++;
+                        sleep(1);
+                    }
+
+                    //关闭文件
+                    fclose($fh);
+
+                    break;
+                case 'remote':
+
+                    break;
+            }
+
+        }catch (\Throwable $e){
+            return $this->fetch('user/err',['msg' => $e->getMessage()]);
+        }
+    }
 }

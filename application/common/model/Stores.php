@@ -13,4 +13,18 @@ class Stores extends Model
     protected $deleteTime = 'delete_time';
 
     protected $autoWriteTimestamp = true;
+
+    public function getPolicy(){
+        $policy = Policys::get($this->policy_id);
+        if(empty($policy)){
+            return false;
+        }
+        return $policy;
+    }
+
+    public function getLocalSaveFilePath($save_dir,$filename): string
+    {
+        return env('root_path').'public'.getSafeDirSeparator($save_dir . $filename);
+    }
+
 }

@@ -25,10 +25,17 @@ class Home extends Controller
 
         $this->userInfo = (new Users())->login_info('default');
 
-        $this->groupData = Groups::where('id',$this->userInfo['group'])->find();
-
         // 是否登录
         $this->is_login = empty($this->userInfo) ? 0 : 1;
+
+        // 用户组信息
+        if($this->is_login){
+            // 登录用户组
+            $this->groupData = Groups::where('id',$this->userInfo['group'])->find();
+        }else{
+            // 游客用户组
+            $this->groupData = Groups::where('id',2)->find();
+        }
 
         // 获取VIP用户组ID
         $vip_group = config('vip.vip_group');

@@ -114,7 +114,6 @@ class User extends Admin
         return json(['code' => 200,'msg' => '删除成功']);
     }
 
-
     public function edit(){
         $id = input('get.id');
         $info = Users::get($id);
@@ -128,12 +127,15 @@ class User extends Admin
             $result = $this->validate($data,[
                 'email|安全邮箱' => 'email',
                 'password|登录密码' => 'alphaNum|length:6,18',
+                'amount|账户余额' => 'float',
                 'group|用户组' => 'require|number'
             ]);
 
             if($result !== true) return json(['code' => 502,'msg' => $result]);
 
             $update = [];
+
+            $update['amount'] = $data['amount'];
 
             if(!empty($data['email'])){
                 $update['email'] = $data['email'];
@@ -169,7 +171,6 @@ class User extends Admin
             return $this->fetch();
         }
     }
-
 
     public function change_status(){
         $id = input('get.id');

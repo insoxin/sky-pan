@@ -255,3 +255,24 @@ function sendEmail($username,$url){
     // 发送邮件 返回状态
     return $mail->send();
 }
+
+function getFileDownloadUrl($shares_id,$file_id){
+
+    $params = [
+        'file' => $file_id,
+        'shares' => $shares_id,
+        'timestamp' => time()
+    ];
+
+    $sign = md5(urldecode(http_build_query($params)) . config('app.pass_salt'));
+
+    $params['sign'] = $sign;
+
+    return url('Index/download','',false,true).'?'.urldecode(http_build_query($params));
+}
+
+function getDownloadFileSignVerify($param,$sign): bool
+{
+    $sign_key = md5(urldecode(http_build_query($param)) . config('app.pass_salt'));
+    return $sign_key == $sign;
+}

@@ -85,6 +85,7 @@
                 </div>
             </div>
 
+            {eq name="$vip_info.is_vip" value="0"}
             <div class="card-deck">
                 <div class="card mb-3 overflow-hidden" style="min-width: 12rem">
                     <div class="bg-holder bg-card" style="background-image:url(__STATIC__/pan/img/corner-1.png);"></div>
@@ -114,7 +115,56 @@
                     </div>
                 </div>
             </div>
+            {else/}
+            <div class="card-deck">
+                <div class="card mb-3 overflow-hidden" style="min-width: 12rem">
+                    <div class="bg-holder bg-card" style="background-image:url((__STATIC__/pan/img/corner-1.png);">
+                    </div>
 
+                    <div class="card-body position-relative">
+                        <h5>电信下载<span class="badge badge-soft-warning rounded-capsule ml-2">VIP专用</span></h5>
+                        <button class="btn btn-outline-info fs--1" onclick="down()">立即下载</button>
+                    </div>
+                </div>
+                <div class="card mb-3 overflow-hidden" style="min-width: 12rem">
+                    <div class="bg-holder bg-card" style="background-image:url(__STATIC__/pan/img/corner-2.png);">
+                    </div>
+
+                    <div class="card-body position-relative">
+                        <h5>联通下载<span class="badge badge-soft-info rounded-capsule ml-2">VIP专用</span></h5>
+                        <button class="btn btn-outline-info fs--1" onclick="down()">立即下载</button>
+                    </div>
+                </div>
+                <div class="card mb-3 overflow-hidden" style="min-width: 12rem">
+                    <div class="bg-holder bg-card" style="background-image:url(__STATIC__/pan/img/corner-3.png);">
+                    </div>
+
+                    <div class="card-body position-relative">
+                        <h5>移动下载<span class="badge badge-soft-success rounded-capsule ml-2">VIP专用</span></h5>
+                        <button class="btn btn-outline-info fs--1" onclick="down()">立即下载</button>
+                    </div>
+                </div>
+            </div>
+            {/eq}
+
+            {eq name="$vip_info.is_vip" value="1"}
+            <div class="card bg-light mb-3" rv-show="file.vip_guest" style="">
+                <div class="card-body p-3">
+                    <div class="row justify-content-center justify-content-sm-between">
+                        <div class="col-sm-auto text-center">
+                            <p class="fs--1 mb-0">
+                                尊贵的{$group.group_name}您好，您已经购买成为
+                                <a href="javascript:;" onclick="vip()"><strong> {$group.group_name} </strong></a>
+                                到期时间：{$vip_info.expire_time}</p>
+                        </div>
+                        <div class="col-sm-auto d-flex flex-center">
+                            <p class="fs--1 mb-0"><a href="javascript:;" onclick="kefu()">在线客服</a></p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            {/eq}
 
             <div class="h-100 card mb-3">
                 <div class="card-body">
@@ -227,10 +277,10 @@
             var down_info = {
                 is_login:{$is_login},
                 is_vip:{$vip_info.is_vip},
-                link:'',
+                link:'{$download|raw}',
                 kefu:"{$Think.config.basic.site_kefu|raw}",
                 vip_max:{$vip_max},
-                vip_expire:{$vip_info.expire_time}
+                vip_expire:"{$vip_info.expire_time}"
             }
 
             var second_left = 8035;

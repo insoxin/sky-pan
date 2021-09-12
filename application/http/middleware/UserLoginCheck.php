@@ -15,7 +15,8 @@ class UserLoginCheck
         'Index/share',
         'Index/report',
         'Index/share_pass',
-        'Index/qrcode'
+        'Index/qrcode',
+        'Index/download'
     ];
 
     public function handle($request, \Closure $next){
