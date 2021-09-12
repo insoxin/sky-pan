@@ -154,4 +154,11 @@ class Users extends Model
         return $user;
     }
 
+
+    public function getCertify(){
+        return Certify::where('uid',$this->id)
+            ->where('status',1)
+            ->field('name,idcard,create_time')
+            ->find();
+    }
 }

@@ -32,15 +32,14 @@ class Index extends Home
 
         // 判断类型
         if($info['type']){
-            $store = Folders::withTrashed();
+            $storeInfo = Folders::where('uid',$info['uid'])
+                ->where('id',$info['source_id'])
+                ->find();
         }else{
-            $store = Stores::withTrashed();
+            $storeInfo = Stores::where('uid',$info['uid'])
+                ->where('id',$info['source_id'])
+                ->find();
         }
-
-        // 获取存储信息
-        $storeInfo = $store->where('uid',$info['uid'])
-            ->where('id',$info['source_id'])
-            ->find();
 
         // 存储文件/夹不存在
         if(empty($storeInfo)){

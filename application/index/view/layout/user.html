@@ -102,7 +102,14 @@
                                     <span>回收站</span>
                                 </a>
                             </li>
-                            <li role="menuitem" class="el-menu-item g-button-right {eq name="url_path" value="user/shouyi"}select{/eq}">
+                            {php}
+                            if($url_path == 'share/index' || $url_path == 'share/record' || $url_path == 'share/withdraw'){
+                                $share_active = 1;
+                            }else{
+                                $share_active = 0;
+                            }
+                            {/php}
+                            <li role="menuitem" class="el-menu-item g-button-right {eq name="$share_active" value="1"}select{/eq}">
                                 <a href="{:url('share/index')}">
                                     <em class="icon icon-my-share"></em>
                                     <span>分享赚钱</span>
@@ -200,45 +207,6 @@
     });
 </script>
 
-<script>
-    function tixianadd() {
-        if (window.screen.width < 768) {
-            var w = '95%';
-        }
-        else {
-            var w = '723px';
-        }
-        layer.open({
-            type: 2,
-            shadeClose: true,
-            title: "申请提现",
-            area: [w, '520px'], // 宽高
-            content: "/user/withdraw",
-            end: function () {
-                //location.reload();
-            },
-        });
-    }
-
-    function shiming() {
-        if (window.screen.width < 768) {
-            var w = '95%';
-        }
-        else {
-            var w = '700px';
-        }
-        layer.open({
-            type: 2,
-            shadeClose: true,
-            title: "实名认证",
-            area: [w, '600px'], // 宽高
-            content: "/user/auth",
-            end: function () {
-                //location.reload();
-            },
-        });
-    }
-</script>
 <script src="__STATIC__/js/wind.js"></script>
 <script src="__STATIC__/js/admin.js"></script>
 

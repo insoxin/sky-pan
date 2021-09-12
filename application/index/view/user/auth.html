@@ -1,0 +1,85 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="__STATIC__/tixian/layui.js"></script>
+    <script src="__STATIC__/js/jquery.js"></script>
+    <script src="__STATIC__/pay/js/ui-choose.js" type="text/javascript"></script>
+    <script src="__STATIC__/pay/js/qrcode.min.js" type="text/javascript"></script>
+    <link rel='stylesheet' href='__STATIC__/tixian/layui.css' type='text/css' media='all' />
+</head>
+<body style="margin:20px;">
+<article class="page-container">
+    <form class="layui-form layui-form-pane" id="renzheng">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">实名状态：</label>
+            <div class="layui-input-inline">
+                <input type="text" lay-verify="required" value="{eq name="$is_auth" value="1"}已实名{else/}未实名{/eq}" class="layui-input" disabled>
+            </div>
+        </div>
+
+
+        {eq name="$is_auth" value="1"}
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名：</label>
+            <div class="layui-input-inline">
+                <div class="layui-form-mid">{:getSafeNickname($info.name)}</div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">身份证：</label>
+            <div class="layui-input-inline">
+                <div class="layui-form-mid">{:getSafeNickname($info.idcard)}</div>
+            </div>
+        </div>
+        {else/}
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名：</label>
+            <div class="layui-input-inline">
+                <input type="text" name="name" id="xingming" value="" placeholder="请输入姓名" class="layui-input" lay-verify="required" lay-vertype="tips">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">身份证：</label>
+            <div class="layui-input-inline">
+                <input type="text" name="idcard" id="shenfenzheng" value="" placeholder="请输入身份证号码" class="layui-input" lay-verify="required" lay-vertype="tips">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="smsubmit">提交认证</button>
+            </div>
+        </div>
+        {/eq}
+        <hr>
+    </form>
+</article>
+
+<script>
+    layui.use(['form', 'layer','upload'], function () {
+        var form = layui.form, layer = layui.layer,$= layui.jquery,upload = layui.upload;
+        form.on('submit(smsubmit)', function (data) {
+            loading =layer.load(1, {shade: [0.1,'#fff']});
+            $.post("", data.field, function (res) {
+                layer.close(loading);
+                if (res.code > 0) {
+                    layer.msg(res.msg, {time: 1500, icon: 1}, function () {
+                        var index = parent.layer.getFrameIndex(window.name);
+                        window.parent.location.reload();
+                        parent.layer.close(index);
+                    });
+                } else {
+                    layer.msg(res.msg, {time: 1500, icon: 2});
+                }
+            });
+        });
+
+    });
+
+</script>
+
+
+
+</body>
+</html>

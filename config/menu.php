@@ -81,7 +81,7 @@ return [
         'title' => '实名认证',
         'icon' => 'layui-icon layui-icon-vercode',
         'type' => 1,
-        'href' => url('withdraw/index'),
+        'href' => url('certify/index'),
     ],
     [
         'id' => 8,

@@ -3,7 +3,10 @@
 namespace app\index\controller;
 
 use app\common\controller\Home;
+use app\common\model\Certify;
+use app\common\model\Record;
 use app\common\model\Users;
+use app\common\model\Withdraw;
 use think\Exception;
 use think\facade\Cache;
 use function MongoDB\BSON\toRelaxedExtendedJSON;
@@ -163,6 +166,81 @@ class User extends Home
         $this->assign('key',$key);
         $this->assign('sign',$sign);
         return $this->fetch('reset');
+    }
+
+    public function auth(){
+        if($this->request->isPost()){
+            $data = input('post.');
+            $result = $this->validate($data,[
+               'name|姓名' => 'require|chs|length:2,20',
+                'idcard|身份证号码' => 'require|idCard'
+            ]);
+
+            if($result !== true) return json(['code' => 0,'msg' => $result]);
+
+            if($this->userInfo['is_auth']){
+                return json(['code' => 0,'msg' => '您已完成实名认证，请勿重复提交']);
+            }
+
+            if(Certify::where('uid',$this->userInfo['id'])->where('status',0)->count() > 0){
+                return json(['code' => 0,'msg' => '您提交的实名资料正在审核中，请勿重复提交']);
+            }
+
+            Certify::create([
+                'uid' => $this->userInfo['id'],
+                'name' => $data['name'],
+                'idcard' => $data['idcard'],
+                'create_time' => time()
+            ]);
+
+            return json(['code' => 1,'msg' => '实名资料已提交，请耐心等待审核']);
+        }
+
+        $this->assign('info',$this->userInfo->getCertify());
+        $this->assign('is_auth',$this->userInfo['is_auth']);
+        return $this->fetch();
+    }
+
+    public function withdraw(){
+        if($this->request->isPost()){
+            $data = input('post.');
+            $result = $this->validate($data,[
+               'tx_money|提现金额' => 'require|float',
+                'alipay_account|支付宝帐号' => 'require|max:255',
+                'alipay_name|支付宝姓名' => 'require|chs|max:60'
+            ]);
+
+            if($result !== true) return json(['code' => 0,'msg' => $result]);
+
+            $withdraw_count = Withdraw::where('uid',$this->userInfo['id'])
+                ->where('status',0)
+                ->whereTime('create_time','d')
+                ->count();
+
+            if($withdraw_count > 0){
+                return json(['code' => 0,'msg' => '您有一条提现申请还在审核中，请勿重复提交']);
+            }
+
+            if(floatval($this->userInfo['amount']) - floatval($data['tx_money']) < 0){
+                return json(['code' => 0,'msg' => '您的账户余额不足']);
+            }
+
+            // 扣钱
+            Record::addRecord($this->userInfo['id'],1,'用户提现',$data['tx_money'],'余额提现'.$data['tx_money'].'元至支付宝');
+
+            // 添加记录
+            Withdraw::create([
+                'uid' => $this->userInfo['id'],
+                'money' => $data['tx_money'],
+                'alipay_account' => $data['alipay_account'],
+                'alipay_name' => $data['alipay_name'],
+                'create_time' => time()
+            ]);
+
+            return json(['code' => 1,'msg' => '申请成功，请等待处理']);
+        }
+        $this->assign('amount',$this->userInfo['amount']);
+        return $this->fetch();
     }
 
 }

@@ -1,0 +1,50 @@
+{extend name="layout/user" /}
+
+
+{block name="main"}
+<link href="__STATIC__/font-awesome/css/font-awesome.min.css?page=index" rel="stylesheet" type="text/css">
+<link href="__STATIC__/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
+<script src="__STATIC__/js/bootstrap-datetimepicker.js"></script>
+
+<div class="all-box">
+  <div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+      <li {eq name="url_path" value="share/index"}class="active"{/eq}><a href="{:url('share/index')}">今日收益</a></li>
+      <li {eq name="url_path" value="share/record"}class="active"{/eq}><a href="{:url('share/record')}">财务记录</a></li>
+      <li {eq name="url_path" value="share/withdraw"}class="active"{/eq}><a href="{:url('share/withdraw')}">提现记录</a></li>
+    </ul>
+    <fieldset>
+      <div class="tabbable">
+        <div class="tab-content">
+
+          <div class="tab-pane active">
+            <form class="well form-inline margin-top-20">
+              累计收益：0 </form>
+
+            <table class="table table-hover table-bordered">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>原因</th>
+                <th>来源</th>
+                <th>变更金额</th>
+                <th>变更前</th>
+                <th>变更后</th>
+                <th>时间</th>
+              </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+
+            <div class="pagination"></div>
+
+          </div>
+
+
+        </div>
+      </div>
+    </fieldset>
+  </div>
+</div>
+{/block}
