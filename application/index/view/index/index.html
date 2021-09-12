@@ -53,6 +53,8 @@
         }
     </style>
 
+    {$Think.config.basic.site_head|raw}
+
 </head>
 
 <body>
@@ -70,12 +72,14 @@
                 <div class="nav">
                     <ul>
                         <li><a href="{:url('index/index')}" class="a_line">首页</a></li>
-                        <li><a href="xieyi.html" class="a_line" target="_blank">免责声明</a></li>
-                        <li><a href="javascript:;" class="a_line" style="color:red;" target="_self">分享赚钱</a></li>
+                        <li><a href="{:url('index/xieyi')}" class="a_line" target="_blank">免责声明</a></li>
                     </ul>
                     <div class="login">
-                        <!-- <a href="index.html" title="您好，Hudson Star" class="a_area">我的网盘</a> -->
+                        {eq name="$is_login" value="1"}
+                        <a href="{:url('user/index')}" class="a_area">我的网盘</a>
+                        {else/}
                         <a target="_blank" href="{:url('user/login')}" class="a_area">登录/注册</a>
+                        {/eq}
                     </div>
                 </div>
             </div>
@@ -88,7 +92,7 @@
                     <div data-v-e9e0751c="" class="body-left">
                         <div data-v-e9e0751c="" class="left-title">高速存储的云盘</div>
                         <div data-v-e9e0751c="" class="left-text">
-                            闪客云盘是一款速度快、不打扰、够安全、易于分享的网络云盘,你可以在这里存储、管理和探索内容，尽情打造丰富的数字世界。</div>
+                            {$Think.config.basic.site_title}是一款速度快、不打扰、够安全、易于分享的网络云盘,你可以在这里存储、管理和探索内容，尽情打造丰富的数字世界。</div>
                         <div data-v-e9e0751c="" class="left-download">
                             <a data-v-e9e0751c="" href="{:url('user/index')}">
                                 <div data-v-e9e0751c="" class="apps">用户中心</div>
@@ -168,19 +172,8 @@
                 </a>
             </div>
             <div data-v-20ff4511="" class="footer-text">
-                <div data-v-20ff4511="" class="footer-text-links">
-                    <div data-v-20ff4511="" class="footer-text-links-title">友情链接：</div>
-                    <ul data-v-20ff4511="">
-                        <li>
-                            <a data-v-20ff4511="" target="_blank" href="">闪客云盘</a>
-                        </li>
-                        <li>
-                            <a data-v-20ff4511="" target="_self" href="javascript:;">玖讯支付</a>
-                        </li>
-                    </ul>
-                </div>
-                <div data-v-20ff4511="" class="footer-text-content">Copyright © 2018-2021 xxxxx网络科技有限公司 All rights
-                    reserved. 版权所有 <a href="javascript:;" target="_self" style="color: #8286a6">皖ICP备18025451号-6</a>
+                <div data-v-20ff4511="" class="footer-text-content">Copyright © 2018-2021 {$Think.config.basic.site_title} All rights
+                    reserved. 版权所有
                 </div>
             </div>
         </div>
@@ -197,5 +190,6 @@
     $(".course_c:eq(2),.course_c:eq(6)").css("margin-right", "28px");
     $("#pic_list_1").cxScroll();
 </script>
+{$Think.config.basic.site_foot|raw}
 </body>
 </html>

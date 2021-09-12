@@ -228,7 +228,7 @@
                 is_login:{$is_login},
                 is_vip:{$vip_info.is_vip},
                 link:'',
-                kefu:'客服QQ：<span style=\'color:red;font-size:15px\'>1665555255</span><br/><br/>客服在线时间：早上9点-晚上22点<br/><br/>如遇到任何问题请联系客服处理<br/>对此给您带来的不便深感抱歉',
+                kefu:'{$Think.config.basic.site_kefu|raw}',
                 vip_max:{$vip_max},
                 vip_expire:{$vip_info.expire_time}
             }
