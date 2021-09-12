@@ -4,6 +4,7 @@ namespace app\index\controller;
 use app\common\controller\Home;
 use app\common\model\FileManage;
 use app\common\model\Folders;
+use app\common\model\Reports;
 use app\common\model\Shares;
 use app\common\model\Stores;
 use app\common\model\Users;
@@ -109,7 +110,71 @@ class Index extends Home
     }
 
     public function report(){
+        $share_id = input('get.share_id');
 
+        $share = Shares::where('id',$share_id)->find();
+
+        if(empty($share)){
+            return $this->fetch('user/err',['msg' => '传递参数不正确']);
+        }
+
+        // 获取文件信息
+        if($share['type'] == 1){
+            $files = Folders::where('id',$share['source_id'])->find();
+        }else{
+            $files = Stores::where('id',$share['source_id'])->find();
+        }
+
+        // 文件信息获取失败
+        if(empty($files)){
+            return $this->fetch('user/err',['msg' => '文件信息获取失败']);
+        }
+
+        // 获取用户信息
+        $share_user = Users::where('id',$share['uid'])->find();
+
+        if(empty($share_user)){
+            return $this->fetch('user/err',['msg' => '举报用户不存在']);
+        }
+
+        // 分享信息
+        $report = [
+            'share_id' => $share['id'],
+            'source_name' => $share['type'] ? $files['folder_name'] : $files['origin_name'],
+            'source_url' => getShareUrl($share['code']),
+            'source_uid' => $share['uid'],
+            'source_username' => $share_user['username'],
+            'source_type' => $share['type'],
+            'create_time' => time(),
+            'real_ip' => request()->ip()
+        ];
+
+        if($this->request->isPost()){
+            $data = input('post.');
+            $result = $this->validate($data,[
+               'contact|联系方式' => 'require',
+                'content|详细描述' => 'require',
+                'type|危害类别' => 'require'
+            ]);
+
+            if($result !== true) return json(['code' => 0,'msg' => $result]);
+
+            $report_key = 'report_'.$share_id;
+
+            if(!empty(Cookie::get($report_key))){
+                return json(['code' => 0,'msg' => '您已经举报过了，请勿重复举报']);
+            }
+
+            $report = array_merge($report,$data);
+
+            Cookie::set('report_'.$share_id,'1');
+
+            Reports::create($report);
+
+            return json(['code' => 1,'msg' => '举报反馈成功']);
+        }
+
+        return $this->fetch();
     }
 
     public function qrcode(){

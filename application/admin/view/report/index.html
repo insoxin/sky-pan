@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="/static/component/pear/css/pear.css" />
+</head>
+<body class="pear-container">
+<div class="layui-card">
+    <div class="layui-card-body">
+        <table id="user-table" lay-filter="user-table"></table>
+    </div>
+</div>
+
+<script type="text/html" id="user-toolbar"></script>
+
+<script type="text/html" id="user-bar">
+    <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-survey"></i></button>
+    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
+</script>
+
+
+<script type="text/html" id="user-auth">
+    {{#if (d.status == 0) { }}
+    <span class="layui-badge layui-bg-orange">未处理</span>
+    {{# }else if(d.status == 1){ }}
+    <span class="layui-badge layui-bg-blue">已处理</span>
+    {{# } }}
+</script>
+
+<script type="text/html" id="user-url">
+    <a href="{{ d.source_url }}" target="_blank">{{ d.source_url }}</a>
+</script>
+
+<script src="/static/component/layui/layui.js"></script>
+<script src="/static/component/pear/pear.js"></script>
+<script>
+    layui.use(['table', 'form', 'jquery','common'], function() {
+        let table = layui.table;
+        let form = layui.form;
+        let $ = layui.jquery;
+        let common = layui.common;
+
+        let cols = [
+            [{type: 'checkbox'},
+                {title: '文件/目录名', field: 'source_name', align: 'center'},
+                {title: '链接地址', field: 'source_url', align: 'center', templet: '#user-url'},
+                {title: '所属用户', field: 'source_username', align: 'center'},
+                {title: '危害类别', field: 'type', align: 'center'},
+                {title: '联系方式', field: 'contact', align: 'center'},
+                {title: '举报IP', field: 'real_ip', align: 'center'},
+                {title: '处理状态', field: 'status', align: 'center', templet: '#user-auth'},
+                {title: '创建时间', field: 'create_time', align: 'center'},
+                {title: '操作', toolbar: '#user-bar', align: 'center', width: 130}
+            ]
+        ]
+
+        table.render({
+            elem: '#user-table',
+            url: "{:url('report/index')}",
+            page: true,
+            limit:20,
+            cols: cols,
+            skin: 'line',
+            toolbar: '#user-toolbar',
+            defaultToolbar: [{
+                title: '刷新',
+                layEvent: 'refresh',
+                icon: 'layui-icon-refresh',
+            }, 'filter', 'print', 'exports']
+        });
+
+        table.on('tool(user-table)', function(obj) {
+            if (obj.event === 'remove') {
+                window.remove(obj);
+            } else if (obj.event === 'edit') {
+                window.edit(obj);
+            }
+        });
+
+        table.on('toolbar(user-table)', function(obj) {
+            if (obj.event === 'refresh') {
+                window.refresh();
+            }
+        });
+
+
+        window.edit = function(obj) {
+            layer.open({
+                type: 2,
+                title: '处理举报',
+                shade: 0.1,
+                area: ['600px', '520px'],
+                content: "{:url('report/edit')}?id=" + obj.data['id']
+            });
+        }
+
+        window.remove = function(obj) {
+            layer.confirm('确定要删除该举报内容吗？', {
+                icon: 3,
+                title: '提示'
+            }, function(index) {
+                layer.close(index);
+                let loading = layer.load();
+                $.ajax({
+                    url: "{:url('report/delete')}?id=" + obj.data['id'],
+                    dataType: 'json',
+                    type: 'get',
+                    success: function(result) {
+                        layer.close(loading);
+                        if (result.code == 200) {
+                            layer.msg(result.msg, {
+                                icon: 1,
+                                time: 1000
+                            }, function() {
+                                obj.del();
+                            });
+                        } else {
+                            layer.msg(result.msg, {
+                                icon: 2,
+                                time: 1000
+                            });
+                        }
+                    }
+                })
+            });
+        }
+
+        window.refresh = function(param) {
+            table.reload('user-table');
+        }
+    })
+</script>
+</body>
+</html>

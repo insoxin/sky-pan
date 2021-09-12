@@ -1,0 +1,422 @@
+
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+    <script type="text/javascript" src="__STATIC__/js/jquery.js"></script>
+    <script src="__STATIC__/js/layer.js"></script>
+    <title>举报 - {$Think.config.basic.site_title}</title>
+    <style>
+        body,
+        td,
+        th {
+            font-family: Arial, \5FAE\8F6F\96C5\9ED1, sans-serif;
+            font-size: 14px;
+            margin: 0px;
+            color: #333333;
+        }
+
+        .d2 {
+            font-size: 22px;
+            font-family: MingLiU, PMingLiU;
+            width: auto;
+            margin-right: auto;
+            margin-left: auto;
+            padding-left: 8%;
+            padding-right: 50px;
+            padding-top: 17px;
+            padding-bottom: 11px;
+        }
+
+        #date {
+            font-size: 12px;
+            color: #666666;
+            margin: auto;
+            padding: 7px 98px;
+            text-align: center;
+            width: auto;
+        }
+
+        .d5 {
+            color: #000000;
+            font-size: 16px;
+        }
+
+        .h3 {
+            color: #FFFF66;
+            font-weight: normal;
+            padding-bottom: 30px;
+            padding-top: 27px;
+            background-color: #19A9E5;
+            padding-right: 50px;
+            padding-left: 8%;
+            line-height: 2.1;
+            font-size: 16px;
+        }
+
+        .h9 {
+            text-align: center;
+            padding: 7px;
+            border: 1px solid #FFFFFF;
+            color: #FFFFFF;
+        }
+
+        .d7 {
+            padding-left: 8%;
+            margin-right: auto;
+            margin-left: auto;
+            width: auto;
+            padding-top: 17px;
+            padding-right: 50px;
+            padding-bottom: 98px;
+            color: #666666;
+        }
+
+        .m {
+            border: 1px solid #ccc;
+            padding: 9px;
+            /* width: 500px; */
+            font-size: 14px;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, .125);
+            background-color: #fafafa;
+        }
+
+        .m:hover {
+            border: 1px solid #19A9E5;
+        }
+
+        .m2 {
+            border: none;
+            color: #FF0000;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .anniu {
+            padding: 9px;
+            height: 39px;
+            width: 150px;
+            background-color: #FFFFFF;
+            color: #0099FF;
+        }
+
+        .anniu:disabled {
+            color: #757575;
+            background-color: #DEDEDE;
+            border: 2px solid #DEDEDE;
+        }
+
+        .copy {
+            border-top: 1px dashed #CCCCCC;
+            border-right: 1px none #CCCCCC;
+            border-bottom: 1px dashed #CCCCCC;
+            border-left: 1px none #CCCCCC;
+            color: #888888;
+            line-height: 37px;
+            text-align: left;
+            padding: 7px;
+        }
+
+        span {
+            color: #8AD3F2;
+            font-size: 14px;
+            line-height: 2.3;
+        }
+
+        .p {
+            width: 709px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .tc {
+            padding: 8px;
+            visibility: hidden;
+            background-color: #78E789;
+            border: 1px solid #009900;
+            font-size: 30px;
+            color: #FFFFFF;
+            line-height: 100px;
+        }
+
+        #f8 {
+            color: #75D84B;
+            display: none;
+        }
+
+        input:focus {
+            outline: 0;
+        }
+
+        .m:focus {
+            border: #52A6EF 1px solid;
+            box-shadow: 0 0 3px rgba(82, 166, 239, .8);
+            outline: 0;
+            background-color: #fff
+        }
+
+        .radio {
+            position: absolute;
+            left: -9999em
+        }
+
+        .cb_empty {
+            margin-bottom: 16px;
+            font-weight: 700;
+            font-size: 12px;
+            background-color: #fff;
+            border: 1px #ddd solid;
+            padding: 0 16px;
+            border-radius: 3px;
+            cursor: pointer;
+            background-image: linear-gradient(#FCFCFC, #EEE);
+            display: inline-block;
+            line-height: 28px;
+            height: 28px
+        }
+
+        .cb_empty:hover {
+            border: 1px #ccc solid;
+            background-image: linear-gradient(#EEE, #DDD)
+        }
+
+        .cb_empty:active {
+            box-shadow: inset 0 1px 6px rgba(0, 0, 0, .3)
+        }
+
+        .checked {
+            color: #fff;
+            cursor: default;
+            background: #379be9;
+            border: 1px #2287D5 solid;
+            background-image: linear-gradient(#379BE9, #379BE9);
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, .3)
+        }
+
+        .checked:hover {
+            border: 1px #2287D5 solid;
+            background-image: linear-gradient(#379BE9, #379BE9)
+        }
+
+        ::-webkit-scrollbar {
+            background: rgba(0, 0, 0, 0.1);
+            height: 8px;
+        ;
+            width: 8px
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.3)
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb:active {
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        #report {
+            position: fixed;
+            width: 100%;
+            background: rgba(17, 17, 17, .3);
+            height: 100%;
+            top: 0;
+            border: 0;
+            z-index: 9;
+        }
+
+        .report {
+            background: #fff;
+            border-radius: 7px;
+            width: 300px;
+            text-align: center;
+            padding: 17px;
+            position: absolute;
+            margin: auto;
+            right: 0;
+            left: 0;
+            bottom: 0;
+            top: 0;
+            height: 80px;
+        }
+
+        .report span {
+            margin: 0 15px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #08f;
+        }
+
+        .report_hd {
+            padding-bottom: 20px;
+        }
+
+        #f9 {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+<div class="d2">互联网不良信息 文件举报</div>
+<div class="h3">
+    <span class="d5">文件举报说明：</span> <br />
+    1,如果有害信息类别属于“版权或者危害他人”，请提供以下材料：
+    <br />
+    <span>版权证明文件（如著作权、版权证书等）或侵犯他人权利的相关证明（如肖像权的本人身份证等）。书面处理请求书（需要注明处理方式，如删除相关文件或冻结用户账户文件等）。举报人的相关证件扫描件（如身份证、营业执照等），如果与第一项版权证明不相符的，还需要提供
+            授权委托书 。<br />
+            以上材料均采用电子扫描件，并加盖公章或签名。发送到邮件 <span class="h9">{$Think.config.basic.site_email}</span> 。</span><br />
+    2,如果文件含有诈骗，病毒，木马，淫秽等问题，可以直接提交。
+</div>
+<div id="content">
+    <div class="main">
+        <div class="d7">
+            <table width="100%" cellspacing="0" cellpadding="7" border="0">
+                <tbody>
+                <tr valign="top">
+                    <td valign="middle">
+                        <div align="left"><span class="field"><strong>联系邮箱/手机号:</strong></span>[必填]<br />
+                            <input type="text" class="m" maxlength="60" size="26" id="yourname"
+                                   name="yourname" />
+                        </div>
+                    </td>
+                </tr>
+
+                <tr valign="top">
+                    <td>
+                        <div align="left"><span class="field"><strong>详细描述:</strong></span><br />
+                            <textarea name="message" class="m" id="message" cols="60" rows="5"></textarea>
+                            <span class="tip"></span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr valign="top">
+                    <td>
+                        <div align="left"><span class="field"><strong>危害类别:</strong></span>
+                            <div id="pay">
+                                <label for="t0" class="cb_empty  checked"><input type="radio" name="tel"
+                                                                                 value="病毒" id="t0" class="radio" checked />病毒</label>
+                                <label for="t1" class="cb_empty"><input type="radio" name="tel" value="诈骗"
+                                                                        id="t1" class="radio" />诈骗</label>
+                                <label for="t5" class="cb_empty"><input type="radio" name="tel" value="赌博"
+                                                                        id="t5" class="radio" />赌博</label>
+                                <label for="t2" class="cb_empty"><input type="radio" name="tel" value="侵权"
+                                                                        id="t2" class="radio" />侵权</label>
+                                <label for="t3" class="cb_empty"><input type="radio" name="tel" value="色情"
+                                                                        id="t3" class="radio" />色情</label>
+                                <label for="t4" class="cb_empty"><input type="radio" name="tel" value="其它"
+                                                                        id="t4" class="radio" />其它</label>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr valign="top">
+                    <td>
+                        <div>
+                            <input type="submit" id="f9" class="anniu" value="提 交" onclick="ck()" />
+                            <font id="f8"> 请稍后...</font>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script language="javascript">
+
+        var type = "病毒";
+
+        $('#pay label').click(function () {
+            type = $(this).find('input').val();
+            var id = $(this).find('input').attr('id');
+            $('#' + id).attr('checked', true);
+            $($('#' + id).parent()).addClass('checked').siblings().removeClass('checked');
+        });
+
+        //获取浏览器参数
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if (pair[0] == variable) { return pair[1]; }
+            }
+            return (false);
+        }
+        function G(id) {
+            return document.getElementById(id);
+        }
+
+        function ck() {
+            var url_id = getQueryVariable("url_id") || '';
+            var contact = $("#yourname").val();
+            var text = $("#message").val();
+            if (contact == '') {
+                layer.msg("请提供您的联系方式", function () { });
+                $("#yourname").focus();
+                return false;
+            }
+            if (text == '') {
+                layer.msg("请提供详细举报内容", function () { });
+                $("#message").focus();
+                return false;
+            }
+
+            G('f9').disabled = true;
+            G('f9').value = "正在提交中...";
+
+            //提交举报
+            $.ajax({
+                type: "post",
+                url: window.location.href,
+                data: {
+                    "contact": contact,
+                    "content": text,
+                    "type": type
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code == 1) {
+                        layer.alert(data.msg, {
+                            icon: 1,
+                            end: function () {
+                                location.reload();
+                            },
+                        });
+                    } else if (data.code == 0) {
+                        layer.alert(data.msg, { icon: 2 });
+                    }
+                },
+                error: function (error) {
+                    layer.alert("API请求失败，请联系客服", { icon: 2 });
+                }
+            });
+
+            G('f9').disabled = false;
+            G('f9').value = "提 交";
+            return false;
+        }
+
+        function getdates() {
+            var d = new Date();
+            var year = d.getFullYear();
+            var shows = "&copy; 2018-" + year + " {$Think.config.basic.site_title}";
+            document.getElementById("date").innerHTML = shows;
+        }
+    </script>
+    <div id='date'>
+        <script>
+            getdates();
+        </script>
+    </div>
+</div>
+</body>
+
+</html>
