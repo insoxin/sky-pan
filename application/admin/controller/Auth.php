@@ -37,11 +37,8 @@ class Auth extends Admin
     }
 
     public function logout(){
-
-    }
-
-    public function pass(){
-
+        (new Users)->logout('admin');
+        return json(['code' => 200,'msg' => '退出登录成功']);
     }
 
     public function verify(){

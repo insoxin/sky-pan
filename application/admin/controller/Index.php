@@ -40,8 +40,4 @@ class Index extends Admin
 
     }
 
-    public function cache(){
-
-    }
-
 }
