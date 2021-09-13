@@ -34,14 +34,14 @@
                     <div class="avatar">
                         <div class="photo-frame">
                                 <span class="radius-3">
-                                    <img src="//static.skpan.cn/avatar/fa8c6a353520fcfcebdc65323bec7ff8.jpeg" width="44">
+                                    <img src="{:getUserHead($info.avatar)}" width="44">
                                     <span class="cert-info"></span>
                                 </span>
                         </div>
                     </div>
                     <div class="verify-property">
                         <div class="verify-user">
-                            <div class="username">A********品</div>
+                            <div class="username">{:getSafeNickname($info.nickname)}</div>
                         </div>
                         <div class="author-desc">暂无签名</div>
                     </div>

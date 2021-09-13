@@ -4,6 +4,7 @@ namespace app\index\controller;
 use app\common\controller\Home;
 use app\common\model\FileManage;
 use app\common\model\Folders;
+use app\common\model\Profit;
 use app\common\model\Reports;
 use app\common\model\Shares;
 use app\common\model\Stores;
@@ -87,6 +88,13 @@ class Index extends Home
             }
             return $this->fetch('folder');
         }else{
+
+            // 统计数据
+            (new Profit)
+                ->source($storeInfo['uid'],$storeInfo['id'])
+                ->addCount('view',1)
+                ->record();
+
             // 文件显示
             $file_info = [
                 'username' => getSafeNickname($user['nickname']),
@@ -235,6 +243,12 @@ class Index extends Home
                 throw new Exception('文件数据存储策略不存在');
             }
 
+            // 统计数据
+            (new Profit)
+                ->source($stores['uid'],$stores['id'])
+                ->addCount('down',1)
+                ->record();
+
             // 判断存储方式
             switch ($policy->type){
                 case 'local':
@@ -300,4 +314,5 @@ class Index extends Home
             return $this->fetch('user/err',['msg' => $e->getMessage()]);
         }
     }
+
 }

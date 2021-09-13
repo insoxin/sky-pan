@@ -276,3 +276,7 @@ function getDownloadFileSignVerify($param,$sign): bool
     $sign_key = md5(urldecode(http_build_query($param)) . config('app.pass_salt'));
     return $sign_key == $sign;
 }
+
+function getFileName($field_id){
+    return \app\common\model\Stores::where('id',$field_id)->value('origin_name');
+}

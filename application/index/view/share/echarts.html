@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="__STATIC__/js/jquery.js"></script>
+    <script src="__STATIC__/js/highcharts.js"></script>
+    <link href="__STATIC__/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__STATIC__/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="__STATIC__/css/bootstrap-table-fixed-columns.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="wrap">
+
+    <div class="panel-body" id="container" style="width: 95%; height: 400px; margin: 0 auto">
+    </div>
+    <table class="table table-hover table-bordered margin-top-10">
+        <thead>
+        <tr>
+            <th>浏览</th>
+            <th>下载</th>
+            <th>登录</th>
+            <th>总订单</th>
+            <th>成功订单</th>
+            <th>注册</th>
+            <th>金额</th>
+            <th>分成</th>
+            <th>日期</th>
+            <th>星期</th>
+            <th>几天前</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><span class="label label-success">1</span></td>
+            <td><span class="label label-success">1</span></td>
+            <td><span class="label label-success">0</span></td>
+            <td><span class="label label-success">0</span></td>
+            <td><span class="label label-success">0</span></td>
+            <td><span class="label label-success">0</span></td>
+            <td><span class="label label-success">0.00</span></td>
+            <td><span class="label label-success">0.00</span></td>
+            <td>2021-09-09</td>
+            <td>星期四</td>
+            <td>0天前</td>
+        </tr>
+        <tr>
+            <td><span class="label label-success">0</span></td>
+            <td><span class="label label-success">1</span></td>
+            <td><span class="label label-success">0</span></td>
+            <td><span class="label label-success">0</span></td>
+            <td><span class="label label-success">0</span></td>
+            <td><span class="label label-success">0</span></td>
+            <td><span class="label label-success">0.00</span></td>
+            <td><span class="label label-success">0.00</span></td>
+            <td>2021-09-08</td>
+            <td>星期三</td>
+            <td>1天前</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+<script>
+    $(function () {
+        $('#container').highcharts({
+            title: {
+                text: '',
+                x: -20 //center
+            },
+            plotOptions: {
+                line: {
+                    lineWidth: 3
+                },
+                tooltip: {
+                    hideDelay: 200
+                }
+            },
+            subtitle: {
+                text: '',
+                x: -20
+            },
+            xAxis: {
+                categories: [
+                    {$time_type|raw}
+                ]
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1
+                }]
+            },
+            tooltip: {
+                valueSuffix: ' 个',
+                crosshairs: true,
+                shared: true
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            },
+            series: [
+
+                {
+                    name: '注册',
+                    color: 'rgba(0,242,59,246)', marker: { radius: 6 }, data: [
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                    ]
+                },
+                {
+                    name: '成功订单',
+                    color: 'rgba(0,15,182,59)', marker: { radius: 6 }, data: [
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                    ]
+                },
+                {
+                    name: '金额',
+                    color: 'rgba(0,92,219,192)', marker: { radius: 6 }, data: [
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                    ]
+                },
+            ]
+
+        });
+    });
+</script>
+
+</html>
