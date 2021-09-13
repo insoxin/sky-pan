@@ -4,7 +4,9 @@ namespace app\index\controller;
 use app\common\controller\Home;
 use app\common\model\FileManage;
 use app\common\model\Folders;
+use app\common\model\Order;
 use app\common\model\Profit;
+use app\common\model\Record;
 use app\common\model\Reports;
 use app\common\model\Shares;
 use app\common\model\Stores;
@@ -312,11 +314,108 @@ class Index extends Home
     }
 
     public function return_callback(){
-        return '同步通知';
+        $param = input('get.');
+        $sign = input('get.sign');
+
+        if($sign != $this->sign_param($param)){
+            $this->error('签名校验失败');
+        }
+
+        $order = Order::where('trade_no',$param['out_trade_no'])->find();
+
+        if(empty($order)){
+            $this->error('订单数据不存在');
+        }
+
+        if($order['status'] != 1){
+            $this->error('订单未支付成功');
+        }
+
+        $this->success('VIP开通/续费成功');
     }
 
     public function return_notify(){
-        return '异步通知';
+        $param = input('get.');
+        $sign = input('get.sign');
+
+        if($sign != $this->sign_param($param)){
+            exit('Fail is sign verify.');
+        }
+
+        if($param['trade_status'] != 'TRADE_SUCCESS'){
+            exit('Fail is trade status.');
+        }
+
+        // 查找订单
+        $order = Order::where('trade_no',$param['out_trade_no'])->find();
+
+        if(empty($order)){
+            exit('Fail order is not found.');
+        }
+
+        // 查找用户
+        $user = Users::where('id',$order['uid'])->find();
+
+        if(empty($user)){
+            exit('Fail order user is not found.');
+        }
+
+        // VIP用户组
+        $vip_group = config('vip.vip_group');
+        // 开通/续费时长
+        $vip_expire = $order['vip_day'] * 86400;
+        // 开通/续费VIP
+        if($user['group'] == $vip_group){
+            // 续费VIP
+            $user['group_expire'] = $user['group_expire'] + $vip_expire;
+        }else{
+            // 开通VIP
+            $user['group'] = $vip_group;
+            $user['group_expire'] = time() + $vip_expire;
+        }
+
+        // 保存数据
+        $user->save();
+
+        // 完成订单
+        $order['status'] = 1;
+        $order['out_trade_no'] = $param['trade_no'];
+        $order['pay_time'] = time();
+
+        // 保存订单
+        $order->save();
+
+        // 查询分成用户
+        $share = Shares::where('id',$order['profit_id'])->find();
+        // 参与分成
+        if(!empty($share)){
+            // 用户分成奖励比例
+            $vip_profit = config('vip.vip_profit');
+            // 计算用户分成奖励
+            $user_profit = ($order['money'] / 100) * $vip_profit;
+            // 通用户不奖励
+            if($order['uid'] != $share['uid']){
+                // 奖励
+                Record::addRecord($share['uid'],0,'VIP分成',$user_profit,'用户'.getSafeNickname($user['nickname']).'开通VIP奖励');
+                // 记录
+                Profit::record($share['uid'],$share['source_id'],'count_order',1);
+                Profit::record($share['uid'],$share['source_id'],'count_order_yes',1);
+                Profit::record($share['uid'],$share['source_id'],'count_money',$order['money']);
+                Profit::record($share['uid'],$share['source_id'],'count_profit',$user_profit);
+            }
+        }
+
+        // 处理完成
+        exit('SUCCESS');
+    }
+
+    protected function sign_param($param): string
+    {
+        unset($param['sign']);
+        unset($param['sign_type']);
+        ksort($param);
+        reset($param);
+        return md5(urldecode(http_build_query($param)) . config('pay.api_key'));
     }
 
 }

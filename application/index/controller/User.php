@@ -142,7 +142,7 @@ class User extends Home
             'uid' => $this->userInfo['id'],
             'trade_no' => $trade_no,
             'type' => $pay_type,
-            'profit_uid' => $share_id,
+            'profit_id' => $share_id,
             'money' => $vip_config['money'],
             'vip_day' => $vip_config['day'],
             'create_time' => time(),
@@ -185,7 +185,13 @@ class User extends Home
     }
 
     public function vip_close(){
+        $lock_time = time() - (60 * 10);
+        Order::where('status',0)
+            ->limit(50)
+            ->whereTime('create_time','<=',$lock_time)
+            ->update(['status' => 3]);
 
+        return json(['code' => 1,'msg' => '关闭订单成功']);
     }
 
     public function forget(){
