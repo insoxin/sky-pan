@@ -34,10 +34,29 @@
               </tr>
               </thead>
               <tbody>
+                {volist name="list" id="vo"}
+                <tr>
+                  <td>{$vo.id}</td>
+                  <td>{$vo.remark}</td>
+                  <td>{$vo.source}</td>
+                  <td>
+                      {eq name="$vo.type" value="0"}
+                      <b style="color: #47a21a;font-weight: bold"> + {$vo.money}</b>
+                      {else/}
+                      <b style="color: #f70606;font-weight: bold"> - {$vo.money}</b>
+                      {/eq}
+                  </td>
+                  <td>{$vo.before_money}</td>
+                  <td>{$vo.after_money}</td>
+                  <td>{$vo.create_time|date="Y-m-d H:i"}</td>
+                </tr>
+                {/volist}
               </tbody>
             </table>
 
-            <div class="pagination"></div>
+            <div class="pag">
+              {$list|raw}
+            </div>
 
           </div>
 

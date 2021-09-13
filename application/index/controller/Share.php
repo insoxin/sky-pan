@@ -3,6 +3,7 @@
 namespace app\index\controller;
 
 use app\common\controller\Home;
+use app\common\model\Record;
 use app\common\model\Withdraw;
 
 class Share extends Home
@@ -13,6 +14,10 @@ class Share extends Home
     }
 
     public function record(){
+
+        $list = Record::where('uid',$this->userInfo['id'])->order('create_time desc')->paginate(15);
+
+        $this->assign('list',$list);
 
         return $this->fetch();
     }

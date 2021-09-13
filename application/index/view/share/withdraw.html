@@ -46,11 +46,9 @@
                   <td>{$vo.alipay_account}</td>
                   <td>{$vo.alipay_name}</td>
                   <td>
-                    {eq name="$vo.status" value="1"}
-                    <span class="label label-success">提现成功</span>
-                    {else/}
-                    <span class="label label-info">等待处理</span>
-                    {/eq}
+                    {eq name="$vo.status" value="0"}<span class="label label-info">等待处理</span>{/eq}
+                    {eq name="$vo.status" value="1"}<span class="label label-success">提现成功</span>{/eq}
+                    {eq name="$vo.status" value="2"}<span class="label label-danger">资金退回</span>{/eq}
                   </td>
                   <td>{$vo.create_time|date="Y-m-d H:i"}</td>
                 </tr>
