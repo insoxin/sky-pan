@@ -57,8 +57,6 @@ class Users extends Model
                 'uid' => $user_id,
                 'folder_name' => '根目录',
 				'parent_folder' => 0,
-				'position' => '.',
-				'position_absolute' => '/',
                 'create_time' => time()
             ]);
         }

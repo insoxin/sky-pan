@@ -22,6 +22,7 @@ class Index extends Home
     }
 
     public function share(){
+
         $code = $this->request->param('code');
         //分享信息
         $info = Shares::where('code',$code)->find();
@@ -90,10 +91,7 @@ class Index extends Home
         }else{
 
             // 统计数据
-            (new Profit)
-                ->source($storeInfo['uid'],$storeInfo['id'])
-                ->addCount('view',1)
-                ->record();
+            Profit::record($storeInfo['uid'],$storeInfo['id'],'view');
 
             // 文件显示
             $file_info = [
@@ -244,10 +242,7 @@ class Index extends Home
             }
 
             // 统计数据
-            (new Profit)
-                ->source($stores['uid'],$stores['id'])
-                ->addCount('down',1)
-                ->record();
+            Profit::record($stores['uid'],$stores['id'],'down',1);
 
             // 判断存储方式
             switch ($policy->type){
@@ -273,9 +268,7 @@ class Index extends Home
 
 
                     // 关闭php超时限制
-                    ignore_user_abort(false);
                     set_time_limit(0);
-                    session_write_close();
 
                     // 写入文件头
                     header('Cache-control: private');
@@ -304,6 +297,7 @@ class Index extends Home
                     //关闭文件
                     fclose($fh);
 
+                    exit;
                     break;
                 case 'remote':
 

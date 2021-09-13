@@ -13,6 +13,80 @@
 </head>
 
 <body>
+
+{eq name="layer" value="1"}
+<div class="p1" style="margin-top: 5px;box-shadow: none">
+    <!-- 注册账号 -->
+    <div id="reg" style="display:none;">
+        <span class="main-title" style="margin-bottom: 10px;">注册新账号</span>
+        <form onkeydown="if(event.keyCode==13){doReg();return false;}">
+
+            <div class="p3 pmob1">
+                <input class="input" type="text" id="reg_nickname" name="nickname" tabindex="1" maxlength="20" placeholder="昵称 (支持中文)">
+            </div>
+
+            <div class="p3 pmob1">
+                <input class="input" type="text" id="reg_username" name="username" tabindex="1" maxlength="20" placeholder="登录帐号">
+            </div>
+            <div class="p3 pmob2">
+                <input class="input pwd" id="reg_pass1" type="password" name="password" value="" tabindex="2" maxlength="32" placeholder="密码">
+            </div>
+            <div class="p3 pmob2">
+                <input class="input pwd" id="reg_pass2" type="password" value="" tabindex="3" maxlength="32" placeholder="确认密码">
+            </div>
+
+            <br>
+
+            <div class="p3 pmob2">
+                <input class="input" id="reg_email" type="email" value="" tabindex="3" maxlength="64" placeholder="安全邮箱">
+            </div>
+
+            <div class="p3">
+                <div class="errorBox">请输入密码</div>
+            </div>
+
+            <div class="p3"></div>
+        </form>
+
+        <div class="p3">
+            <input onclick="doReg()" class="btn" type="submit" tabindex="4" value="注 册">
+        </div>
+
+        <div class="p3" style="text-align:left;position:absolute">
+            <a onclick="login()" href="#">已有账号？点我登录</a>
+        </div>
+    </div>
+    <!-- 账号密码登录 -->
+    <div id="login" >
+        <form onkeydown="if(event.keyCode==13){doLogin();return false;}">
+
+            <div class="p3">
+                <div class="p2"> </div>
+            </div>
+            <div class="p3 pmob1">
+                <input class="input" type="text" id="user" name="username" tabindex="1" maxlength="20" placeholder="用户名">
+            </div>
+            <div class="p3 pmob2">
+                <input class="input pwd" type="password" id="pass" name="password" tabindex="2" maxlength="32" placeholder="密码">
+            </div>
+            <div class="p3">
+                <div class="errorBox">请输入密码</div>
+            </div>
+
+            <div class="p3"></div>
+        </form>
+        <div class="p3" class='btn'>
+            <input onclick="doLogin()" class="btn" type="submit" tabindex="4" value="登 录">
+        </div>
+        <div class="p3" style="text-align:left;">
+            <p><a onclick="reg()" href="#">没有账号？点我注册</a></p>
+        </div>
+    </div>
+
+</div>
+{/eq}
+
+{eq name="layer" value="0"}
 <div class="top">
     <div class="d1">
         <div class="d11" style="background-image: url({$Think.config.basic.site_logo});height: 18px; background-repeat: no-repeat; background-position: 15px 5px;">
@@ -29,24 +103,6 @@
     <div class="p4">会分享，就会有收获！</div>
 
     <div class="p1" style="margin-top: 15px;">
-        <!-- 微信扫码登录 -->
-        <div id="wx">
-            <!-- <span class="main-title">微信扫码登录</span>
-            <div class="wx-img">
-                <img src="static/picture/showqrcode.jpg" onerror="layer.alert('微信二维码加载失败，请更换浏览器后再试。<br/><br/>推荐您使用搜狗浏览器或者Chrome浏览器<br/><br/>客服QQ：1665555255',{icon:2});">
-            </div>
-            <span class="wx-title">
-                <p>
-                <img src="static/picture/wx.png">
-                微信扫码
-                </p>
-                <p style="margin-top:-8px;">扫码关注公众号登录注册</p>
-            </span> -->
-            <!--<div class="p3" style="text-align:right;">-->
-            <!--    <a onclick="login()" href="#">账号密码登录</a>-->
-            <!--</div>-->
-        </div>
-
         <!-- 注册账号 -->
         <div id="reg" style="display:none;">
             <span class="main-title">注册新账号</span>
@@ -90,8 +146,6 @@
                 <a onclick="wx()" href="#">微信扫码登录</a>
             </div> -->
         </div>
-
-
         <!-- 账号密码登录 -->
         <div id="login" >
             <form onkeydown="if(event.keyCode==13){doLogin();return false;}">
@@ -124,8 +178,8 @@
         </div>
 
     </div>
-
-    <script>
+{/eq}
+<script>
         $(function () {
             //setTimeout("check_login()", 1300);
         });
@@ -252,7 +306,7 @@
             //提交注册
             $.ajax({
                 type: "post",
-                url : "{:url('user/register')}",
+                url : "{:url('user/register')}?share_id={$share_id}",
                 data: {
                     "nickname":nick,
                     "username":sacct,
@@ -301,9 +355,12 @@
             $(".errorBox").show();
         }
     </script>
+
 </div>
 
+{eq name="layer" value="0"}
 <div class="copyright">不得利用云存储发布，存储，传播违法信息</div>
 <div class="foot_info"> © 2021 {$Think.config.basic.site_title}    </div>
+{/eq}
 </body>
 </html>

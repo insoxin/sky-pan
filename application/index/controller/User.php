@@ -4,7 +4,9 @@ namespace app\index\controller;
 
 use app\common\controller\Home;
 use app\common\model\Certify;
+use app\common\model\Profit;
 use app\common\model\Record;
+use app\common\model\Shares;
 use app\common\model\Users;
 use app\common\model\Withdraw;
 use think\Exception;
@@ -19,6 +21,10 @@ class User extends Home
     }
 
     public function login(){
+        $layer = input('get.layer',0);
+        $share_id = input('get.share_id',0);
+
+        if(empty($layer)) $layer = 0;
 
         if((new Users)->login_auth('default')){
             return redirect('user/index');
@@ -36,11 +42,15 @@ class User extends Home
                 return json(['status' => 0,'msg' => '登录失败：' . $e->getMessage()]);
             }
         }
+
+        $this->assign('share_id',$share_id);
+        $this->assign('layer',$layer);
         return $this->fetch();
     }
 
     public function register(){
         $data = input('post.');
+        $share_id = input('get.share_id');
 
         if(config('register.allow_register') != 1){
             return json(['code' => 0,'msg' => '管理员已关闭用户注册功能']);
@@ -57,6 +67,9 @@ class User extends Home
 
         $default_group = config('register.default_group');
 
+        // 获取注册来源
+        $share_info = Shares::where('id',$share_id)->find();
+
         try {
             (new Users)->register(
                 $data['username'],
@@ -65,10 +78,17 @@ class User extends Home
                 $default_group,
                 ['nickname' => $data['nickname']]
             );
+
+            // 统计数据
+            if(!empty($share_info)){
+                Profit::record($share_info['uid'],$share_info['source_id'],'reg',1);
+            }
+
             return json(['code' => 1,'msg' => '注册帐号成功']);
         }catch (Exception $e){
             return json(['code' => 0,'msg' => $e->getMessage()]);
         }
+
     }
 
     public function logout(){
@@ -79,6 +99,9 @@ class User extends Home
     public function vip(){
         $rule = getVipRule();
         $this->assign('rule',$rule);
+        if($this->request->isMobile()){
+            return $this->fetch('vip_wap');
+        }
         return $this->fetch();
     }
 

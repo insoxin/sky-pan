@@ -305,10 +305,10 @@
             }
 
             function vip(buy) {
-                buy = (buy === "" ? down_info.vip_max : buy);
+                buy = (buy === "" || typeof buy === "undefined" ? down_info.vip_max : buy);
                 if (down_info.is_login) {
                     if (isMobile()) {
-                        $("#infoModal").load("/user/vip?buy=" + buy, function () {
+                        $("#infoModal").load("/user/vip?share_id={$share_id}&buy=" + buy, function () {
                             $(this).modal('toggle');
                         });
                     } else {
@@ -317,7 +317,7 @@
                             shadeClose: true,
                             title: down_info.is_vip ? ('续费VIP会员 到期时间：' + down_info.vip_expire) : "在线开通VIP会员",
                             area: ['723px', '520px'], // 宽高
-                            content: "/user/vip?buy=" + buy,
+                            content: "/user/vip?share_id={$share_id}&buy=" + buy,
                             end: function () {
                                 location.reload();
                             },
@@ -345,9 +345,9 @@
                 layer.open({
                     type: 2,
                     title: title,
-                    area: ['319px', '436px'],
+                    area: ['325px', '500px'],
                     //shadeClose: true, // 是否点击遮罩关闭
-                    content: '/user/login?layer=1',
+                    content: '/user/login?layer=1&share_id={$share_id}',
                     end: function () {
                         location.reload(); //刷新数据
                     }
