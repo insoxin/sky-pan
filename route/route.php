@@ -18,4 +18,7 @@ if(ENTRY_MODULE == 'index'){
     Route::any('/file_share/pass','index/share_pass');
     Route::any('/file_share/qrcode','index/qrcode');
     Route::any('/download','index/download');
+
+    Route::any('/pay/callback','index/return_callback');
+    Route::any('/pay/notify','index/return_notify');
 }

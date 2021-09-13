@@ -78,6 +78,8 @@ class Index extends Home
                 'create_time' => $storeInfo->getData('create_time')
             ];
 
+            Folders::where('id',$storeInfo['id'])->where('uid',$storeInfo['uid'])->setInc('count_open',1);
+
             // 获取当前文件夹下所有文件
             $share_list = FileManage::ShareListFile($storeInfo['id'],$user['id']);
 
@@ -307,6 +309,14 @@ class Index extends Home
         }catch (\Throwable $e){
             return $this->fetch('user/err',['msg' => $e->getMessage()]);
         }
+    }
+
+    public function return_callback(){
+        return '同步通知';
+    }
+
+    public function return_notify(){
+        return '异步通知';
     }
 
 }

@@ -49,76 +49,25 @@
     </div>
     <div class="modal-body p-3">
       <div id="mb_vip_selection">
+
+        {volist name="$rule" id="vo"}
         <div class="mb_vip_item d-flex justify-content-between py-3 px-2"
-             onclick="mb_switch_vip(0);" data-vip="day_7">
+             onclick="mb_switch_vip({$vo.id});" data-vip="{$vo.id}">
           <div class=" ">
-            <span class="font-weight-normal my-0">周付VIP会员</span>
-            <span class="badge badge-soft-success badge-pill ml-1">限时7.0折</span>
-            <p class="fs--1 mb-0">高速多线程下载文件，原价9元。</p>
+            <span class="font-weight-normal my-0">{$vo.name}</span>
+            <span class="badge badge-soft-success badge-pill ml-1">限时{$vo.discount}折</span>
+            <p class="fs--1 mb-0">{$vo.desc}</p>
           </div>
           <div class=" ">
-            <h3 class="font-weight-medium my-1"> 3<small class="fs--1 text-700">元
-              / 周</small> </h3>
+            <h3 class="font-weight-medium my-1"> {$vo.money}<small class="fs--1 text-700">元
+              / {$vo.day_name}</small> </h3>
           </div>
         </div>
-
-        <div class="mb_vip_item d-flex justify-content-between py-3 px-2"
-             onclick="mb_switch_vip(1);"  data-vip="day_30">
-          <div class=" ">
-            <span class="font-weight-normal my-0">月付VIP会员</span>
-            <span class="badge badge-soft-success badge-pill ml-1">限时6.3折</span>
-            <p class="fs--1 mb-0">高速多线程下载文件，比周付省11%。</p>
-
-          </div>
-          <div class=" ">
-            <h3 class="font-weight-medium my-1"> 5<small
-                    class="fs--1 text-700">元 / 月</small> </h3>
-          </div>
-        </div>
-
-        <div class="mb_vip_item d-flex justify-content-between py-3 px-2"
-             onclick="mb_switch_vip(2);"  data-vip="day_183">
-          <div class=" ">
-            <span class="font-weight-normal my-0">半年VIP会员</span>
-            <span class="badge badge-soft-success badge-pill ml-1">限时5.2折</span>
-            <p class="fs--1 mb-0">高速多线程下载文件，比月付省35%。</p>
-
-          </div>
-          <div class=" ">
-            <h3 class="font-weight-medium my-1"> 8<small
-                    class="fs--1 text-700">元 / 半年</small> </h3>
-          </div>
-        </div>
-        <div class="mb_vip_item d-flex justify-content-between py-3 px-2"
-             onclick="mb_switch_vip(3);"  data-vip="day_365">
-          <div class=" ">
-            <span class="font-weight-normal my-0">年付VIP会员</span>
-            <span class="badge badge-soft-success badge-pill ml-1">限时4.7折</span>
-            <p class="fs--1 mb-0">高速多线程下载文件，比月付省50%。</p>
-
-          </div>
-          <div class=" ">
-            <h3 class="font-weight-medium my-1"> 10<small
-                    class="fs--1 text-700">元 / 整年</small> </h3>
-          </div>
-        </div>
-        <div class="mb_vip_item d-flex justify-content-between py-3 px-2"
-             onclick="mb_switch_vip(4);"  data-vip="day_9999">
-          <div class=" ">
-            <span class="font-weight-normal my-0">永久VIP会员</span>
-            <span class="badge badge-soft-success badge-pill ml-1">限时2.7折</span>
-            <p class="fs--1 mb-0">高速多线程下载文件，比月付省73%。</p>
-
-          </div>
-          <div class=" ">
-            <h3 class="font-weight-medium my-1"> 20<small
-                    class="fs--1 text-700">元 / 永久</small> </h3>
-          </div>
-        </div>
+        {/volist}
       </div>
       <h5 class="text-center mb-3">选择购买方式</h5>
       <div class="text-center">
-        <button onclick="zhifu(3);" class="btn btn-lg btn-falcon-primary mr-4">
+        <button onclick="zhifu('alipay');" class="btn btn-lg btn-falcon-primary mr-4">
           <svg class="svg-inline--fa fa-alipay fa-w-14 mr-2" aria-hidden="true" focusable="false"
                data-prefix="fab" data-icon="alipay" role="img" xmlns="http://www.w3.org/2000/svg"
                viewBox="0 0 448 512" data-fa-i2svg="">
@@ -127,7 +76,7 @@
             </path>
           </svg>支付宝</button>
 
-        <button onclick="zhifu(1);" class="btn btn-lg btn-falcon-success"><!--span class="fab fa-weixin mr-2"></span>-->
+        <button onclick="zhifu('wxpay');" class="btn btn-lg btn-falcon-success"><!--span class="fab fa-weixin mr-2"></span>-->
           <svg class="svg-inline--fa fa-weixin fa-w-18 mr-2"
                aria-hidden="true" focusable="false" data-prefix="fab" data-icon="weixin" role="img"
                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" data-fa-i2svg="">
@@ -135,6 +84,7 @@
                   d="M385.2 167.6c6.4 0 12.6.3 18.8 1.1C387.4 90.3 303.3 32 207.7 32 100.5 32 13 104.8 13 197.4c0 53.4 29.3 97.5 77.9 131.6l-19.3 58.6 68-34.1c24.4 4.8 43.8 9.7 68.2 9.7 6.2 0 12.1-.3 18.3-.8-4-12.9-6.2-26.6-6.2-40.8-.1-84.9 72.9-154 165.3-154zm-104.5-52.9c14.5 0 24.2 9.7 24.2 24.4 0 14.5-9.7 24.2-24.2 24.2-14.8 0-29.3-9.7-29.3-24.2.1-14.7 14.6-24.4 29.3-24.4zm-136.4 48.6c-14.5 0-29.3-9.7-29.3-24.2 0-14.8 14.8-24.4 29.3-24.4 14.8 0 24.4 9.7 24.4 24.4 0 14.6-9.6 24.2-24.4 24.2zM563 319.4c0-77.9-77.9-141.3-165.4-141.3-92.7 0-165.4 63.4-165.4 141.3S305 460.7 397.6 460.7c19.3 0 38.9-5.1 58.6-9.9l53.4 29.3-14.8-48.6C534 402.1 563 363.2 563 319.4zm-219.1-24.5c-9.7 0-19.3-9.7-19.3-19.6 0-9.7 9.7-19.3 19.3-19.3 14.8 0 24.4 9.7 24.4 19.3 0 10-9.7 19.6-24.4 19.6zm107.1 0c-9.7 0-19.3-9.7-19.3-19.6 0-9.7 9.7-19.3 19.3-19.3 14.5 0 24.4 9.7 24.4 19.3.1 10-9.9 19.6-24.4 19.6z">
             </path>
           </svg>微信支付</button>
+
       </div>
     </div>
     <div class="modal-footer">
@@ -149,15 +99,16 @@
   var vip_id = "";
 
   function zhifu(pay_type){
+
     layer.open({
       type: 2,
       title: '支付页面',
       closeBtn: 1,
       area: ['100%', '100%'], // 宽高
-      content: "/user/vip/tiao?pay_type="+pay_type+"&vip="+vip_id,
+      content: "/user/payment?pay_type="+pay_type+"&vip="+vip_id + "&share_id={$share_id}",
       end: function () {
         //设置订单为已关闭
-        $.get("/user/vip/close");
+        $.get("/user/vip_close");
       },
       cancel:function(index){
         //eg1
@@ -172,6 +123,7 @@
         return false;
       },
     });
+
   }
 
   function mb_switch_vip(id) {

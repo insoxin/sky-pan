@@ -4,6 +4,7 @@ namespace app\index\controller;
 
 use app\common\controller\Home;
 use app\common\model\Certify;
+use app\common\model\Order;
 use app\common\model\Profit;
 use app\common\model\Record;
 use app\common\model\Shares;
@@ -97,12 +98,94 @@ class User extends Home
     }
 
     public function vip(){
+        $share_id = input('get.share_id',0);
+
         $rule = getVipRule();
+
         $this->assign('rule',$rule);
+        $this->assign('share_id',$share_id);
+
         if($this->request->isMobile()){
             return $this->fetch('vip_wap');
         }
         return $this->fetch();
+    }
+
+    public function payment(){
+        $vip_type = input('get.vip',0);
+        $share_id = input('get.share_id',0);
+        $pay_type = input('get.pay_type',0);
+
+        if($pay_type != 'alipay' && $pay_type != 'wxpay'){
+            $this->error('支付方式错误');
+        }
+
+        // 获取VIP规则
+        $rule = getVipRule();
+
+        // 判断VIP类型是否正确
+        if(!isset($rule[$vip_type])){
+            $this->error('VIP类型不存在');
+        }
+
+        // 获取VIP价格
+        $vip_config = $rule[$vip_type];
+
+        // 获取支付配置信息
+        $config = config('pay.');
+
+        // 本地创建订单号
+        $trade_no = strtoupper('VIP_'.date('YmdHis').substr(md5(uniqid()),0,10));
+
+        // 订单数据
+        $order = [
+            'uid' => $this->userInfo['id'],
+            'trade_no' => $trade_no,
+            'type' => $pay_type,
+            'profit_uid' => $share_id,
+            'money' => $vip_config['money'],
+            'vip_day' => $vip_config['day'],
+            'create_time' => time(),
+            'status' => 0
+        ];
+
+        Order::create($order);
+
+        // 获取支付参数
+        $pay_params = [
+            'pid' => $config['api_pid'],
+            'type' => $pay_type,
+            'out_trade_no' => $trade_no,
+            'notify_url' => url('index/return_notify','',false,true),
+            'return_url' => url('index/return_callback','',false,true),
+            'name' => 'VIP会员',
+            'money' => $vip_config['money']
+        ];
+
+        ksort($pay_params);
+        reset($pay_params);
+
+        $pay_params['sign'] = md5(urldecode(http_build_query($pay_params)) . $config['api_key']);
+        $pay_params['sign_type'] = strtoupper('MD5');
+
+
+        $pay_html = '<html><head><title>正在跳转支付</title><meta name="viewport" content="width=device-width, initial-scale=1.0">';
+        $pay_html .= '<style>body{background-color: #e6e6e6;}.pay_btn{border: 0;display: block;width: 100%;font-size: 22px;font-weight: bold;outline: none;height: 250px;color: #989898;line-height: 250px;background-color: transparent;}</style>';
+        $pay_html .= '</head><body>';
+        // 拼接支付表单
+        $pay_html .= '<form id="alipaysubmit" name="alipaysubmit" action="'.$config['api_gateway'].'" method="POST">';
+        foreach ($pay_params as $key => $val) {
+            $pay_html .= '<input type="hidden" name="'.$key.'" value="'.$val.'" />';
+        }
+        $pay_html .= '<input class="pay_btn" type="submit" value="订单创建中..."></form>';
+        $pay_html .= "<script>document.forms['alipaysubmit'].submit();</script>";
+        $pay_html .= '</body></html>';
+
+        exit($pay_html);
+    }
+
+    public function vip_close(){
+
     }
 
     public function forget(){

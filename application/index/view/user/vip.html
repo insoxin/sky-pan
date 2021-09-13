@@ -31,7 +31,7 @@
                     {volist name="$rule" id="vo"}
                     <li>
                         <label class="am-radio-inline">
-                            <input type="radio" name="vip" value="day_{$vo.day}" money="{:number_format($vo.money,2)}">
+                            <input type="radio" name="vip" value="{$vo.id}" money="{:number_format($vo.money,2)}">
                             {$vo.name}
                         </label>
                     </li>
@@ -68,7 +68,7 @@
     // 将所有.ui-choose实例化
     $('.ui-choose').ui_choose();
     // uc_01 ul 单选
-    var vip = "day_{$rule[0]['day']}";
+    var vip = "{$rule[0]['id']}";
     var uc_01 = $('#uc_01').data('ui-choose'); // 取回已实例化的对象
     uc_01.click = function (index, item) {
         //console.log('click', index, vip)
@@ -111,10 +111,10 @@
             title: '支付页面',
             closeBtn: 1,
             area: ['650px', '774px'], // 宽高
-            content: "/user/vip/tiao?pay_type=" + pay_type + "&vip=" + vip,
+            content: "/user/payment?pay_type=" + pay_type + "&vip=" + vip + "&share_id={$share_id}",
             end: function () {
                 //设置订单为已关闭
-                $.get("/user/vip/close");
+                $.get("/user/vip_close");
             },
             cancel: function (index) {
                 parent.layer.confirm('确定要取消支付吗？', { icon: 3 }, function (index2) {
