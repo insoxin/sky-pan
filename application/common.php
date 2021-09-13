@@ -280,3 +280,15 @@ function getDownloadFileSignVerify($param,$sign): bool
 function getFileName($field_id){
     return \app\common\model\Stores::where('id',$field_id)->value('origin_name');
 }
+
+function getWeekDay($time){
+    $week = ["日","一","二","三","四","五","六"];
+    return '星期'.$week[date('w',$time)];
+}
+
+function getTimeLastDay($time){
+    $now_time = strtotime(date('Y-m-d'));
+    $the_time = strtotime(date('Y-m-d',$time));
+    $day_lazy = $now_time - $the_time;
+    return floor($day_lazy / 86400);
+}

@@ -20,7 +20,6 @@
         <tr>
             <th>浏览</th>
             <th>下载</th>
-            <th>登录</th>
             <th>总订单</th>
             <th>成功订单</th>
             <th>注册</th>
@@ -32,32 +31,20 @@
         </tr>
         </thead>
         <tbody>
+        {volist name="profit" id="vo"}
         <tr>
-            <td><span class="label label-success">1</span></td>
-            <td><span class="label label-success">1</span></td>
-            <td><span class="label label-success">0</span></td>
-            <td><span class="label label-success">0</span></td>
-            <td><span class="label label-success">0</span></td>
-            <td><span class="label label-success">0</span></td>
-            <td><span class="label label-success">0.00</span></td>
-            <td><span class="label label-success">0.00</span></td>
-            <td>2021-09-09</td>
-            <td>星期四</td>
-            <td>0天前</td>
+            <td><span class="label label-success">{$vo.count_view}</span></td>
+            <td><span class="label label-success">{$vo.count_down}</span></td>
+            <td><span class="label label-success">{$vo.count_order}</span></td>
+            <td><span class="label label-success">{$vo.count_order_yes}</span></td>
+            <td><span class="label label-success">{$vo.count_reg}</span></td>
+            <td><span class="label label-success">{$vo.count_money}</span></td>
+            <td><span class="label label-success">{$vo.count_profit}</span></td>
+            <td>{$vo.create_time|date="Y-m-d"}</td>
+            <td>{:getWeekDay($vo.create_time)}</td>
+            <td>{:getTimeLastDay($vo.create_time)}天前</td>
         </tr>
-        <tr>
-            <td><span class="label label-success">0</span></td>
-            <td><span class="label label-success">1</span></td>
-            <td><span class="label label-success">0</span></td>
-            <td><span class="label label-success">0</span></td>
-            <td><span class="label label-success">0</span></td>
-            <td><span class="label label-success">0</span></td>
-            <td><span class="label label-success">0.00</span></td>
-            <td><span class="label label-success">0.00</span></td>
-            <td>2021-09-08</td>
-            <td>星期三</td>
-            <td>1天前</td>
-        </tr>
+        {/volist}
         </tbody>
     </table>
 </div>
@@ -111,19 +98,19 @@
                 {
                     name: '注册',
                     color: 'rgba(0,242,59,246)', marker: { radius: 6 }, data: [
-                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                        {$series_reg|raw}
                     ]
                 },
                 {
                     name: '成功订单',
                     color: 'rgba(0,15,182,59)', marker: { radius: 6 }, data: [
-                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                        {$series_order|raw}
                     ]
                 },
                 {
                     name: '金额',
                     color: 'rgba(0,92,219,192)', marker: { radius: 6 }, data: [
-                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                        {$series_money|raw}
                     ]
                 },
             ]
