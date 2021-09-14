@@ -223,9 +223,14 @@ class Index extends Home
         $shares_id = input('get.shares');
         $timestamp = input('get.timestamp');
         $sign = input('get.sign');
+        $is_count = input('get.is_count');
 
         // 数据签名校验
-        if(!getDownloadFileSignVerify(['file' => $file,'shares' => $shares_id,'timestamp' => $timestamp],$sign)){
+        if(!getDownloadFileSignVerify([
+            'file' => $file,
+            'shares' => $shares_id,
+            'timestamp' => $timestamp
+        ],$sign)){
             return $this->fetch('user/err',['msg' => '数据sign签名校验失败']);
         }
 
@@ -238,15 +243,18 @@ class Index extends Home
                 throw new Exception('文件数据不存在');
             }
 
+            if($is_count){
+                // 统计数据
+                Profit::record($stores['uid'],$stores['id'],'down',1);
+                $download_url = getFileDownloadUrl($stores['shares_id'],$stores['id'],0);
+                return redirect($download_url);
+            }
             // 获取存储策略
             $policy = $stores->getPolicy();
 
             if(empty($policy)){
                 throw new Exception('文件数据存储策略不存在');
             }
-
-            // 统计数据
-            Profit::record($stores['uid'],$stores['id'],'down',1);
 
             // 判断存储方式
             switch ($policy->type){

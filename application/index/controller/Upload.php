@@ -4,6 +4,7 @@ namespace app\index\controller;
 
 use app\common\controller\Home;
 use app\common\model\FileManage;
+use app\common\model\Groups;
 use app\common\model\Shares;
 use app\common\model\Stores;
 use think\Exception;
@@ -14,6 +15,23 @@ class Upload extends Home
 
     public function index(){
 
+        // 上传策略
+        $policy = $this->getPolicy();
+
+        // 上传文件数量限制
+        $upload_limit = 20;
+
+        // 上传限制
+        $upload_rule = [
+            'upsize_byte' => $this->groupData['max_storage'],
+            'upsize' => countSize($this->groupData['max_storage']),
+            'fsize_byte' => $this->groupData['max_storage'] * $upload_limit,
+            'fsize' => countSize($this->groupData['max_storage'] * $upload_limit),
+        ];
+
+        $this->assign('upload_limit',$upload_limit);
+        $this->assign('upload_rule',$upload_rule);
+
         return $this->fetch();
     }
 
@@ -21,10 +39,24 @@ class Upload extends Home
         // 超时时间5分钟
         @set_time_limit(5 * 60);
 
-        //目录校验获取
+        // 目录校验获取
         $folder_id = input('post.folder_id',0);
 
         $folder_id = FileManage::getFolderAllowPid($folder_id,$this->userInfo['id']);
+
+        // 获取上传文件大小
+        $size = input('post.size',0);
+
+        // 获取上传文件名
+        $up_filename = input('post.name','');
+
+        if(empty($up_filename)){
+            return json(['code' => 0,'msg' => '上传文件名异常']);
+        }
+
+        if(empty($size)){
+            return json(['code' => 0,'msg' => '文件大小异常']);
+        }
 
         if(empty($folder_id)){
             return json(['code' => 0,'msg' => '上传目标文件夹不存在']);
@@ -40,7 +72,6 @@ class Upload extends Home
         // 存储策略
         $policy = $this->getPolicy();
 
-
         // 判断存储类型
         if($policy['type'] != 'local'){
             return json(['code' => 0,'msg' => '您不可以使用该存储策略']);
@@ -51,14 +82,25 @@ class Upload extends Home
 
         $file_validate = [];
 
+        // 验证文件大小
         if(!empty($policy['max_size'])){
-            $file_validate['size'] = $policy['max_size'];
+            $file_validate['size'] = $this->groupData['max_storage'];
+
+            if($size > $this->groupData['max_storage']){
+                return json(['code' => 0,'msg' => '单文件最大上传大小'.countSize($this->groupData['max_storage'])]);
+            }
+
         }
 
+        // 验证文件类型
         if(!empty($policy['filetype'])){
             $file_validate['ext'] = $policy['filetype'];
+            $file_ext = $this->getFileExt($up_filename);
+            $allow_ext = explode(',',$policy['filetype']);
+            if(!in_array($file_ext,$allow_ext)){
+                return json(['code' => 0,'msg' => '不允许上传此类型的文件']);
+            }
         }
-
 
         $chunk = input('post.chunk',0);
         $chunks = input('post.chunks',0);
@@ -184,80 +226,10 @@ class Upload extends Home
             }
         }
 
-        //var_dump($file);
-    }
-
-    protected function getChunkFile(){
-        $file = request()->file('file');
-        $size = $file->getSize();
-
-        if($size > (2 * 1024 * 1024)){
-            throw new Exception('分片错误');
-        }
-        $chunk_fh = fopen($file->getRealPath(),'r');
-        $chunk_data = fread($chunk_fh,$size);
-        fclose($chunk_fh);
-        return $chunk_data;
-    }
-
-    protected function getRandomKey($length = 16){
-        $charTable = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        $result = "";
-        for ( $i = 0; $i < $length; $i++ ){
-            $result .= $charTable[ mt_rand(0, strlen($charTable) - 1) ];
-        }
-        return $result;
-    }
-
-    public function file2(){
-
-        // 超时时间5分钟
-        @set_time_limit(5 * 60);
-
-        //目录校验获取
-        $folder_id = input('post.folder_id',0);
-
-        $folder_id = FileManage::getFolderAllowPid($folder_id,$this->userInfo['id']);
-
-        if(empty($folder_id)){
-            return json(['code' => 0,'msg' => '上传目标文件夹不存在']);
-        }
-
-
-        //文件获取
-        $files = request()->file('file');
-
-        if(empty($files)){
-            return json(['code' => 0,'msg' => '请选择上传的文件']);
-        }
-
-        // 存储策略
-        $policy = $this->getPolicy();
-
-
-        // 判断存储类型
-        if($policy['type'] != 'local'){
-            return json(['code' => 0,'msg' => '您不可以使用该存储策略']);
-        }
-
-        //判断存储类型
-        $paths = $this->getUploadPaths($policy);
-
-        $file_validate = [];
-
-        if(!empty($policy['max_size'])){
-            $file_validate['size'] = $policy['max_size'];
-        }
-
-        if(!empty($policy['filetype'])){
-            $file_validate['ext'] = $policy['filetype'];
-        }
-
+        // 文件上传
         $info = $files->validate($file_validate)->move($paths['path'],$paths['name']);
-
         // 保存结果
         if($info){
-
             // 加入数据库
             $data = [
                 'uid' => $this->userInfo['id'],
@@ -288,6 +260,28 @@ class Upload extends Home
 
     }
 
+    protected function getChunkFile(){
+        $file = request()->file('file');
+        $size = $file->getSize();
+
+        if($size > (2 * 1024 * 1024)){
+            throw new Exception('分片错误');
+        }
+        $chunk_fh = fopen($file->getRealPath(),'r');
+        $chunk_data = fread($chunk_fh,$size);
+        fclose($chunk_fh);
+        return $chunk_data;
+    }
+
+    protected function getRandomKey($length = 16){
+        $charTable = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $result = "";
+        for ( $i = 0; $i < $length; $i++ ){
+            $result .= $charTable[ mt_rand(0, strlen($charTable) - 1) ];
+        }
+        return $result;
+    }
+
     protected function getUploadPaths($policy): array
     {
         // 目录分割
@@ -313,4 +307,9 @@ class Upload extends Home
         ];
 
     }
+
+    protected function getFileExt($filename){
+        return strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+    }
+
 }

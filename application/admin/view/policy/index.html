@@ -25,31 +25,6 @@
     <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
 </script>
 
-<script type="text/html" id="user-enable">
-    <input type="checkbox" name="status" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="user-enable" {{ d.status == 1 ? 'checked' : '' }}>
-</script>
-
-
-<script type="text/html" id="user-auth">
-    {{#if (d.is_auth == 0) { }}
-    <span class="layui-badge layui-bg-orange">未实名</span>
-    {{# }else if(d.is_auth == 1){ }}
-    <span class="layui-badge layui-bg-blue">已认证</span>
-    {{# } }}
-
-</script>
-
-<script type="text/html" id="user-grade">
-    {{#if (d.grade == 0) { }}
-    <span class="layui-badge layui-bg-gray">普通用户</span>
-    {{# }else if(d.grade > 0){ }}
-    <span class="layui-badge">VIP用户</span>
-    {{# } }}
-</script>
-
-<script type="text/html" id="user-createTime">
-    {{layui.util.toDateString(d.createTime, 'yyyy-MM-dd')}}
-</script>
 
 <script src="/static/component/layui/layui.js"></script>
 <script src="/static/component/pear/pear.js"></script>
@@ -66,7 +41,6 @@
                 {title: '类型', field: 'type', align: 'center'},
                 {title: '文件数量', field: 'file_num', align: 'center'},
                 {title: '存储数据量', field: 'store_num', align: 'center'},
-                {title: '上传大小限制', field: 'max_size', align: 'center'},
                 {title: '操作', toolbar: '#user-bar', align: 'center', width: 130}
             ]
         ]

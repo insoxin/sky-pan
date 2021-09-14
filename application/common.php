@@ -256,17 +256,18 @@ function sendEmail($username,$url){
     return $mail->send();
 }
 
-function getFileDownloadUrl($shares_id,$file_id){
+function getFileDownloadUrl($shares_id,$file_id,$is_count = 1){
 
     $params = [
         'file' => $file_id,
         'shares' => $shares_id,
-        'timestamp' => time()
+        'timestamp' => time(),
     ];
 
     $sign = md5(urldecode(http_build_query($params)) . config('app.pass_salt'));
 
     $params['sign'] = $sign;
+    $params['is_count'] = $is_count;
 
     return url('Index/download','',false,true).'?'.urldecode(http_build_query($params));
 }

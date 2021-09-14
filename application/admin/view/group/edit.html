@@ -29,7 +29,7 @@
       </div>
 
       <div class="layui-form-item">
-        <label class="layui-form-label">储存容量</label>
+        <label class="layui-form-label">上传大小</label>
         <div class="layui-input-block">
           <div class="layui-input-inline">
             <input type="number" name="max_storage" required value="{:countSize($info.max_storage,true)[0]}"  lay-verify="required" autocomplete="off" class="layui-input">
@@ -46,7 +46,7 @@
               <option value="1073741824" {eq name="$storage_size" value="1073741824"}selected{/eq}>GB</option>
             </select>
           </div>
-          <div class="layui-form-mid layui-word-aux">该用户组初始最大可用容量</div>
+          <div class="layui-form-mid layui-word-aux">限制用户组单文件上传大小</div>
         </div>
 
       </div>

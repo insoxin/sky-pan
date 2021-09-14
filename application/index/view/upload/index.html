@@ -36,7 +36,7 @@
                             <label style="opacity: 0; width: 100%; height: 100%; display: block; cursor: pointer; background: rgb(255, 255, 255);"></label>
                         </div>
                     </div>
-                    <p class="filep">或将文件拖到这里，单次最多可选20个</p>
+                    <p class="filep">或将文件拖到这里，单次最多可选{$upload_limit}个</p>
                     <p class="filep" style="color:red">凡是上传违反国家法律文件,一律封号处理!!!</p>
                 </div>
                 <ul class="filelist"></ul>
@@ -56,22 +56,10 @@
     catch (err) {
     }
 
-    if ('0' == '1' && '3218' == '3') {
-        var upsizeb = '1073741824';     //1GB
-        var upsize = '1GB';
-        var fsizeall = 1073741824 * 2;  //2GB 文件总和
-        var fsizeallb = '2GB';          //2GB 文件总和
-    } else if ('0' == '1') {
-        var upsizeb = '209715200';      //200M
-        var upsize = '200M';
-        var fsizeall = 524288000;       //500M 文件总和
-        var fsizeallb = '500M';         //500M 文件总和
-    } else {
-        var upsizeb = '104857600';      //100MB
-        var upsize = '100M';
-        var fsizeall = 209715200;       //200M 文件总和
-        var fsizeallb = '200M';         //200M 文件总和
-    }
+    var upsizeb = {$upload_rule.upsize_byte};
+    var upsize = '{$upload_rule.upsize}';
+    var fsizeall = {$upload_rule.fsize_byte};
+    var fsizeallb = '{$upload_rule.fsize}';
 
     var pgs = 1;
     //上传类型1=头像，2=文件图标
@@ -92,7 +80,6 @@
 
             // 文件总体选择信息。
             $info = $wrap.find('.info'),
-
 
             // 上传按钮
             $upload = $wrap.find('.uploadBtn'),
@@ -152,7 +139,7 @@
             },
 
             threads: 1, //并发
-            fileNumLimit: 20,               //数量限制
+            fileNumLimit: {$upload_limit},               //数量限制
             fileSizeLimit: fsizeall,        //1024 M
             fileSingleSizeLimit: upsizeb,   //400 M
         });
@@ -408,30 +395,28 @@
         //前端判断
         uploader.onError = function (code) {
             if (code == 'Q_TYPE_DENIED') {
-                //w_info('仅能上传apk,zip,rar,txt,7z,z,e,ct,doc,docx,exe,ipa格式的文件');
                 $info.html('未开放此格式的文件');
             } else if (code == 'Q_EXCEED_NUM_LIMIT') {
                 $info.html('超过单次个数限制，请上传完在添加上传');
             } else if (code == 'Q_EXCEED_SIZE_LIMIT') {
-                if ('0' == '1') {
-                    $info.html('尊敬的VIP会员您好，单次总和大小超过了' + fsizeallb);
-                } else {
-                    $info.html('允许上传小于' + upsize +
-                        '的文件，<a onclick="window.parent.location.href=\'/user/vip.html\'" href="#"><font>升级VIP 最大500M</font></a>');
-                }
+                {eq name="$vip_info.is_vip" value="1"}
+                $info.html('尊敬的{$group.group_name}您好，单次总和大小超过了' + fsizeallb);
+                {else/}
+                $info.html('允许上传小于' + upsize +
+                        '的文件，<a onclick="window.parent.vip()" href="#"><font>升级VIP 提升容量</font></a>');
+                {/eq}
             } else if (code == 'F_DUPLICATE') {
                 $info.html('已经上传过或者已选择，忽重复');
             } else if (code == 'F_EXCEED_SIZE') {
-                if ('0' == '1') {
-                    $info.html('尊敬的VIP会员您好，允许上传小于' + upsize + '的文件');
-                } else {
-                    $info.html('允许上传小于' + upsize +
-                        '的文件，<a onclick="window.parent.location.href=\'/user/vip.html\'" href="#"><font>升级VIP 最大500M</font></a>');
-                }
+                {eq name="$vip_info.is_vip" value="1"}
+                $info.html('尊敬的{$group.group_name}您好，允许上传小于' + upsize + '的文件');
+                {else/}
+                $info.html('允许上传小于' + upsize +
+                        '的文件，<a onclick="window.parent.vip()" href="#"><font>升级VIP 提升容量</font></a>');
+                {/eq}
             } else {
                 alert('Eroor: ' + code);
             }
-
 
         };
 
