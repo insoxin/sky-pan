@@ -4,6 +4,7 @@
     <link href="__STATIC__/css/upload.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="__STATIC__/js/jquery.js"></script>
     <script type="text/javascript" src="__STATIC__/js/file.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-base64@3.7.0/base64.min.js"></script>
     <script type="text/javascript" src="__STATIC__/js/webuploader2.js"></script>
 </head>
 
@@ -133,8 +134,8 @@
 
             disableGlobalDnd: true,
 
-            // chunked: true,  //开启分片上传
-            // chunkSize: 2 * 1024 * 1024,
+            chunked: true,  //开启分片上传
+            chunkSize: 2 * 1024 * 1024,
 
             duplicate: false,
 
@@ -151,10 +152,11 @@
             },
 
             threads: 1, //并发
-            fileNumLimit: 50,               //数量限制
+            fileNumLimit: 20,               //数量限制
             fileSizeLimit: fsizeall,        //1024 M
             fileSingleSizeLimit: upsizeb,   //400 M
         });
+
 
         // 添加“添加文件”的按钮，
         uploader.addButton({
@@ -397,6 +399,11 @@
         });
 
 
+        uploader.on('uploadStart',function(file){
+            uploader.option('formData',{
+                chunks_key:Base64.encode(file.__hash)
+            })
+        });
 
         //前端判断
         uploader.onError = function (code) {

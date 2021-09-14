@@ -293,16 +293,3 @@ function getTimeLastDay($time){
     return floor($day_lazy / 86400);
 }
 
-function mymd5( $file ) {
-    $fragment = 65536;
-
-    $rh = fopen($file, 'rb');
-    $size = filesize($file);
-
-    $part1 = fread( $rh, $fragment );
-    fseek($rh, $size-$fragment);
-    $part2 = fread( $rh, $fragment);
-    fclose($rh);
-
-    return md5( $part1.$part2 );
-}
