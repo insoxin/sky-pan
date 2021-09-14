@@ -57,8 +57,6 @@ class Policy extends Admin
             $this->returnSuccess();
         }
 
-        $info['config'] = json_decode($info['config'],true);
-
         $this->assign('info',$info);
         return $this->fetch();
     }

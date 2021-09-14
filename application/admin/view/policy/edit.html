@@ -102,6 +102,8 @@
         let form = layui.form;
         let $ = layui.jquery;
 
+        {eq name="$info.type" value="remote"}$(".remote_field").show();{/eq}
+
         form.on('select(server_select)',function(obj){
             if(obj.value == 'remote'){
                 $(".remote_field").show();

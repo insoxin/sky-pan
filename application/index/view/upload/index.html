@@ -133,8 +133,8 @@
 
             disableGlobalDnd: true,
 
-            //chunked: true,  //开启分片上传
-            //chunkSize: 2 * 1024 * 1024,
+            // chunked: true,  //开启分片上传
+            // chunkSize: 2 * 1024 * 1024,
 
             duplicate: false,
 
@@ -196,8 +196,6 @@
             if (file.getStatus() === 'invalid') {
                 showError(file.statusText);
             } else {
-
-
                 percentages[file.id] = [file.size, 0];
                 file.rotation = 0;
             }
@@ -236,7 +234,6 @@
             $btns.on('click', function () {
                 uploader.removeFile(file);
                 return;
-
             });
 
             $li.appendTo($queue);
@@ -439,29 +436,10 @@
                 return false;
             }
             else {
-                // var xxx = null;
-                // $.ajax({
-                //     type: "post",
-                //     async: false, //这句必须写，同步处理
-                //     url: '/user/upload/post',
-                //     data: response.data,
-                //     dataType: "json",
-                //     success: function (data) {
-                //         xxx = data;
-                //     }, error: function (error) {
-                //         console.log(error);
-                //     }
-                // });
-                // if (!xxx) {
-                //     uploadError = "回调失败";
-                //     return false;
-                // }
-                //
-                // if (!xxx.status) {
-                //     console.log(xxx);
-                //     uploadError = xxx.msg;
-                //     return false;
-                // }
+                if(response.code == 0){
+                    uploadError = response.msg;
+                    return false;
+                }
             }
         });
 

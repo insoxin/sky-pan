@@ -11,15 +11,16 @@ class Upload extends Home
 {
 
     public function index(){
+
         return $this->fetch();
     }
 
     public function file(){
+
         // 超时时间5分钟
         @set_time_limit(5 * 60);
 
         //目录校验获取
-
         $folder_id = input('post.folder_id',0);
 
         $folder_id = FileManage::getFolderAllowPid($folder_id,$this->userInfo['id']);
@@ -28,14 +29,13 @@ class Upload extends Home
             return json(['code' => 0,'msg' => '上传目标文件夹不存在']);
         }
 
-        //文件获取
 
+        //文件获取
         $files = request()->file('file');
 
         if(empty($files)){
             return json(['code' => 0,'msg' => '请选择上传的文件']);
         }
-
 
         // 存储策略
         $policy = $this->getPolicy();
@@ -91,6 +91,7 @@ class Upload extends Home
         }else{
             return json(['code' => 0,'msg' => $files->getError()]);
         }
+
     }
 
     protected function getUploadPaths($policy): array
@@ -118,5 +119,4 @@ class Upload extends Home
         ];
 
     }
-
 }
