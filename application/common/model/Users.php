@@ -74,9 +74,13 @@ class Users extends Model
      */
     public function login($username,$password,$login_type = 'default'){
         // 登录用户组类型
-        $group = $login_type == 'admin' ? 1 : 3;
+        if($login_type == 'admin'){
+            $group = 1;
+        }else{
+            $group = config('register.default_group') .','.config('vip.vip_group');
+        }
         // 查找用户
-        $user = self::where('username',$username)->where('group',$group)->find();
+        $user = self::where('username',$username)->where('group','in',$group)->find();
         // 用户不存在
         if(empty($user)){
             throw new LoginError('登录帐号或者密码错误，请重试');

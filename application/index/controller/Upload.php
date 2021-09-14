@@ -72,7 +72,14 @@ class Upload extends Home
         // 分片上传
         if(!empty($chunks)){
             $chunks_key = input('post.chunks_key');
-            $chunk_path = realpath(env('root_path') . './public/chunks');
+
+
+            $real_chunk_path = env('root_path') . './public/chunks';
+
+            is_dir($real_chunk_path) || mkdir($real_chunk_path, 0777, true);
+
+            $chunk_path = realpath($real_chunk_path);
+
 
             if(empty($chunks_key)){
                 return json(['code' => 0,'msg' => '分片密钥错误']);
@@ -124,7 +131,6 @@ class Upload extends Home
                     }
 
 
-
                     // 移动文件
                     is_dir($paths['path']) ?: mkdir($paths['path'],0777,true);
 
@@ -146,7 +152,7 @@ class Upload extends Home
                     $data = [
                         'uid' => $this->userInfo['id'],
                         'origin_name' => $post_name,
-                        'file_name' => $paths['file'] . $paths['name'],
+                        'file_name' => $paths['file'] . $paths['name'] .'.'.$ext,
                         'size' => $size,
                         'meta' => '',
                         'mime_type' => $mime_type,

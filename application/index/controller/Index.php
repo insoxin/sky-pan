@@ -260,7 +260,7 @@ class Index extends Home
                     }
 
                     // 禁止下载
-                    if($this->groupData['speed'] === 0){
+                    if($this->groupData['speed'] == 0){
                         throw new Exception('您当前的用户组禁止下载文件');
                     }
 
@@ -270,7 +270,20 @@ class Index extends Home
                         return $download->name($stores['origin_name']);
                     }
 
+                    $_file_path = $stores->getLocalSaveFile($policy->config['save_dir'],$stores['file_name']);
+                    $_file_limit_size = round(intval($this->groupData['speed']) * 1024);
 
+
+                    // 启用 nginx X-Accel 下载
+                    header('Content-Type: application/octet-stream');
+                    $encoded_fname = rawurlencode($stores['origin_name']);
+                    header('Content-Disposition: attachment;filename="'.$encoded_fname.'";filename*=utf-8'."''".$encoded_fname);
+
+                    header('X-Accel-Redirect: '. $_file_path);
+                    header('X-Accel-Buffering: yes');
+                    header('X-Accel-Limit-Rate:'.$_file_limit_size);
+
+                    /*
                     // 关闭php超时限制
                     set_time_limit(0);
 
@@ -300,7 +313,7 @@ class Index extends Home
 
                     //关闭文件
                     fclose($fh);
-
+                    */
                     exit;
                     break;
                 case 'remote':
@@ -331,7 +344,7 @@ class Index extends Home
             $this->error('订单未支付成功');
         }
 
-        $this->success('VIP开通/续费成功');
+        $this->success('VIP开通/续费成功','none','请刷新当前页面，然后重新点击下载');
     }
 
     public function return_notify(){

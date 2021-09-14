@@ -27,4 +27,8 @@ class Stores extends Model
         return env('root_path').'public'.getSafeDirSeparator($save_dir . $filename);
     }
 
+    public function getLocalSaveFile($save_dir,$filename){
+        return str_replace(['/','\\','//','\\\\'],'/',($save_dir.$filename));
+    }
+
 }

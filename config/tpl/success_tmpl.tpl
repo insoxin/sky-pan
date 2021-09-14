@@ -19,8 +19,10 @@
 						 {$data}
 					</p>
 					<div class="action">
-                     <a id="href" href="{$url}" class="pear-btn pear-btn-primary">立即跳转</a>
-                     <button  class="pear-btn"><b id="wait"><?php echo($wait);?></b>秒后自动跳转</button>
+						{neq name="$url" value="/index/none"}
+							<a id="href" href="{$url}" class="pear-btn pear-btn-primary">立即跳转</a>
+							<button  class="pear-btn"><b id="wait"><?php echo($wait);?></b>秒后自动跳转</button>
+						{/neq}
 					</div>
 				</div>
 			</div>
@@ -29,6 +31,7 @@
         (function(){
             var wait = document.getElementById('wait'),
                 href = document.getElementById('href').href;
+			{neq name="$url" value="/index/none"}
             var interval = setInterval(function(){
                 var time = --wait.innerHTML;
                 if(time <= 0) {
@@ -36,6 +39,7 @@
                     clearInterval(interval);
                 };
             }, 1000);
+			{/neq}
         })();
     </script>
 	</body>

@@ -185,11 +185,11 @@ class User extends Home
     }
 
     public function vip_close(){
-        $lock_time = time() - (60 * 10);
+        $lock_time = time() - 7200;
         Order::where('status',0)
             ->limit(50)
             ->whereTime('create_time','<=',$lock_time)
-            ->update(['status' => 3]);
+            ->update(['status' => 2]);
 
         return json(['code' => 1,'msg' => '关闭订单成功']);
     }
