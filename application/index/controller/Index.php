@@ -268,7 +268,7 @@ class Index extends Home
                     }
 
                     // 禁止下载
-                    if($this->groupData['speed'] == 0){
+                    if($this->groupData['speed'] === 0){
                         throw new Exception('您当前的用户组禁止下载文件');
                     }
 
@@ -295,7 +295,7 @@ class Index extends Home
                     break;
                 case 'remote':
                     // 禁止下载
-                    if($this->groupData['speed'] == 0){
+                    if($this->groupData['speed'] === 0){
                         throw new Exception('您当前的用户组禁止下载文件');
                     }
 
