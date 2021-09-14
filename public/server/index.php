@@ -1,5 +1,12 @@
 <?php
 
+
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization");
+header('Access-Control-Allow-Methods: GET, POST, PUT,DELETE,OPTIONS,PATCH');
+
+
+
 class Server{
 
     const DS = '/';
@@ -237,7 +244,7 @@ class Server{
                 $encoded_fname = rawurlencode($tk_info['origin']);
                 header('Content-Disposition: attachment;filename="'.$encoded_fname.'";filename*=utf-8'."''".$encoded_fname);
 
-                header('X-Accel-Redirect: '. $download_file_path);
+                header('X-Accel-Redirect: '. $tk_info['file']);
                 header('X-Accel-Buffering: yes');
 
                 if ($tk_info['type'] > 0){
