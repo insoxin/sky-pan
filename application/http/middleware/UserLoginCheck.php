@@ -18,7 +18,8 @@ class UserLoginCheck
         'Index/qrcode',
         'Index/download',
         'Index/return_callback',
-        'Index/return_notify'
+        'Index/return_notify',
+        'Upload/notify'
     ];
 
     public function handle($request, \Closure $next){

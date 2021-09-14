@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version: 5.5.29)
-# Date: 2021-09-14 11:55:44
+# Date: 2021-09-15 04:29:59
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
@@ -47,14 +47,14 @@ CREATE TABLE `sk_folders` (
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
   `delete_time` int(11) DEFAULT NULL COMMENT '软删除',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='文件夹';
+) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COMMENT='文件夹';
 
 #
 # Data for table "sk_folders"
 #
 
 /*!40000 ALTER TABLE `sk_folders` DISABLE KEYS */;
-INSERT INTO `sk_folders` VALUES (1,4,0,'根目录',0,NULL,0,755,0,0,1631186682,0,NULL),(8,5,0,'根目录',0,NULL,0,755,0,0,1631210019,0,NULL),(14,5,6,'图片资源',13,'会议深入学习贯彻习近平总书记关于文艺工作的重要论述，贯彻落实中宣部关于文娱领域综合治理工作部署要求和广电总局广播电视和网络视听文艺工作者座谈会精神，研究提高网络视听文艺节目质量水平的思路举措和发展方向，廓清网络视听领域风气，切实推动网络视听文艺高质量发展。',0,755,0,0,1631307651,1631307651,NULL),(15,5,39,'aaaa',13,'',0,755,0,0,1631308784,1631308784,NULL),(16,5,40,'vvvvvvvv',14,'',0,755,0,0,1631308789,1631308789,NULL),(17,5,41,'sssss',16,'',0,755,0,0,1631308795,1631308795,NULL),(18,5,42,'ddddd',15,'',0,755,0,0,1631308807,1631308807,NULL),(19,4,44,'等待',1,'a',1,755,0,0,1631402716,1631402716,NULL),(20,7,0,'根目录',0,NULL,0,755,0,0,1631553262,0,NULL);
+INSERT INTO `sk_folders` VALUES (1,4,0,'根目录',0,NULL,0,755,0,0,1631186682,0,NULL),(8,5,0,'根目录',0,NULL,0,755,0,0,1631210019,0,NULL),(14,5,6,'图片资源',13,'会议深入学习贯彻习近平总书记关于文艺工作的重要论述，贯彻落实中宣部关于文娱领域综合治理工作部署要求和广电总局广播电视和网络视听文艺工作者座谈会精神，研究提高网络视听文艺节目质量水平的思路举措和发展方向，廓清网络视听领域风气，切实推动网络视听文艺高质量发展。',0,755,0,0,1631307651,1631307651,NULL),(15,5,39,'aaaa',13,'',0,755,0,0,1631308784,1631308784,NULL),(16,5,40,'vvvvvvvv',14,'',0,755,0,0,1631308789,1631308789,NULL),(17,5,41,'sssss',16,'',0,755,0,0,1631308795,1631308795,NULL),(18,5,42,'ddddd',15,'',0,755,0,0,1631308807,1631308807,NULL),(19,4,44,'等待',1,'a',1,755,0,0,1631402716,1631402716,NULL),(20,7,0,'根目录',0,NULL,0,755,0,0,1631553262,0,NULL),(21,5,101,'dddd',8,'',0,755,0,0,1631648730,1631648730,NULL);
 /*!40000 ALTER TABLE `sk_folders` ENABLE KEYS */;
 
 #
@@ -78,7 +78,7 @@ CREATE TABLE `sk_groups` (
 #
 
 /*!40000 ALTER TABLE `sk_groups` DISABLE KEYS */;
-INSERT INTO `sk_groups` VALUES (1,'管理员',1,1073741824,'',1,1),(2,'游客',1,0,'10',0,1),(3,'普通用户',1,1073741824,'100',1,1),(4,'VIP用户',1,5368709120,'',1,0);
+INSERT INTO `sk_groups` VALUES (1,'管理员',1,1073741824,'',1,1),(2,'游客',1,0,'5',0,1),(3,'普通用户',3,104857600,'20',1,1),(4,'VIP用户',1,209715200,'',1,0);
 /*!40000 ALTER TABLE `sk_groups` ENABLE KEYS */;
 
 #
@@ -99,14 +99,13 @@ CREATE TABLE `sk_order` (
   `pay_time` int(11) NOT NULL DEFAULT '0' COMMENT '支付时间',
   `status` tinyint(3) NOT NULL DEFAULT '0' COMMENT '支付状态 0 等待支付 1支付成功 2订单关闭',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='订单记录';
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='订单记录';
 
 #
 # Data for table "sk_order"
 #
 
 /*!40000 ALTER TABLE `sk_order` DISABLE KEYS */;
-INSERT INTO `sk_order` VALUES (6,5,'VIP_2021091405294563E468AA32','','alipay',48,1.00,7,1631568585,0,0),(7,5,'VIP_202109140606594D131388D6','','alipay',48,1.00,7,1631570819,0,0),(8,5,'VIP_20210914060904F9A610A4A2','','wxpay',48,1.00,7,1631570944,0,0),(9,5,'VIP_2021091406111400D625E59B','','wxpay',48,1.00,7,1631571074,0,0);
 /*!40000 ALTER TABLE `sk_order` ENABLE KEYS */;
 
 #
@@ -129,7 +128,7 @@ CREATE TABLE `sk_policys` (
 #
 
 /*!40000 ALTER TABLE `sk_policys` DISABLE KEYS */;
-INSERT INTO `sk_policys` VALUES (1,'默认存储','local','',2097152,'{\"save_dir\":\"\\/default\\/\",\"access_token\":\"\",\"server_uri\":\"\"}'),(3,'远程服务器一','remote','',1073741824,'{\"save_dir\":\"\\/uploads\\/\",\"access_token\":\"asdasfasfasfasfasfa\",\"server_uri\":\"http:\\/\\/vip.dev.com:8081\\/\"}');
+INSERT INTO `sk_policys` VALUES (1,'默认存储','local','png',2097152,'{\"save_dir\":\"\\/default\\/\",\"access_token\":\"\",\"server_uri\":\"\"}'),(3,'远程服务器一','remote','',1073741824,'{\"save_dir\":\"\\/uploads\\/\",\"access_token\":\"asdasfasfasfasfasfa\",\"server_uri\":\"http:\\/\\/tp.com:8080\\/server\\/index.php\"}');
 /*!40000 ALTER TABLE `sk_policys` ENABLE KEYS */;
 
 #
@@ -150,14 +149,14 @@ CREATE TABLE `sk_profit` (
   `count_profit` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '收益',
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='收益记录';
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='收益记录';
 
 #
 # Data for table "sk_profit"
 #
 
 /*!40000 ALTER TABLE `sk_profit` DISABLE KEYS */;
-INSERT INTO `sk_profit` VALUES (1,5,90,5,1,2,0,0,0.00,0.00,1631542710),(2,5,91,12,2,6,0,0,0.00,0.00,1631542900),(3,5,92,102,1,0,0,0,0.00,0.00,1631545469),(4,5,90,6,2,6,0,0,0.00,0.00,1631422109),(5,5,91,49,0,0,0,0,0.00,0.00,1631549201),(6,5,90,69,0,0,0,0,0.00,0.00,1631549214),(7,5,92,230,1,0,0,0,0.00,0.00,1631553147),(8,5,48,0,0,4,0,0,0.00,0.00,1631553201),(9,5,95,2,0,0,0,0,0.00,0.00,1631576957),(10,5,133,2,0,0,0,0,0.00,0.00,1631579839),(11,5,134,2,0,0,0,0,0.00,0.00,1631591496);
+INSERT INTO `sk_profit` VALUES (1,5,90,5,1,2,0,0,0.00,0.00,1631542710),(2,5,91,12,2,6,0,0,0.00,0.00,1631542900),(3,5,92,102,1,0,0,0,0.00,0.00,1631545469),(4,5,90,6,2,6,0,0,0.00,0.00,1631422109),(5,5,91,49,0,0,0,0,0.00,0.00,1631549201),(6,5,90,69,0,0,0,0,0.00,0.00,1631549214),(7,5,92,230,1,0,0,0,0.00,0.00,1631553147),(8,5,48,0,0,4,0,0,0.00,0.00,1631553201),(9,5,95,2,0,0,0,0,0.00,0.00,1631576957),(10,5,133,2,0,0,0,0,0.00,0.00,1631579839),(11,5,134,2,0,0,0,0,0.00,0.00,1631591496),(12,5,137,6,5,0,0,0,0.00,0.00,1631624501),(13,5,138,4,4,0,0,0,0.00,0.00,1631624563),(14,5,139,3,2,0,0,0,0.00,0.00,1631624691),(15,5,140,24,8,0,0,0,0.00,0.00,1631624735),(16,5,141,62,130,0,0,0,0.00,0.00,1631626904),(17,5,142,3,13,0,0,0,0.00,0.00,1631635076),(18,5,142,1,6,0,0,0,0.00,0.00,1631635371),(19,5,141,15,30,0,0,0,0.00,0.00,1631635502);
 /*!40000 ALTER TABLE `sk_profit` ENABLE KEYS */;
 
 #
@@ -206,13 +205,14 @@ CREATE TABLE `sk_reports` (
   `real_ip` varchar(32) DEFAULT NULL COMMENT '举报IP',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '举报处理',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='文件举报';
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='文件举报';
 
 #
 # Data for table "sk_reports"
 #
 
 /*!40000 ALTER TABLE `sk_reports` DISABLE KEYS */;
+INSERT INTO `sk_reports` VALUES (1,0,'phpStudy_64.zip','http://192.168.1.39:8080/s/yI7jAvQrtQ',5,'ceshi123',0,'病毒','02132132','0.sada2.3sd',1631625163,'192.168.1.40',1);
 /*!40000 ALTER TABLE `sk_reports` ENABLE KEYS */;
 
 #
@@ -251,14 +251,14 @@ CREATE TABLE `sk_shares` (
   `pwd` varchar(8) DEFAULT NULL COMMENT '分享密码',
   `pwd_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '密码状态',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=93 DEFAULT CHARSET=utf8 COMMENT='分享表';
+) ENGINE=MyISAM AUTO_INCREMENT=95 DEFAULT CHARSET=utf8 COMMENT='分享表';
 
 #
 # Data for table "sk_shares"
 #
 
 /*!40000 ALTER TABLE `sk_shares` DISABLE KEYS */;
-INSERT INTO `sk_shares` VALUES (1,5,13,1,0,'QVNbueubNW','fmrw',0),(4,5,54,0,0,'aYbA3iNCSk','kHIb',0),(5,5,55,0,0,'JJBjIvUM80','',0),(6,5,14,1,0,'7NVjYnhxwT','jPAT',0),(7,5,56,0,0,'yaYJ3mrsYP','Wt9G',0),(8,5,57,0,0,'qy2a6fp7PW','CkLp',0),(9,5,58,0,0,'7bmANrUqUE','MyFS',0),(10,5,59,0,0,'NJVjEzpLFh','BFaM',0),(11,5,60,0,0,'mmArMvpqNn','5XPd',0),(12,5,61,0,0,'nUjuQz1qb2','98Zl',0),(13,5,62,0,0,'MzUnIjCVom','5ERQ',0),(14,5,63,0,0,'IziqeylQaJ','1Qmi',0),(15,5,64,0,0,'2uAnEr0QFn','FNx2',0),(16,5,65,0,0,'YB7bI3IucT','MCpN',0),(17,5,66,0,0,'qERnMf08KE','iKVU',0),(18,5,67,0,0,'YFJbiySL45','c8Mu',0),(19,5,68,0,0,'UFjIf2QqnV','3G2H',0),(20,5,69,0,0,'EzuYburVJs','qkIU',0),(21,5,70,0,0,'6Vzmmu1ksV','SHdA',0),(22,5,71,0,0,'MbIr2yNNJT','yV7I',0),(23,5,72,0,0,'JzyeInn1Pi','Gmmb',0),(24,5,73,0,0,'imiQraBLcN','Pa2p',0),(25,5,74,0,0,'EJZRZrJMbq','W2IS',0),(26,5,75,0,0,'eqAfaiWH7R','D1B8',0),(27,5,76,0,0,'UFj2uq57f4','SQ9u',0),(28,5,77,0,0,'Bf6vEfdCoU','sgnk',0),(29,5,78,0,0,'imaqyala0O','oTAG',0),(30,5,79,0,0,'VfMV7fnMhl','TWAr',0),(31,5,80,0,0,'QVbeqiRTAZ','eaCW',0),(32,5,81,0,0,'JBBfUvPgwv','uzc5',0),(33,5,82,0,0,'FFNJzmsgjK','NU7M',0),(34,5,83,0,0,'2aiEZbNudq','ynBq',0),(35,5,84,0,0,'3aMFVfKSwN','gkRD',0),(36,5,85,0,0,'uqiYfaxfkv','QxfD',0),(37,5,86,0,0,'VVZzyaLcG0','HRhA',0),(38,5,87,0,0,'FJv2mmUflN','Fg90',0),(39,5,15,1,0,'73eA32Tg7o','4uA5',0),(40,5,16,1,0,'YNfUzmZhx8','nEMH',0),(41,5,17,1,0,'eiiQFjdEpA','sBNK',0),(42,5,18,1,0,'YreIjqrjMS','CdZc',0),(43,5,88,0,0,'QfIzAvSL40','lZcP',0),(44,4,19,1,0,'j6ZnqaMTRo','wAvF',0),(45,4,89,0,0,'VZVnumE7Km','02tC',0),(46,5,90,0,0,'NbUFFfo3sb','J8tF',0),(47,5,91,0,0,'EfQ3QbG4aK','Bctq',0),(48,5,92,0,0,'NZb6B3ic49','jrDc',0),(49,5,93,0,0,'aqUNNnZmR2','632a',0),(50,5,94,0,0,'qeeMFrQTea','adpb',0),(51,5,95,0,0,'v6vyIbYLEW','5Guc',0),(52,5,96,0,0,'FZrIZ3YkZE','7d65',0),(53,5,97,0,0,'FzyqmqBrEb','2xry',0),(54,5,98,0,0,'qim2qmNTqN','2yOS',0),(55,5,99,0,0,'iuQJnuSQHT','UJmM',0),(56,5,100,0,0,'MBbuUrgjwi','lmSD',0),(57,5,101,0,0,'3yUF7vPc7e','I0uV',0),(58,5,102,0,0,'mm6ZRfXZCa','prqi',0),(59,5,103,0,0,'ryqeuivWSs','i5Ly',0),(60,5,104,0,0,'UN3M3mhxHw','ZpfC',0),(61,5,105,0,0,'FRZjyewFnu','SRYT',0),(62,5,106,0,0,'muQ3aeS48W','ic2y',0),(63,5,107,0,0,'qY3yi2Wfc9','nRHo',0),(64,5,108,0,0,'iAfEryWcv1','upsi',0),(65,5,109,0,0,'7VVjUzFoMO','jwTR',0),(66,5,110,0,0,'ENrUZfUfgi','xYVP',0),(67,5,111,0,0,'nMNf2u68pm','idbJ',0),(68,5,112,0,0,'RvINn2qOaE','nFo1',0),(69,5,113,0,0,'F3aYnacuCu','azXJ',0),(70,5,114,0,0,'6FR3mebo4b','IqyQ',0),(71,5,115,0,0,'mi2Qjm9MOT','6tKy',0),(72,5,116,0,0,'U32IvaBozx','JP7x',0),(73,5,117,0,0,'IVRBJbXC8c','ZO9x',0),(74,5,118,0,0,'ANn2muSUlr','fWlr',0),(75,5,119,0,0,'qiYvUv3ERC','GP8y',0),(76,5,120,0,0,'jQVRRftjKV','y8Gz',0),(77,5,121,0,0,'vmyIre9Isy','QQ9G',0),(78,5,122,0,0,'iQ7Nva6kEo','H2P8',0),(79,5,123,0,0,'6BBn2eGfaa','Fngu',0),(80,5,124,0,0,'FZBFBjTu6D','QN63',0),(81,5,125,0,0,'aimiyqgMq7','fIjC',0),(82,5,126,0,0,'q6Nn2iu8v9','cZ6U',0),(83,5,127,0,0,'umy6ZnVIzB','YO7G',0),(84,5,128,0,0,'zqmUZfk2y3','MnYF',0),(85,5,129,0,0,'3eEbUzMnxT','2zTb',0),(86,5,130,0,0,'JZjU3aeep6','6fuE',0),(87,5,131,0,0,'2IF3u25i8Y','LcbB',0),(88,5,132,0,0,'biaiaqZkzS','OqbL',0),(89,5,133,0,0,'FfQRJjr7NK','6btE',0),(90,5,134,0,0,'BRFnQfqGqa','wgTz',0),(91,5,135,0,0,'RzmmYv8Qjg','OJcS',0),(92,5,136,0,0,'nMRvI3Xo05','b8t3',0);
+INSERT INTO `sk_shares` VALUES (1,5,13,1,0,'QVNbueubNW','fmrw',0),(4,5,54,0,0,'aYbA3iNCSk','kHIb',0),(5,5,55,0,0,'JJBjIvUM80','',0),(6,5,14,1,0,'7NVjYnhxwT','jPAT',0),(7,5,56,0,0,'yaYJ3mrsYP','Wt9G',0),(8,5,57,0,0,'qy2a6fp7PW','CkLp',0),(9,5,58,0,0,'7bmANrUqUE','MyFS',0),(10,5,59,0,0,'NJVjEzpLFh','BFaM',0),(11,5,60,0,0,'mmArMvpqNn','5XPd',0),(12,5,61,0,0,'nUjuQz1qb2','98Zl',0),(13,5,62,0,0,'MzUnIjCVom','5ERQ',0),(14,5,63,0,0,'IziqeylQaJ','1Qmi',0),(15,5,64,0,0,'2uAnEr0QFn','FNx2',0),(16,5,65,0,0,'YB7bI3IucT','MCpN',0),(17,5,66,0,0,'qERnMf08KE','iKVU',0),(18,5,67,0,0,'YFJbiySL45','c8Mu',0),(19,5,68,0,0,'UFjIf2QqnV','3G2H',0),(20,5,69,0,0,'EzuYburVJs','qkIU',0),(21,5,70,0,0,'6Vzmmu1ksV','SHdA',0),(22,5,71,0,0,'MbIr2yNNJT','yV7I',0),(23,5,72,0,0,'JzyeInn1Pi','Gmmb',0),(24,5,73,0,0,'imiQraBLcN','Pa2p',0),(25,5,74,0,0,'EJZRZrJMbq','W2IS',0),(26,5,75,0,0,'eqAfaiWH7R','D1B8',0),(27,5,76,0,0,'UFj2uq57f4','SQ9u',0),(28,5,77,0,0,'Bf6vEfdCoU','sgnk',0),(29,5,78,0,0,'imaqyala0O','oTAG',0),(30,5,79,0,0,'VfMV7fnMhl','TWAr',0),(31,5,80,0,0,'QVbeqiRTAZ','eaCW',0),(32,5,81,0,0,'JBBfUvPgwv','uzc5',0),(33,5,82,0,0,'FFNJzmsgjK','NU7M',0),(34,5,83,0,0,'2aiEZbNudq','ynBq',0),(35,5,84,0,0,'3aMFVfKSwN','gkRD',0),(36,5,85,0,0,'uqiYfaxfkv','QxfD',0),(37,5,86,0,0,'VVZzyaLcG0','HRhA',0),(38,5,87,0,0,'FJv2mmUflN','Fg90',0),(39,5,15,1,0,'73eA32Tg7o','4uA5',0),(40,5,16,1,0,'YNfUzmZhx8','nEMH',0),(41,5,17,1,0,'eiiQFjdEpA','sBNK',0),(42,5,18,1,0,'YreIjqrjMS','CdZc',0),(43,5,88,0,0,'QfIzAvSL40','lZcP',0),(44,4,19,1,0,'j6ZnqaMTRo','wAvF',0),(45,4,89,0,0,'VZVnumE7Km','02tC',0),(46,5,90,0,0,'NbUFFfo3sb','J8tF',0),(47,5,91,0,0,'EfQ3QbG4aK','Bctq',0),(48,5,92,0,0,'NZb6B3ic49','jrDc',0),(49,5,93,0,0,'aqUNNnZmR2','632a',0),(50,5,94,0,0,'qeeMFrQTea','adpb',0),(51,5,95,0,0,'v6vyIbYLEW','5Guc',0),(52,5,96,0,0,'FZrIZ3YkZE','7d65',0),(53,5,97,0,0,'FzyqmqBrEb','2xry',0),(54,5,98,0,0,'qim2qmNTqN','2yOS',0),(55,5,99,0,0,'iuQJnuSQHT','UJmM',0),(56,5,100,0,0,'MBbuUrgjwi','lmSD',0),(57,5,101,0,0,'3yUF7vPc7e','I0uV',0),(58,5,102,0,0,'mm6ZRfXZCa','prqi',0),(59,5,103,0,0,'ryqeuivWSs','i5Ly',0),(60,5,104,0,0,'UN3M3mhxHw','ZpfC',0),(61,5,105,0,0,'FRZjyewFnu','SRYT',0),(62,5,106,0,0,'muQ3aeS48W','ic2y',0),(63,5,107,0,0,'qY3yi2Wfc9','nRHo',0),(64,5,108,0,0,'iAfEryWcv1','upsi',0),(65,5,109,0,0,'7VVjUzFoMO','jwTR',0),(66,5,110,0,0,'ENrUZfUfgi','xYVP',0),(67,5,111,0,0,'nMNf2u68pm','idbJ',0),(68,5,112,0,0,'RvINn2qOaE','nFo1',0),(69,5,113,0,0,'F3aYnacuCu','azXJ',0),(70,5,114,0,0,'6FR3mebo4b','IqyQ',0),(71,5,115,0,0,'mi2Qjm9MOT','6tKy',0),(72,5,116,0,0,'U32IvaBozx','JP7x',0),(73,5,117,0,0,'IVRBJbXC8c','ZO9x',0),(74,5,118,0,0,'ANn2muSUlr','fWlr',0),(75,5,119,0,0,'qiYvUv3ERC','GP8y',0),(76,5,120,0,0,'jQVRRftjKV','y8Gz',0),(77,5,121,0,0,'vmyIre9Isy','QQ9G',0),(78,5,122,0,0,'iQ7Nva6kEo','H2P8',0),(79,5,123,0,0,'6BBn2eGfaa','Fngu',0),(80,5,124,0,0,'FZBFBjTu6D','QN63',0),(81,5,125,0,0,'aimiyqgMq7','fIjC',0),(82,5,126,0,0,'q6Nn2iu8v9','cZ6U',0),(83,5,127,0,0,'umy6ZnVIzB','YO7G',0),(84,5,128,0,0,'zqmUZfk2y3','MnYF',0),(85,5,129,0,0,'3eEbUzMnxT','2zTb',0),(86,5,130,0,0,'JZjU3aeep6','6fuE',0),(87,5,131,0,0,'2IF3u25i8Y','LcbB',0),(88,5,132,0,0,'biaiaqZkzS','OqbL',0),(89,5,133,0,0,'FfQRJjr7NK','6btE',0),(90,5,134,0,0,'BRFnQfqGqa','wgTz',0),(91,5,135,0,0,'RzmmYv8Qjg','OJcS',0),(92,5,136,0,0,'nMRvI3Xo05','b8t3',0),(93,5,137,0,0,'y67nEnWzjz','lhK7',0),(94,5,138,0,0,'3YVB3qb5b7','o3GV',0),(95,5,139,0,0,'r6jEJfmGhy','3U6u',0),(96,5,140,0,0,'yI7jAvQrtQ','m3Do',0),(97,5,141,0,0,'yAR7fqlAYT','A1ft',0),(98,5,142,0,0,'VJbai2zHA8','lQjh',0),(99,5,143,0,0,'NrYVvqD4sP','StfT',0),(100,5,144,0,0,'uauIFjPko6','sijd',0),(101,5,21,1,0,'eIRrQnOHwE','RhXA',0),(102,5,145,0,0,'UbIRB3mwAm','lFCk',0),(103,5,146,0,0,'mMVJryGgMx','tSWc',0);
 /*!40000 ALTER TABLE `sk_shares` ENABLE KEYS */;
 
 #
@@ -286,14 +286,14 @@ CREATE TABLE `sk_stores` (
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
   `delete_time` int(11) DEFAULT NULL COMMENT '软删除',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=137 DEFAULT CHARSET=utf8 COMMENT='储存文件';
+) ENGINE=MyISAM AUTO_INCREMENT=139 DEFAULT CHARSET=utf8 COMMENT='储存文件';
 
 #
 # Data for table "sk_stores"
 #
 
 /*!40000 ALTER TABLE `sk_stores` DISABLE KEYS */;
-INSERT INTO `sk_stores` VALUES (136,5,92,'phpStudy_64.zip','20210914\\5\\file_61401cf1aaa781631591665',81485042,'','application/zip','zip',8,1,0,0,'',NULL,1631591665,1631591665,NULL);
+INSERT INTO `sk_stores` VALUES (143,5,99,'phpstudyV8使用说明.txt','/upload/20210915/5/file_6QnbhpO3SwBqz8GF.txt',535,'','','txt',0,3,0,0,'',NULL,1631648573,1631648573,NULL),(144,5,100,'GPU-Z.exe','/upload/20210915/5/file_FyJhIpQmbBvSza8y.exe',1034752,'','','exe',0,3,0,0,'',NULL,1631648679,1631648679,NULL),(145,5,102,'Intel PCI-E网卡正品检测.exe','/upload/20210915/5/file_yuK1D5K7uBt6S71e.exe',662688,'','','exe',21,3,0,0,'',NULL,1631648736,1631648736,NULL),(146,5,103,'PC游戏运行库检测工具.exe','/upload/20210915/5/file_7iVF4jCKRiwOCNcB.exe',386869,'','','exe',8,3,0,0,'',NULL,1631648929,1631648929,NULL);
 /*!40000 ALTER TABLE `sk_stores` ENABLE KEYS */;
 
 #

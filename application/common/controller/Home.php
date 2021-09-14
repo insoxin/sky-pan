@@ -76,4 +76,40 @@ class Home extends Controller
         return $policy;
     }
 
+    protected function getPolicyUrl($policy,$param = []): string
+    {
+        if($policy['type'] == 'local'){
+            return url('upload/file');
+        }
+
+        $data = [
+            'uid' => $this->userInfo['id'],
+            'policy_id' => $policy['id'],
+            'save_dir' => $policy['config']['save_dir']
+        ];
+
+        $data = array_merge($data,$param);
+
+        $data['sign'] = $this->remote_sign_params($data,$policy['config']['access_token']);
+
+        return $policy['config']['server_uri'].'?'.urldecode(http_build_query($data));
+    }
+
+    protected function remote_sign_params($params,$key): string
+    {
+        // 过滤参数
+        $params = array_filter($params,function($key) use ($params){
+            if(empty($params[$key]) || $key == 'sign'){
+                return false;
+            }
+            return true;
+        },ARRAY_FILTER_USE_KEY);
+        // ascii排序
+        ksort($params);
+        reset($params);
+        // 签名
+        return md5(urldecode(http_build_query($params)) . $key);
+    }
+
+
 }

@@ -5,6 +5,7 @@ namespace app\index\controller;
 use app\common\controller\Home;
 use app\common\model\FileManage;
 use app\common\model\Groups;
+use app\common\model\Policys;
 use app\common\model\Shares;
 use app\common\model\Stores;
 use think\Exception;
@@ -29,10 +30,67 @@ class Upload extends Home
             'fsize' => countSize($this->groupData['max_storage'] * $upload_limit),
         ];
 
+        $folder_id = FileManage::getFolderAllowPid(0,$this->userInfo['id']);
+
+        $upload_api = $this->getPolicyUrl($policy,[
+            'md' => 'upload',
+            'size' => $this->groupData['max_storage'],
+            'notify' => url('upload/notify','',false,true),
+            'root_folder_id' => $folder_id
+        ]);
+
+        $this->assign('upload_api',$upload_api);
+
         $this->assign('upload_limit',$upload_limit);
         $this->assign('upload_rule',$upload_rule);
 
         return $this->fetch();
+    }
+
+    public function notify(){
+        $data = input('get.');
+        $policy_id = input('get.policy_id');
+        $sign = input('get.sign');
+
+        $policy = Policys::where('id',$policy_id)->find();
+
+        if(empty($policy)){
+            exit('Fail policy not found.');
+        }
+
+        if(empty($sign)){
+            exit('Fail is no params a sign.');
+        }
+
+        $remote_sign = $this->remote_sign_params($data,$policy['config']['access_token']);
+
+        if($remote_sign != $sign){
+            exit('Fail is sign verify.');
+        }
+
+        // 加入数据库
+        $data = [
+            'uid' => $data['uid'],
+            'origin_name' => $data['name'],
+            'file_name' => $data['path'],
+            'size' => $data['size'],
+            'meta' => '',
+            'mime_type' => '',
+            'ext' => $data['ext'],
+            'parent_folder' => $data['folder_id'],
+            'policy_id' => $policy['id'],
+            'dir' => '',
+            'create_time' => time(),
+            'update_time' => time()
+        ];
+
+        $file_id = (new Stores)->insertGetId($data);
+
+        $share_id = Shares::addShare($data['uid'],$file_id,0);
+
+        Stores::where('id',$file_id)->update(['shares_id' => $share_id]);
+
+        exit('UPLOAD_SUCCESS');
     }
 
     public function file(){
@@ -115,7 +173,6 @@ class Upload extends Home
         if(!empty($chunks)){
             $chunks_key = input('post.chunks_key');
 
-
             $real_chunk_path = env('root_path') . './public/chunks';
 
             is_dir($real_chunk_path) || mkdir($real_chunk_path, 0777, true);
@@ -171,7 +228,6 @@ class Upload extends Home
                         fclose($chunkObj);
                         unlink($chunk_path.DIRECTORY_SEPARATOR .$value.".chunk");
                     }
-
 
                     // 移动文件
                     is_dir($paths['path']) ?: mkdir($paths['path'],0777,true);

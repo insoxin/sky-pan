@@ -126,7 +126,7 @@
 
             duplicate: false,
 
-            server: "{:url('upload/file')}",
+            server: "{$upload_api|raw}",
             fileVal: 'file',
 
             formData: { //自定义参数

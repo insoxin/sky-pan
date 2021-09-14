@@ -8,11 +8,8 @@ class Policys extends Model
 {
 
     public function addPolicy($data){
-        $data['max_size'] = $data["max_size"] * $data["storage_size"];
-        unset($data["storage_size"]);
-
         //基础参数
-        $keys = ['name','type','filetype','max_size'];
+        $keys = ['name','type','filetype'];
 
         // 附加参数
         $field = [];
@@ -30,10 +27,8 @@ class Policys extends Model
     }
 
     public function editPolicy($id,$data){
-        $data['max_size'] = $data["max_size"] * $data["storage_size"];
-        unset($data["storage_size"]);
         //基础参数
-        $keys = ['name','type','filetype','max_size'];
+        $keys = ['name','type','filetype'];
         // 附加参数
         $field = [];
         foreach ($data as $key => $item){
