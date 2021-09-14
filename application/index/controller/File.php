@@ -345,7 +345,8 @@ class File extends Home
                 return $down->name($info['origin_name']);
                 break;
             case 'remote':
-
+                $down_url = getDownloadRemote($info['file_name'],$info['origin_name'],$policy->config['server_uri'],'',$policy->config['access_token']);
+                $this->redirect($down_url);
                 break;
         }
     }

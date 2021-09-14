@@ -68,7 +68,6 @@ class Server{
             $this->returnJson(0,'数据签名不存在');
         }
 
-
         if(!$this->sign_verify($_GET,$sign)){
             $this->returnJson(0,'数据签名验证失败');
         }
@@ -216,10 +215,65 @@ class Server{
                 break;
 
             case 'download':
+                // 下载操作
+                $tk = $_GET['tk'] ?? '';
+                $tk_info = $this->decodeTk($tk);
+
+                //获取下载文件位置
+                $download_file_path = $this->getFitSeparator($this->runtime_path . $tk_info['file']);
+
+                // 检查文件是否存在
+                if(!is_file($download_file_path)){
+                    $this->returnJson(0,'下载文件不存在');
+                }
+
+                if ($tk_info['type'] == 'none'){
+                    // 禁止下载
+                    $this->returnJson(0,'禁止下载此文件');
+                }
+
+                // 启用 nginx X-Accel 下载
+                header('Content-Type: application/octet-stream');
+                $encoded_fname = rawurlencode($tk_info['origin']);
+                header('Content-Disposition: attachment;filename="'.$encoded_fname.'";filename*=utf-8'."''".$encoded_fname);
+
+                header('X-Accel-Redirect: '. $download_file_path);
+                header('X-Accel-Buffering: yes');
+
+                if ($tk_info['type'] > 0){
+                    $_file_limit_size = round(intval($tk_info['type']) * 1024);
+                    // 限速下载
+                    header('X-Accel-Limit-Rate:'.$_file_limit_size);
+                }
 
                 break;
         }
 
+    }
+
+
+    /**
+     * 解密tk
+     * @param $string
+     * @return array|false|string[]
+     * @throws Exception
+     */
+    protected function decodeTk($string){
+        $data = str_replace(['-','_'],['+','/'],$string);
+        $mod4 = strlen($data) % 4;
+        if ($mod4) {
+            $data .= substr('====', $mod4);
+        }
+        $tk = base64_decode($data);
+        $tk_data = explode(',',$tk);
+
+        if(count($tk_data) != 4){
+            $this->returnJson(0,'下载文件失败，参数错误');
+        }
+
+        $keys = ['file','origin','type','time'];
+
+        return array_combine($keys,$tk_data);
     }
 
     /**

@@ -120,6 +120,8 @@ class File extends Admin
                 return $down->name($info['origin_name']);
                 break;
             case 'remote':
+                $down_url = getDownloadRemote($info['file_name'],$info['origin_name'],$policy->config['server_uri'],'',$policy->config['access_token']);
+                $this->redirect($down_url);
                 break;
         }
 
@@ -134,7 +136,7 @@ class File extends Admin
 
         $username = Users::where('id',$info['uid'])->value('username');
         $policy_name = Policys::where('id',$info['policy_id'])->value('name');
-        $file_path = Policys::getFileSavePath($info['policy_id'],$info['file_name']);
+        $file_path = $info['file_name'];
 
         $this->assign('username',$username);
         $this->assign('policy_name',$policy_name);

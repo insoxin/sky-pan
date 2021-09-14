@@ -291,45 +291,20 @@ class Index extends Home
                     header('X-Accel-Buffering: yes');
                     header('X-Accel-Limit-Rate:'.$_file_limit_size);
 
-                    /*
-                    // 关闭php超时限制
-                    set_time_limit(0);
-
-                    // 写入文件头
-                    header('Cache-control: private');
-                    header('Content-Type: application/octet-stream');
-                    header('Content-Length: '.filesize($_file));
-                    $encoded_fname = rawurlencode($stores['origin_name']);
-                    header('Content-Disposition: attachment;filename="'.$encoded_fname.'";filename*=utf-8'."''".$encoded_fname);
-
-                    // 读取文件
-                    $fh = fopen($_file,"r");
-
-                    $i = 0;
-                    // 按照指定大小读取
-                    while (!feof($fh)){
-                        if($i < 1){
-                            echo fread($fh,round(100 * 1024));
-                        }else{
-                            echo fread($fh,round(intval($this->groupData['speed']) * 1024));
-                        }
-                        ob_flush();
-                        flush();
-                        $i++;
-                        sleep(1);
-                    }
-
-                    //关闭文件
-                    fclose($fh);
-                    */
                     exit;
                     break;
                 case 'remote':
+                    // 禁止下载
+                    if($this->groupData['speed'] == 0){
+                        throw new Exception('您当前的用户组禁止下载文件');
+                    }
 
+                    $down_url = getDownloadRemote($stores['file_name'],$stores['origin_name'],$policy->config['server_uri'],$this->groupData['speed'],$policy->config['access_token']);
+                    $this->redirect($down_url);
                     break;
             }
 
-        }catch (\Throwable $e){
+        }catch (Exception $e){
             return $this->fetch('user/err',['msg' => $e->getMessage()]);
         }
     }

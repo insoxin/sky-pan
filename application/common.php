@@ -294,3 +294,52 @@ function getTimeLastDay($time){
     return floor($day_lazy / 86400);
 }
 
+function getDownloadRemote($file_path,$origin_name,$hosts,$speed,$token){
+
+    if($speed === ""){
+        $speed = 'full';
+    }
+
+    if($speed === 0){
+        $speed = 'none';
+    }
+
+    $params = [
+        'file' => $file_path,
+        'origin' => $origin_name,
+        'speed' => $speed,
+        'time' => time()
+    ];
+
+    $post = [
+        'md' => 'download',
+        'tk' => urlsafe_b64encode(implode(',',$params))
+    ];
+
+    $post['sign'] = getRemoteSign($post,$token);
+
+    return $hosts .'?' . urldecode(http_build_query($post));
+}
+
+function urlsafe_b64encode($string) {
+    $data = base64_encode($string);
+    $data = str_replace(['+','/','='],['-','_',''],$data);
+    return $data;
+}
+
+function getRemoteSign($params,$key): string
+{
+    // 过滤参数
+    $params = array_filter($params,function($key) use ($params){
+        if(empty($params[$key]) || $key == 'sign'){
+            return false;
+        }
+        return true;
+    },ARRAY_FILTER_USE_KEY);
+    // ascii排序
+    ksort($params);
+    reset($params);
+
+    // 签名
+    return md5(urldecode(http_build_query($params)) . $key);
+}
