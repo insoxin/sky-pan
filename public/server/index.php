@@ -123,28 +123,35 @@ class Server{
                     }
 
                     // 加入分片文件
-                    $chunk_list[] = $chunks_filename;
+                    $chunks_list[] = $chunks_filename;
 
                     // 保存分片key文件
-                    $this->setChunkKeyFile($chunks_list_name,$chunk_path,$chunk_list);
+                    $this->setChunkKeyFile($chunks_list_name,$chunk_path,$chunks_list);
 
                     // 判断分片是否上传完成
                     if($chunk == ($chunks - 1)){
                         // 融合文件名
                         $combine_name = "file_".$this->getRandomName(8);
                         // 打开融合文件hanlder
-                        $fileObj = fopen($chunk_path.DIRECTORY_SEPARATOR.$combine_name,"a+");
+                        $fileObj = fopen($chunk_path.self::DS.$combine_name,"a+");
                         // 融合
-                        foreach ($chunk_list as $value) {
-                            $chunkObj = fopen($chunk_path.DIRECTORY_SEPARATOR .$value.".chunk", "rb");
+                        foreach ($chunks_list as $value) {
+
+                            $chunkObj = fopen($chunk_path.self::DS.$value.".chunk", "rb");
+
                             if(!$fileObj || !$chunkObj){
                                 $this->returnJson(0,'文件创建失败');
                             }
+
                             $content = fread($chunkObj, (2 * 1024 * 1024));
+
                             fwrite($fileObj, $content, (2 * 1024 * 1024));
+
                             unset($content);
+
                             fclose($chunkObj);
-                            unlink($chunk_path.DIRECTORY_SEPARATOR .$value.".chunk");
+
+                            unlink($chunk_path.self::DS.$value.".chunk");
                         }
 
                         // 获取保存目录
@@ -157,11 +164,13 @@ class Server{
                         $file_name = 'file_'.$this->getRandomName(16);
 
                         // 保存文件名
-                        $save_file_name = $save_dir.$file_name.'.'.$ext;
+                        $save_file_name = $this->getFitSeparator($this->runtime_path.$save_dir) . $file_name.'.'.$ext;
 
-                        if(!@rename($chunk_path.DIRECTORY_SEPARATOR.$combine_name,$save_file_name)){
+                        if(!@rename($chunk_path.self::DS.$combine_name,$save_file_name)){
                             $this->returnJson(0,'融合文件创建失败');
                         }
+
+                        $this->rmChunkKeyFile($chunks_list_name,$chunk_path);
 
                         $size = filesize($save_file_name);
 
@@ -174,7 +183,7 @@ class Server{
                             'name' => $file['name'],
                             'ext' => $ext,
                             'path' => $save_dir . $file_name .'.'. $ext,
-                            'size' => $file['size'],
+                            'size' => $size,
                             'mime' => $mime_type,
                             'folder_id' => ($folder_id == 0 ? $root_folder_id : $folder_id),
                             'policy_id' => $policy_id
@@ -205,10 +214,10 @@ class Server{
                 }
                 $this->returnJson(1,'上传文件成功');
                 break;
+
             case 'download':
 
                 break;
-
         }
 
     }
@@ -229,6 +238,17 @@ class Server{
         fclose($chunk_fh);
         return $chunk_data;
     }
+
+
+    /**
+     * 删除chunkKey文件
+     * @param $key
+     * @param $path
+     */
+    protected function rmChunkKeyFile($key,$path){
+        unlink($path.$key.'.crx');
+    }
+
     /**
      * 读取chunkKey文件
      * @param $key

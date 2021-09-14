@@ -8,3 +8,5 @@ thinkphp
 /tp.com
 /public/nginx.htaccess
 /public/default
+/public/server/chunks/*
+/public/server/upload/*

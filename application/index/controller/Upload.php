@@ -75,7 +75,7 @@ class Upload extends Home
             'file_name' => $data['path'],
             'size' => $data['size'],
             'meta' => '',
-            'mime_type' => '',
+            'mime_type' => $data['mime'],
             'ext' => $data['ext'],
             'parent_folder' => $data['folder_id'],
             'policy_id' => $policy['id'],
