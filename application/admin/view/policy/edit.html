@@ -31,7 +31,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">存储服务器</label>
                 <div class="layui-input-block">
-                    <select name="type" lay-verify="required" lay-filter="server_select">
+                    <select name="type" lay-verify="required" lay-filter="server_select" disabled>
                         <option value="local" {eq name="$info.type" value="local"}selected{/eq}>本地</option>
                         <option value="remote" {eq name="$info.type" value="remote"}selected{/eq}>远程</option>
                         <option value="aliyunoss" {eq name="$info.type" value="aliyunoss"}selected{/eq}>阿里云OSS</option>

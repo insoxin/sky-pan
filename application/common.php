@@ -204,6 +204,10 @@ function getSafeDirSeparator($dir){
     return str_replace(['/','\\','//','\\\\'],DIRECTORY_SEPARATOR,$dir);
 }
 
+function getDiyDirSeparator($spr,$dir){
+    return str_replace(['/','\\','//','\\\\'],$spr,$dir);
+}
+
 function sendEmail($username,$url){
     // 邮件配置
     $config = config('email.');

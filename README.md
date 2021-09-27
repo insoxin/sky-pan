@@ -65,6 +65,6 @@ https://xiaoluzyw.lanzoui.com/iMblCto46sb
 
 `Endpoint` oss-cn-hangzhou.aliyuncs.com
 
-`AccessKey` IDLTAI5tRkL7PfE5YrYnK5i5Vp
+`AccessKey` LTAI5tRkL7PfE5YrYnK5i5Vp
 
 `AccessKeySecret` LSRzPi3vGLsOdKh6Q48Wl89nTp6O9R

@@ -78,7 +78,7 @@ class Home extends Controller
 
     protected function getPolicyUrl($policy,$param = []): string
     {
-        if($policy['type'] == 'local'){
+        if($policy['type'] != 'remote'){
             return url('upload/file');
         }
 

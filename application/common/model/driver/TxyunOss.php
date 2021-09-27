@@ -2,10 +2,10 @@
 
 namespace app\common\model\driver;
 
-class TxyunOss
+class TxyunOss implements PolicyStore
 {
 
-    public static function upload($info,$policy){
+    public function upload($info,$policy,$path){
 
         $accessKeyId = "yourAccessKeyId";
         $accessKeySecret = "yourAccessKeySecret";
@@ -17,4 +17,8 @@ class TxyunOss
         return 0;
     }
 
+    public function download()
+    {
+        // TODO: Implement download() method.
+    }
 }

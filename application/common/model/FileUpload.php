@@ -91,6 +91,61 @@ class FileUpload
         return strtolower(pathinfo($filename, PATHINFO_EXTENSION));
     }
 
+    /**
+     * 获取随机文件名
+     * @param int $length
+     * @return string
+     */
+    protected function getRandomKey(int $length = 16): string
+    {
+        $charTable = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $result = "";
+        for ( $i = 0; $i < $length; $i++ ){
+            $result .= $charTable[ mt_rand(0, strlen($charTable) - 1) ];
+        }
+        return $result;
+    }
+
+    /**
+     * 获取上传目录
+     * @param $key
+     */
+    protected function getPath($key)
+    {
+        // 目录分割
+        $ds = DIRECTORY_SEPARATOR;
+
+        // 配置目录
+        $save_dir = str_replace('/',$ds,$this->policy['config']['save_dir']);
+
+        // 根目录
+        $root_path = realpath(env('root_path') . './public') . $save_dir;
+
+        // 临时存储目录
+        $temp_path = realpath(env('root_path') . './public') . str_replace('/',$ds,'/temp/');
+
+        // 当前保存目录
+        $file_path = date('Ymd') . $ds . $this->uid . $ds;
+
+        //文件名
+        $file_name = uniqid( "file_") . time();
+
+        $data = [
+            'root' => $root_path,
+            'temp' => $temp_path,
+            'file' => $file_path,
+            'path' => $root_path . $file_path,
+            'temp_path' => $temp_path . $file_path,
+            'name' => $file_name,
+            'filename' => $file_name .'.'. $this->getFileExt($this->info['file']['name'])
+        ];
+
+        if($key == 'all'){
+            return $data;
+        }
+
+        return $data[$key] ?? '';
+    }
 
 
     public function upload(){
@@ -116,19 +171,22 @@ class FileUpload
         // 参数校验
         $this->check();
 
+        // 目录
+        $path = $this->getPath('all');
+
         // 上传驱动
         switch ($this->policy['type']){
             // 阿里云
             case 'aliyunoss':
-                $file = (new AliyunOss)->upload($this->info,$this->policy);
+                $file = (new AliyunOss)->upload($this->info,$this->policy,$path);
                 break;
             // 腾讯云
             case 'txyunoss':
-                $file = (new TxyunOss)->upload($this->info,$this->policy);
+                $file = (new TxyunOss)->upload($this->info,$this->policy,$path);
                 break;
             // 本地
             case 'local':
-                $file = (new Local)->upload($this->info,$this->policy);
+                $file = (new Local)->upload($this->info,$this->policy,$path);
                 break;
         }
 

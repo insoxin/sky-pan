@@ -10,3 +10,4 @@ thinkphp
 /public/default
 /public/server/chunks/*
 /public/server/upload/*
+/public/temp/*
