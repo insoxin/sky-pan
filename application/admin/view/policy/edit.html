@@ -34,33 +34,15 @@
                     <select name="type" lay-verify="required" lay-filter="server_select">
                         <option value="local" {eq name="$info.type" value="local"}selected{/eq}>本地</option>
                         <option value="remote" {eq name="$info.type" value="remote"}selected{/eq}>远程</option>
+                        <option value="aliyunoss" {eq name="$info.type" value="aliyunoss"}selected{/eq}>阿里云OSS</option>
+                        <option value="txyunoss" {eq name="$info.type" value="txyunoss"}selected{/eq}>腾讯云OSS</option>
                     </select>
                     <div class="layui-form-mid layui-word-aux">文件存储的服务器</div>
                 </div>
             </div>
 
-            <div class="layui-form-item">
-                <label class="layui-form-label">存储目录</label>
-                <div class="layui-input-block">
-                    <input type="text" name="save_dir" value="{$info.config.save_dir}" placeholder="请输入文件存放的目录"  lay-verify="required" autocomplete="off"  class="layui-input">
-                    <div class="layui-form-mid layui-word-aux">请以根目录 / 开始，结尾要加"/"，例如：/uploads/</div>
-                </div>
-            </div>
+            <div class="other-field">
 
-            <div class="layui-form-item remote_field">
-                <label class="layui-form-label">远程Token</label>
-                <div class="layui-input-block">
-                    <input type="text" name="access_token" value="{$info.config.access_token}" placeholder="AccessToken" class="layui-input">
-                    <div class="layui-form-mid layui-word-aux">默认随机生成，请与远程服务端配置文件中保持一致</div>
-                </div>
-            </div>
-
-            <div class="layui-form-item remote_field">
-                <label class="layui-form-label">服务端URL</label>
-                <div class="layui-input-block">
-                    <input type="text" name="server_uri" value="{$info.config.server_uri}" placeholder="服务端URL" class="layui-input">
-                    <div class="layui-form-mid layui-word-aux">请填写合法的URL地址，结尾要加"/"</div>
-                </div>
             </div>
 
         </div>
@@ -74,6 +56,99 @@
         </div>
     </div>
 </form>
+
+{eq name="$info.type" value="local"}
+<script id="field_local" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">存储目录</label>
+        <div class="layui-input-block">
+            <input type="text" name="save_dir" value="{$info.config.save_dir}" placeholder="请输入文件存放的目录"  lay-verify="required" autocomplete="off"  class="layui-input">
+            <div class="layui-form-mid layui-word-aux">请以根目录 / 开始，结尾要加"/"，例如：/uploads/</div>
+        </div>
+    </div>
+</script>
+{/eq}
+
+{eq name="$info.type" value="remote"}
+<script id="field_remote" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">存储目录</label>
+        <div class="layui-input-block">
+            <input type="text" name="save_dir" value="{$info.config.save_dir}" placeholder="请输入文件存放的目录" lay-verify="required" autocomplete="off"  class="layui-input">
+            <div class="layui-form-mid layui-word-aux">请以根目录 / 开始，结尾要加"/"，例如：/uploads/</div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">远程Token</label>
+        <div class="layui-input-block">
+            <input type="text" name="access_token" value="{$info.config.access_token}" placeholder="AccessToken" lay-verify="required" class="layui-input">
+            <div class="layui-form-mid layui-word-aux">请与远程服务端配置文件中保持一致</div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">服务端URL</label>
+        <div class="layui-input-block">
+            <input type="text" name="server_uri" value="{$info.config.server_uri}" placeholder="服务端URL" lay-verify="required" class="layui-input">
+            <div class="layui-form-mid layui-word-aux">请填写合法的URL地址，结尾要加"/"</div>
+        </div>
+    </div>
+
+</script>
+{/eq}
+
+{eq name="$info.type" value="aliyunoss"}
+<script id="field_aliyunoss" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">存储目录</label>
+        <div class="layui-input-block">
+            <input type="text" name="save_dir" value="{$info.config.save_dir}" placeholder="请输入文件存放的目录" lay-verify="required" autocomplete="off"  class="layui-input">
+            <div class="layui-form-mid layui-word-aux">请以根目录 / 开始，结尾要加"/"，例如：/uploads/</div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">Endpoint</label>
+        <div class="layui-input-block">
+            <input type="text" name="endpoint" value="{$info.config.endpoint}" placeholder="Endpoint" lay-verify="required" autocomplete="off"  class="layui-input">
+            <div class="layui-form-mid layui-word-aux">OSS Endpoint</div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">Bucket</label>
+        <div class="layui-input-block">
+            <input type="text" name="bucket" value="{$info.config.bucket}" placeholder="Bucket" lay-verify="required" autocomplete="off"  class="layui-input">
+            <div class="layui-form-mid layui-word-aux">OSS Bucket</div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">AccessKey</label>
+        <div class="layui-input-block">
+            <input type="text" name="access_key" value="{$info.config.access_key}" placeholder="AccessKey" lay-verify="required" autocomplete="off"  class="layui-input">
+            <div class="layui-form-mid layui-word-aux">OSS AccessKey</div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">AccessKeySecret</label>
+        <div class="layui-input-block">
+            <input type="text" name="access_secret" value="{$info.config.access_secret}" placeholder="AccessKeySecret" lay-verify="required" autocomplete="off"  class="layui-input">
+            <div class="layui-form-mid layui-word-aux">OSS AccessKeySecret</div>
+        </div>
+    </div>
+
+</script>
+{/eq}
+
+{eq name="$info.type" value="txyunoss"}
+<script id="field_txyunoss" type="text/html">
+
+</script>
+{/eq}
+
 <script src="/static/component/layui/layui.js"></script>
 <script src="/static/component/pear/pear.js"></script>
 <script>
@@ -81,15 +156,20 @@
         let form = layui.form;
         let $ = layui.jquery;
 
-        {eq name="$info.type" value="remote"}$(".remote_field").show();{/eq}
+        function setFieldHtml(field){
+            let field_name = '#field_' + field;
+            let html = $(field_name).html();
 
-        form.on('select(server_select)',function(obj){
-            if(obj.value == 'remote'){
-                $(".remote_field").show();
-            }else{
-                $(".remote_field").hide();
+            if(typeof html !== "undefined"){
+                $(".other-field").html(html);
+                return true;
             }
-        });
+
+            $(".other-field").html("");
+            return false;
+        }
+
+        setFieldHtml('{$info.type}');
 
         form.on('submit(save)', function(data){
             $.ajax({
