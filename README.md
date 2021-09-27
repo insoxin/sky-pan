@@ -58,3 +58,13 @@ location /下载目录名 {
 #### 参考Cloudreve下载
 
 https://xiaoluzyw.lanzoui.com/iMblCto46sb
+
+#### OSS帐号
+
+`Bucket域名` skpan-store-1.oss-cn-hangzhou.aliyuncs.com
+
+`Endpoint` oss-cn-hangzhou.aliyuncs.com
+
+`AccessKey` IDLTAI5tRkL7PfE5YrYnK5i5Vp
+
+`AccessKey` SecretLSRzPi3vGLsOdKh6Q48Wl89nTp6O9R

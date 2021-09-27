@@ -4,6 +4,7 @@ namespace app\index\controller;
 
 use app\common\controller\Home;
 use app\common\model\FileManage;
+use app\common\model\FileUpload;
 use app\common\model\Groups;
 use app\common\model\Policys;
 use app\common\model\Shares;
@@ -94,6 +95,24 @@ class Upload extends Home
     }
 
     public function file(){
+
+        // 存储策略
+        $policy = $this->getPolicy();
+
+        try {
+            // 上传文件
+            (new FileUpload())
+                ->source($this->userInfo['id'],$policy)
+                ->upload();
+
+        }catch (Exception $e){
+            return json(['code' => 0,'msg' => $e->getMessage()]);
+        }
+
+        exit;
+
+        // folder uid policy
+
         // 超时时间5分钟
         @set_time_limit(5 * 60);
 
