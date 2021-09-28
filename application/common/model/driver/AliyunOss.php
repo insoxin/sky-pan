@@ -140,7 +140,7 @@ class AliyunOss extends PolicyStore
 
     public function download()
     {
-        // TODO: Implement download() method.
+
     }
 
 
