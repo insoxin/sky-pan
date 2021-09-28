@@ -25,17 +25,24 @@ class FileUpload
      */
     protected $info;
 
+    /**
+     * @var int 最大上传大小
+     */
+    protected $max_size;
+
 
     /**
      * 设置来源信息
      * @param $uid
      * @param $policy
+     * @param $max_size
      * @return FileUpload
      */
-    public function source($uid,$policy): FileUpload
+    public function source($uid,$policy,$max_size): FileUpload
     {
         $this->uid = $uid;
         $this->policy = $policy;
+        $this->max_size = $max_size;
         return $this;
     }
 
@@ -65,9 +72,9 @@ class FileUpload
             throw new Exception('您不可以使用该存储策略');
         }
 
-        if(!empty($this->policy['max_size'])){
-            if($this->info['file']['size'] > $this->policy['max_size']){
-                throw new Exception('单文件最大上传大小'.countSize($this->policy['max_size']));
+        if(!empty($this->max_size)){
+            if($this->info['file']['size'] > $this->max_size){
+                throw new Exception('单文件最大上传大小'.countSize($this->max_size));
             }
         }
 
@@ -174,6 +181,8 @@ class FileUpload
         $this->info['chunk']['chunk'] = input('post.chunk',0);
         $this->info['chunk']['chunks'] = input('post.chunks',0);
 
+        $this->info['uid'] = $this->uid;
+
         // 参数校验
         $this->check();
 
@@ -199,8 +208,31 @@ class FileUpload
         // 上传文件
         $file_object = $upload->upload();
 
-        var_dump($file_object);
+        // 插入数据库
+        if($file_object != 'chunk_file' && $file_object != null){
+            // 加入数据库
+            $data = [
+                'uid' => $this->uid,
+                'origin_name' => $this->info['file']['name'],
+                'file_name' => $file_object,
+                'size' => $this->info['file']['size'],
+                'ext' => $this->getFileExt($this->info['file']['name']),
+                'parent_folder' => $this->info['file']['folder'],
+                'policy_id' => $this->policy['id'],
+                'create_time' => time(),
+                'update_time' => time()
+            ];
 
+            $file_id = (new Stores)->insertGetId($data);
+
+            $share_id = Shares::addShare($this->uid,$file_id,0);
+
+            Stores::where('id',$file_id)->update(['shares_id' => $share_id]);
+
+            return ['code' => 1,'msg' => '文件上传成功'];
+        }
+
+        return ['code' => 1,'chunks' => 'chunk 文件上传成功'];
     }
 
 }

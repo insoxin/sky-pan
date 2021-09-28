@@ -21,8 +21,8 @@ function getNotNullTime($time, $default = '', $format = 'Y-m-d H:i:s'){
 }
 
 function countSize($bit,$array=false){
-    $type = array('Bytes','KB','MB','GB','TB');
-    $box = array('1','1024','1048576','1073741824','TB');
+    $type = ['B','KB','MB','GB','TB'];
+    $box = ['1','1024','1048576','1073741824','TB'];
     for($i = 0; $bit >= 1024; $i++) {
         $bit/=1024;
     }

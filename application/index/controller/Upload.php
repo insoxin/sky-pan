@@ -101,9 +101,11 @@ class Upload extends Home
 
         try {
             // 上传文件
-            (new FileUpload())
-                ->source($this->userInfo['id'],$policy)
+            $result = (new FileUpload())
+                ->source($this->userInfo['id'],$policy,$this->groupData['max_storage'])
                 ->upload();
+
+            var_dump($result);
 
         }catch (Exception $e){
             return json(['code' => 0,'msg' => $e->getMessage()]);
@@ -301,38 +303,6 @@ class Upload extends Home
             }
         }
 
-        // 文件上传
-        $info = $files->validate($file_validate)->move($paths['path'],$paths['name']);
-        // 保存结果
-        if($info){
-            // 加入数据库
-            $data = [
-                'uid' => $this->userInfo['id'],
-                'origin_name' => $info->getInfo('name'),
-                'file_name' => $paths['file'] . $info->getFilename(),
-                'size' => $info->getInfo('size'),
-                'meta' => '',
-                'mime_type' => $info->getMime(),
-                'ext' => $info->getExtension(),
-                'parent_folder' => $folder_id,
-                'policy_id' => $policy['id'],
-                'dir' => '',
-                'create_time' => time(),
-                'update_time' => time()
-            ];
-
-            $file_id = (new Stores)->insertGetId($data);
-
-            $share_id = Shares::addShare($this->userInfo['id'],$file_id,0);
-
-            Stores::where('id',$file_id)->update(['shares_id' => $share_id]);
-
-            return json(['code' => 1,'msg' => '文件上传成功']);
-
-        }else{
-            return json(['code' => 0,'msg' => $files->getError()]);
-        }
-
     }
 
     protected function getChunkFile(){
@@ -348,14 +318,7 @@ class Upload extends Home
         return $chunk_data;
     }
 
-    protected function getRandomKey($length = 16){
-        $charTable = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        $result = "";
-        for ( $i = 0; $i < $length; $i++ ){
-            $result .= $charTable[ mt_rand(0, strlen($charTable) - 1) ];
-        }
-        return $result;
-    }
+
 
     protected function getUploadPaths($policy): array
     {
