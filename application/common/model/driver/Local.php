@@ -10,7 +10,6 @@ class Local extends PolicyStore
 
     public function uploadSimple()
     {
-        $file_path = $this->path['path'] . $this->path['name'];
         // 保存文件
         $file_info = $this->info['file']['data']->move($this->path['path'],$this->path['name']);
 
@@ -34,7 +33,7 @@ class Local extends PolicyStore
         $temp_file = $this->path['temp_path'] . $temp_filename;
 
         // 保存临时文件
-        $file_info = $this->info['file']['data']->move($this->path['temp_path'],$this->path['filename']);
+        $file_info = $this->info['file']['data']->move($this->path['temp_path'],$temp_filename);
 
         if(!$file_info){
             throw new Exception('分片创建错误：'.$this->info['file']['data']->getError());
@@ -46,7 +45,40 @@ class Local extends PolicyStore
         // 加入分片文件
         $chunk_list[] = $temp_file;
 
-        
+        // 保存分片临时存储列表
+        Cache::set($chunks_saveKey,$chunk_list);
+
+        // 分片上传成功
+        if($this->info['chunk']['chunk'] == ($this->info['chunk']['chunks'] - 1)){
+
+            $save_file = $this->path['path'] . $this->path['filename'];
+
+            // 融合文件路径
+            $fileObj = fopen($save_file,"a+");
+
+            // 融合文件
+            foreach ($chunk_list as $value) {
+                $chunkObj = fopen($value, "rb");
+
+                if(!($fileObj && $chunkObj)){
+                    throw new Exception('分片融合文件创建失败');
+                }
+
+                $content = fread($chunkObj, (2 * 1024 * 1024));
+                fwrite($fileObj, $content, (2 * 1024 * 1024));
+                unset($content);
+                fclose($chunkObj);
+                // 删除分片文件
+                unlink($value);
+            }
+
+            // 清空分片临时存储列表
+            Cache::rm($chunks_saveKey);
+
+            $policy_save_dir = $this->policy['config']['save_dir'];
+
+            return getDiyDirSeparator('/',$policy_save_dir. $this->path['file'] . $this->path['filename']);
+        }
 
         return 'chunk_file';
 
@@ -63,7 +95,7 @@ class Local extends PolicyStore
 
     public function download()
     {
-        // TODO: Implement download() method.
+
     }
 
 }
