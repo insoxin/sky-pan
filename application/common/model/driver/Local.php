@@ -93,8 +93,32 @@ class Local extends PolicyStore
         return $result;
     }
 
-    public function download()
+    public function download($stores,$speed,$policy)
     {
+        //存储文件地址
+        $_file = getSafeDirSeparator(env('root_path').'public'.$stores['file_name']);
+
+        // 文件不存在
+        if(!is_file($_file)){
+            throw new Exception('文件不存在，可能已被删除');
+        }
+
+        $_file_path = $stores['file_name'];
+
+        $_file_limit_size = round(intval($speed) * 1024);
+
+        // 启用 nginx X-Accel 下载
+        header('Content-Type: application/octet-stream');
+        $encoded_fname = rawurlencode($stores['origin_name']);
+        header('Content-Disposition: attachment;filename="'.$encoded_fname.'";filename*=utf-8'."''".$encoded_fname);
+
+        header('X-Accel-Redirect: '. $_file_path);
+        header('X-Accel-Buffering: yes');
+
+        // 不限速下载
+        if($speed !== ""){
+            header('X-Accel-Limit-Rate:'.$_file_limit_size);
+        }
 
     }
 

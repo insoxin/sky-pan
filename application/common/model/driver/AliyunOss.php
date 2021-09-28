@@ -138,10 +138,45 @@ class AliyunOss extends PolicyStore
         }
     }
 
-    public function download()
+    public function download($stores, $speed, $policy)
     {
 
-    }
+        $accessKeyId = $policy['config']['access_key'];
+        $accessKeySecret = $policy['config']['access_secret'];
+        $endpoint = $policy['config']['endpoint'];
+        $bucket = $policy['config']['bucket'];
 
+        $object = ltrim($stores['file_name'],'/');
+
+        // 限速下载
+        if($speed !== ""){
+            // 下载速度
+            $down_speed = round(intval($speed) * 8192);
+
+            // 最小限速100kb/s
+            if($down_speed < 819200){
+                $down_speed = 819200;
+            }
+
+            $options = [
+                OssClient::OSS_TRAFFIC_LIMIT => $down_speed,
+            ];
+        }
+
+        try {
+            $ossClient = new OssClient($accessKeyId,$accessKeySecret,$endpoint);
+
+            // 120s有效期
+            $timeout = 120;
+            $signedUrl = $ossClient->signUrl($bucket, $object, $timeout, "GET", $options);
+
+            // 跳转下载地址
+            return redirect($signedUrl);
+
+        }catch (OssException $e){
+            throw new Exception($e->getMessage());
+        }
+
+    }
 
 }

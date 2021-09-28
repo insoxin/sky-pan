@@ -2,6 +2,9 @@
 namespace app\index\controller;
 
 use app\common\controller\Home;
+use app\common\model\driver\AliyunOss;
+use app\common\model\driver\Local;
+use app\common\model\driver\TxyunOss;
 use app\common\model\FileManage;
 use app\common\model\Folders;
 use app\common\model\Order;
@@ -249,6 +252,7 @@ class Index extends Home
                 $download_url = getFileDownloadUrl($stores['shares_id'],$stores['id'],0);
                 return redirect($download_url);
             }
+
             // 获取存储策略
             $policy = $stores->getPolicy();
 
@@ -256,61 +260,32 @@ class Index extends Home
                 throw new Exception('文件数据存储策略不存在');
             }
 
+            // 禁止下载
+            if($this->groupData['speed'] === 0){
+                throw new Exception('您当前的用户组禁止下载文件');
+            }
+
             // 远程文件下载
             if($policy->type == 'remote'){
-                // 禁止下载
-                if($this->groupData['speed'] === 0){
-                    throw new Exception('您当前的用户组禁止下载文件');
-                }
-
                 $down_url = getDownloadRemote($stores['file_name'],$stores['origin_name'],$policy->config['server_uri'],$this->groupData['speed'],$policy->config['access_token']);
                 $this->redirect($down_url);
             }
 
             // 存储驱动下载
-
-
-            // 判断存储方式
             switch ($policy->type){
-                case 'local':
-                    //存储文件地址
-                    $_file = $stores->getLocalSaveFilePath($policy->config['save_dir'],$stores['file_name']);
-
-                    // 文件不存在
-                    if(!is_file($_file)){
-                        throw new Exception('文件不存在，可能已被删除');
-                    }
-
-                    // 禁止下载
-                    if($this->groupData['speed'] === 0){
-                        throw new Exception('您当前的用户组禁止下载文件');
-                    }
-
-                    // 不限速下载
-                    if($this->groupData['speed'] === ""){
-                        $download = new Download($_file);
-                        return $download->name($stores['origin_name']);
-                    }
-
-                    $_file_path = $stores->getLocalSaveFile($policy->config['save_dir'],$stores['file_name']);
-                    $_file_limit_size = round(intval($this->groupData['speed']) * 1024);
-
-
-                    // 启用 nginx X-Accel 下载
-                    header('Content-Type: application/octet-stream');
-                    $encoded_fname = rawurlencode($stores['origin_name']);
-                    header('Content-Disposition: attachment;filename="'.$encoded_fname.'";filename*=utf-8'."''".$encoded_fname);
-
-                    header('X-Accel-Redirect: '. $_file_path);
-                    header('X-Accel-Buffering: yes');
-                    header('X-Accel-Limit-Rate:'.$_file_limit_size);
-
-                    exit;
+                case 'aliyunoss':
+                    $driver = new AliyunOss(0,0,0);
                     break;
-                case 'remote':
-
+                case 'txyunoss':
+                    $driver = new TxyunOss(0,0,0);
+                    break;
+                default:
+                    $driver = new Local(0,0,0);
                     break;
             }
+
+            // 下载
+            return $driver->download($stores,$this->groupData['speed'],$policy);
 
         }catch (Exception $e){
             return $this->fetch('user/err',['msg' => $e->getMessage()]);

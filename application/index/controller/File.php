@@ -331,7 +331,6 @@ class File extends Home
         }
 
 
-
         // 判断策略类型
         switch ($policy['type']){
             case 'local':

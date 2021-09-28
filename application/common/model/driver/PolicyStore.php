@@ -38,7 +38,7 @@ abstract class PolicyStore
         return 0;
     }
 
-    public function download()
+    public function download($stores,$speed,$policy)
     {
         return 0;
     }
