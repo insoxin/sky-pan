@@ -79,6 +79,10 @@ class FileUpload
             }
         }
 
+        if(empty($this->info['chunk']['key'])){
+            throw new Exception('分片密钥错误');
+        }
+
     }
 
     /**
@@ -109,6 +113,7 @@ class FileUpload
     /**
      * 获取上传目录
      * @param $key
+     * @return string|string[]
      */
     protected function getPath($key)
     {
@@ -165,6 +170,7 @@ class FileUpload
         $this->info['file']['data'] = request()->file('file');
 
         // 分片上传
+        $this->info['chunk']['key'] = input('post.chunks_key');
         $this->info['chunk']['chunk'] = input('post.chunk',0);
         $this->info['chunk']['chunks'] = input('post.chunks',0);
 
@@ -178,18 +184,22 @@ class FileUpload
         switch ($this->policy['type']){
             // 阿里云
             case 'aliyunoss':
-                $file = (new AliyunOss)->upload($this->info,$this->policy,$path);
+                $upload = new AliyunOss($this->info,$this->policy,$path);
                 break;
             // 腾讯云
             case 'txyunoss':
-                $file = (new TxyunOss)->upload($this->info,$this->policy,$path);
+                $upload = new TxyunOss($this->info,$this->policy,$path);
                 break;
             // 本地
-            case 'local':
-                $file = (new Local)->upload($this->info,$this->policy,$path);
+            default:
+                $upload = new Local($this->info,$this->policy,$path);
                 break;
         }
 
+        // 上传文件
+        $file_object = $upload->upload();
+
+        var_dump($file_object);
 
     }
 

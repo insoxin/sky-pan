@@ -6,43 +6,46 @@ use OSS\Core\OssException;
 use OSS\OssClient;
 use think\Exception;
 
-class AliyunOss implements PolicyStore
+class AliyunOss extends PolicyStore
 {
 
-    public function upload($info,$policy,$path){
+    public function uploadSimple(){
 
         // 临时文件地址
-        $temp_file = $path['temp_path'] . $path['filename'];
+        $temp_file = $this->path['temp_path'] . $this->path['filename'];
 
         // 保存临时文件
-        $file_info = $info['file']['data']->move($path['temp_path'],$path['filename']);
+        $file_info = $this->info['file']['data']->move($this->path['temp_path'],$this->path['filename']);
 
         if(!$file_info){
-            throw new Exception($info['file']['data']->getError());
+            throw new Exception($this->info['file']['data']->getError());
         }
 
-        $accessKeyId = $policy['config']['access_key'];
-        $accessKeySecret = $policy['config']['access_secret'];
-        $endpoint = $policy['config']['endpoint'];
-        $bucket = $policy['config']['bucket'];
+        $accessKeyId = $this->policy['config']['access_key'];
+        $accessKeySecret = $this->policy['config']['access_secret'];
+        $endpoint = $this->policy['config']['endpoint'];
+        $bucket = $this->policy['config']['bucket'];
 
-        $policy['config']['save_dir'] = ltrim($policy['config']['save_dir'],'/');
+        $policy_save_dir = ltrim($this->policy['config']['save_dir'],'/');
 
-        $object = getDiyDirSeparator('/',$policy['config']['save_dir']. $path['file'].$path['filename']);
+        $object = getDiyDirSeparator('/',$policy_save_dir. $this->path['file'].$this->path['filename']);
 
         try{
             $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
 
-            $data = $ossClient->uploadFile($bucket,$object,$temp_file);
+            $ossClient->uploadFile($bucket,$object,$temp_file);
 
-            var_dump($data);
-
+            // 返回文件存储地址
+            return '/'. $object;
 
         } catch(OssException $e) {
             throw new Exception('FAILED：'.$e->getMessage());
         }
+    }
 
-        return 0;
+    public function uploadPart()
+    {
+
     }
 
     public function download()
