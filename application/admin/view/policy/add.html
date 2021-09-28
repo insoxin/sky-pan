@@ -35,7 +35,7 @@
                         <option value="local">本地</option>
                         <option value="remote">远程</option>
                         <option value="aliyunoss">阿里云OSS</option>
-                        <option value="txyunoss">腾讯云OSS</option>
+                        <option value="txyunoss">腾讯云COS</option>
                     </select>
                     <div class="layui-form-mid layui-word-aux">文件存储的服务器</div>
                 </div>
@@ -139,6 +139,14 @@
 </script>
 
 <script id="field_txyunoss" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">存储目录</label>
+        <div class="layui-input-block">
+            <input type="text" name="save_dir" placeholder="请输入文件存放的目录" lay-verify="required" autocomplete="off"  class="layui-input">
+            <div class="layui-form-mid layui-word-aux">请以根目录 / 开始，结尾要加"/"，例如：/uploads/</div>
+        </div>
+    </div>
+
 
 </script>
 

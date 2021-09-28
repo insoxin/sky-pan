@@ -36,7 +36,9 @@ function PolicyType($d): string
 {
     $type = [
         'local' => '本地',
-        'remote' => '远程'
+        'remote' => '远程',
+        'aliyunoss' => '阿里云OSS',
+        'txyunoss' => '腾讯云COS'
     ];
 
     return $type[$d] ?? '未知';
