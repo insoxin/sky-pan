@@ -256,6 +256,20 @@ class Index extends Home
                 throw new Exception('文件数据存储策略不存在');
             }
 
+            // 远程文件下载
+            if($policy->type == 'remote'){
+                // 禁止下载
+                if($this->groupData['speed'] === 0){
+                    throw new Exception('您当前的用户组禁止下载文件');
+                }
+
+                $down_url = getDownloadRemote($stores['file_name'],$stores['origin_name'],$policy->config['server_uri'],$this->groupData['speed'],$policy->config['access_token']);
+                $this->redirect($down_url);
+            }
+
+            // 存储驱动下载
+
+
             // 判断存储方式
             switch ($policy->type){
                 case 'local':
@@ -294,13 +308,7 @@ class Index extends Home
                     exit;
                     break;
                 case 'remote':
-                    // 禁止下载
-                    if($this->groupData['speed'] === 0){
-                        throw new Exception('您当前的用户组禁止下载文件');
-                    }
 
-                    $down_url = getDownloadRemote($stores['file_name'],$stores['origin_name'],$policy->config['server_uri'],$this->groupData['speed'],$policy->config['access_token']);
-                    $this->redirect($down_url);
                     break;
             }
 

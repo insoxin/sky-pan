@@ -330,6 +330,8 @@ class File extends Home
             $this->error('存储策略不存在');
         }
 
+
+
         // 判断策略类型
         switch ($policy['type']){
             case 'local':
@@ -349,6 +351,7 @@ class File extends Home
                 $this->redirect($down_url);
                 break;
         }
+
     }
 
 }
