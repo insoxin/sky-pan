@@ -4,6 +4,7 @@ namespace app\admin\controller;
 
 use app\common\controller\Admin;
 use app\common\model\Policys;
+use app\common\model\Profit;
 use app\common\model\Stores;
 use app\common\model\Users;
 
@@ -100,6 +101,12 @@ class Recycle extends Admin
 
         foreach ($store as $item){
             $item->delete(true);
+
+            // 删除分享信息
+            Profit::where('file_id',$item['id'])
+                ->where('uid',$item['uid'])
+                ->delete();
+
             $succ++;
         }
 
