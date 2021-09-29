@@ -54,7 +54,7 @@ class Index extends Home
         }
 
         // 获取文件所有者信息
-        $user = Users::where('id',$storeInfo['uid'])->field('id,nickname,avatar,status,group')->find();
+        $user = Users::where('id',$storeInfo['uid'])->field('id,nickname,avatar,status,group,desc')->find();
 
         if(empty($user) || $user['status'] == 0){
             return $this->fetch('404');
@@ -73,6 +73,9 @@ class Index extends Home
 
             $is_vip = $user['group'] == $vip_group ? 1 : 0;
 
+            $desc = empty(trim($user['desc'])) ? '暂无签名' : $user['desc'];
+
+            $this->assign('desc',$desc);
             $this->assign('userinfo',$user);
             $this->assign('is_vip',$is_vip);
             return $this->fetch('pwd');

@@ -91,7 +91,8 @@ function getUserHead($user_head): string
     if(empty($user_head)){
         return '/assets/image/userhead.png';
     }
-    return '';
+
+    return $user_head;
 }
 
 function getVipRule(){

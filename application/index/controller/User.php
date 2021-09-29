@@ -361,4 +361,50 @@ class User extends Home
         return $this->fetch();
     }
 
+    public function change_pass(){
+
+    }
+
+    public function set_userinfo(){
+        $data = input('post.');
+        $result = $this->validate($data,[
+           'nickname|昵称' => 'require|max:30|min:1',
+           'desc|个性签名' => 'max:255'
+        ]);
+
+        if($result !== true){
+            return json(['code' => 0,'msg' => $result]);
+        }
+
+        Users::where('id',$this->userInfo['id'])->update([
+            'nickname' => $data['nickname'],
+            'desc' => $data['desc']
+        ]);
+
+        return json(['code' => 1,'msg' => '更新用户资料成功']);
+    }
+
+    public function upload_avatar(){
+        $file = request()->file('file');
+
+        if(!$file){
+            return json(['code' => 0,'msg' => '请选择上传的文件','data' => []]);
+        }
+
+        // 根目录
+        $root_path = getSafeDirSeparator(realpath(env('root_path') . './public').'/avatar');
+
+        $info = $file->validate(['size'=> 2097152,'ext'=>'jpg,png,gif'])->move($root_path);
+        if($info){
+            $avatar = '/avatar/'.str_replace('\\','/',$info->getSaveName());
+            Users::where('id',$this->userInfo['id'])->update([
+                'avatar' => $avatar
+            ]);
+            return json(['code' => 1,'msg' => '头像上传成功','data' => []]);
+        }else{
+            // 上传失败获取错误信息
+            return json(['code' => 0,'msg' => $file->getError(),'data' => []]);
+        }
+    }
+
 }

@@ -27,7 +27,7 @@ class User extends Admin
 
             $list = Users::where($map)
                 ->page($page,$limit)
-                ->field('id,nickname,username,group,is_auth,amount,email,status,create_time')
+                ->field('id,nickname,username,group,is_auth,amount,email,avatar,status,create_time')
                 ->select()->each(function ($item) use ($groups,$default_group){
                     $group_name = $groups[$item['group']] ?? '未知';
 
@@ -38,6 +38,8 @@ class User extends Admin
                     }else{
                         $item['group'] = '<span class="layui-badge layui-bg-red">'. $group_name .'</span>';
                     }
+
+                    $item['avatar'] = getUserHead($item['avatar']);
 
                     return $item;
                 });

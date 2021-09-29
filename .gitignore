@@ -11,3 +11,4 @@ thinkphp
 /public/server/chunks/*
 /public/server/upload/*
 /public/temp/*
+/public/avatar/*

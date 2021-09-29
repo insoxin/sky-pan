@@ -60,6 +60,7 @@
     <script src="__STATIC__/themes/admin_simpleboot3/public/assets/js/bootstrap.min.js"></script>
     <link href="__STATIC__/static/js/layer/skin/default/layer.css" rel="stylesheet">
     <script src="__STATIC__/static/js/layer/layer.js"></script>
+    <script src="__STATIC__/js/layui.js"></script>
     <script>
         Wind.css('artDialog');
         $(function () {
@@ -77,6 +78,9 @@
     <style>
         #think_page_trace_open {
             z-index: 9999;
+        }
+        .layui-upload-file{
+            display: none!important;
         }
     </style>
 </head>
@@ -113,27 +117,33 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label"><span class="form-required">*</span>设置昵称</label>
                             <div class="col-md-6 col-sm-10">
-                                <input required type="text" class="form-control" name="user_nickname"
+                                <input required type="text" id="user_nickname" class="form-control" name="nickname"
                                        value="{$info.nickname}" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label"><span class="form-required">*</span>设置头像</label>
+                            <label class="col-sm-2 control-label"><span class="form-required">*</span>个性签名</label>
                             <div class="col-md-6 col-sm-10">
-                                <input type="hidden" name="avatar" value="" id="thumbnail">
-                                <a href="javascript:uploadOneImage('图片上传','#thumbnail');">
-                                    <img src="{:getUserHead($info.avatar)}"
-                                         id="thumbnail-preview"
-                                         style="cursor: pointer;max-height: 80px;max-width: 80px;" />
-                                </a>
-                                <span class="help-block">
-                                   点击图片上传您的头像，请上传150x150大小的头像
-                                </span>
+                                <input required type="text" id="user_desc" class="form-control" name="desc"
+                                       value="{$info.desc}" autocomplete="off">
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label"><span class="form-required">*</span>设置头像</label>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="layui-upload">
+                                    <div class="prv">
+                                        <img id="prv_avatar" src="{:getUserHead($info.avatar)}" style="width: 80px;height: 80px;display: block">
+                                        <button type="button" style="width: 80px;" class="btn btn-sm btn-success" id="test1">上传头像</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-success">保存</button>
+                                <button type="button" id="submit_user" class="btn btn-success">提交修改</button>
                             </div>
                         </div>
                     </div>
@@ -162,7 +172,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-success js-ajax-submit">保存</button>
+                                <button type="submit" class="btn btn-success js-ajax-submit">修改密码</button>
                             </div>
                         </div>
                     </div>
@@ -175,6 +185,51 @@
 </div>
 
 <script>
+    layui.use(['upload'],function(){
+
+        var upload = layui.upload;
+
+        var uploadInst = upload.render({
+            elem: '#test1'
+            ,url: "{:url('user/upload_avatar')}"
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#prv_avatar').attr('src', result); //图片链接（base64）
+                });
+            }
+        });
+
+    });
+
+
+    $("#submit_user").on('click',function(){
+        let nickname = $("#user_nickname").val();
+        let desc = $("#user_desc").val();
+
+        if(!nickname.length){
+            layer.msg("必须填写昵称~",{icon:2});
+            return false;
+        }
+
+        $.ajax({
+            url:"{:url('user/set_userinfo')}",
+            type:'post',
+            dataType:'JSON',
+            data:{
+                nickname:nickname,
+                desc:desc
+            },
+            success:function(result){
+                layer.msg(result.msg,{icon: result.code ? 1 : 2 },function(){
+                    if(result.code === 1){
+                        window.location.reload();
+                    }
+                })
+            }
+        })
+    });
+
     $('.tan').on({
         mouseenter: function () {
             var nei = $(this).attr("tan");
