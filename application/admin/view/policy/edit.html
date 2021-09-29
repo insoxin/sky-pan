@@ -145,7 +145,45 @@
 
 {eq name="$info.type" value="txyunoss"}
 <script id="field_txyunoss" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">存储目录</label>
+        <div class="layui-input-block">
+            <input type="text" name="save_dir" value="{$info.config.save_dir}" placeholder="请输入文件存放的目录" lay-verify="required" autocomplete="off"  class="layui-input">
+            <div class="layui-form-mid layui-word-aux">请以根目录 / 开始，结尾要加"/"，例如：/uploads/</div>
+        </div>
+    </div>
 
+    <div class="layui-form-item">
+        <label class="layui-form-label">SecretId</label>
+        <div class="layui-input-block">
+            <input type="text" name="secret_id" value="{$info.config.secret_id}" placeholder="SecretId" lay-verify="required" autocomplete="off"  class="layui-input">
+            <div class="layui-form-mid layui-word-aux">COS SecretId</div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">SecretKey</label>
+        <div class="layui-input-block">
+            <input type="text" name="secret_key" value="{$info.config.secret_key}" placeholder="SecretKey" lay-verify="required" autocomplete="off"  class="layui-input">
+            <div class="layui-form-mid layui-word-aux">COS SecretKey</div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">Bucket</label>
+        <div class="layui-input-block">
+            <input type="text" name="bucket" value="{$info.config.bucket}" placeholder="Bucket" lay-verify="required" autocomplete="off"  class="layui-input">
+            <div class="layui-form-mid layui-word-aux">COS Bucket</div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">Region</label>
+        <div class="layui-input-block">
+            <input type="text" name="region" value="{$info.config.region}" placeholder="Region" lay-verify="required" autocomplete="off"  class="layui-input">
+            <div class="layui-form-mid layui-word-aux">COS Region 存储桶地域</div>
+        </div>
+    </div>
 </script>
 {/eq}
 
