@@ -107,7 +107,7 @@ class Upload extends Home
 
             return json($result);
         }catch (Exception $e){
-            return json(['code' => 0,'msg' => $e->getMessage()]);
+            return json(['code' => 0,'msg' => $e->getMessage(),'line' => $e->getLine()]);
         }
 
     }
