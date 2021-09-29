@@ -159,12 +159,15 @@ class AliyunOss extends PolicyStore
             }
 
             $options = [
-                OssClient::OSS_TRAFFIC_LIMIT => $down_speed,
+                OssClient::OSS_TRAFFIC_LIMIT => $down_speed
             ];
         }
 
         try {
+
             $ossClient = new OssClient($accessKeyId,$accessKeySecret,$endpoint);
+
+            $options['response-content-disposition'] = 'attachment; filename='.$stores['origin_name'];
 
             // 120s有效期
             $timeout = 120;
