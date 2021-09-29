@@ -3,6 +3,9 @@
 namespace app\admin\controller;
 
 use app\common\controller\Admin;
+use app\common\model\driver\AliyunOss;
+use app\common\model\driver\Local;
+use app\common\model\driver\TxyunOss;
 use app\common\model\Policys;
 use app\common\model\Stores;
 use app\common\model\Users;
@@ -105,26 +108,27 @@ class File extends Admin
             $this->error('存储策略不存在');
         }
 
-        // 判断策略类型
+        // 远程文件下载
+        if($policy['type'] == 'remote'){
+            $down_url = getDownloadRemote($info['file_name'],$info['origin_name'],$policy->config['server_uri'],"",$policy->config['access_token']);
+            $this->redirect($down_url);
+        }
+
+        // 存储驱动下载
         switch ($policy['type']){
-            case 'local':
-                //文件地址
-                $file_path = env('root_path').'public'.getSafeDirSeparator($policy->config['save_dir'] . $info['file_name']);
-                // 文件不存在
-                if(!is_file($file_path)){
-                    $this->error('存储文件不存在');
-                }
-                //下载对象
-                $down = new Download($file_path);
-                //下载文件
-                return $down->name($info['origin_name']);
+            case 'aliyunoss':
+                $driver = new AliyunOss(0,0,0);
                 break;
-            case 'remote':
-                $down_url = getDownloadRemote($info['file_name'],$info['origin_name'],$policy->config['server_uri'],'',$policy->config['access_token']);
-                $this->redirect($down_url);
+            case 'txyunoss':
+                $driver = new TxyunOss(0,0,0);
+                break;
+            default:
+                $driver = new Local(0,0,0);
                 break;
         }
 
+        // 下载
+        return $driver->download($info,"",$policy);
     }
 
     public function info(){
