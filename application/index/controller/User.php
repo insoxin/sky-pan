@@ -362,7 +362,30 @@ class User extends Home
     }
 
     public function change_pass(){
+        $data = input('post.');
+        $result = $this->validate($data,[
+            'old_password|原密码' => 'require|alphaNum|length:6,18',
+            'password|新密码' => 'require|alphaNum|length:6,18'
+        ]);
 
+        if($result !== true){
+            return json(['code' => 0,'msg' => $result]);
+        }
+
+
+        $en_password = md5($data['old_password'] . config('app.pass_salt'));
+
+        if($en_password != $this->userInfo['password']){
+            return json(['code' => 0,'msg' => '修改失败，原密码不正确']);
+        }
+
+        $en_new_password = md5($data['password'] . config('app.pass_salt'));
+
+        Users::where('id',$this->userInfo['id'])->update([
+           'password' => $en_new_password
+        ]);
+
+        return json(['code' => 1,'msg' => '密码修改成功，请重新登录']);
     }
 
     public function set_userinfo(){

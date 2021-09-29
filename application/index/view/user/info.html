@@ -152,27 +152,27 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">原密码</label>
                             <div class="col-md-6 col-sm-10">
-                                <input required type="password" class="form-control" name="old_password"
+                                <input required type="password" id="u_old_password" class="form-control" name="old_password"
                                        autocomplete="new-password">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">新密码</label>
                             <div class="col-md-6 col-sm-10">
-                                <input required type="password" class="form-control" name="password"
+                                <input required type="password" id="u_password" class="form-control" name="password"
                                        autocomplete="new-password">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">重复新密码</label>
                             <div class="col-md-6 col-sm-10">
-                                <input required type="password" class="form-control" name="re_password"
+                                <input required type="password" id="u_re_password" class="form-control" name="re_password"
                                        autocomplete="new-password">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-success js-ajax-submit">修改密码</button>
+                                <button type="button" id="submit_change" class="btn btn-success">修改密码</button>
                             </div>
                         </div>
                     </div>
@@ -224,6 +224,49 @@
                 layer.msg(result.msg,{icon: result.code ? 1 : 2 },function(){
                     if(result.code === 1){
                         window.location.reload();
+                    }
+                })
+            }
+        })
+    });
+
+    $("#submit_change").on('click',function(){
+        let old_password = $("#u_old_password").val(),
+            password = $("#u_password").val(),
+            re_password = $("#u_re_password").val();
+
+        if(!old_password){
+            layer.msg("请输入原密码",{icon:2});
+            return false;
+        }
+
+        if(!password){
+            layer.msg("请输入新密码",{icon:2});
+            return false;
+        }
+
+        if(!re_password){
+            layer.msg("请输入重复密码",{icon:2});
+            return false;
+        }
+
+        if(re_password != password){
+            layer.msg("两次输入的密码不一致，请重新输入",{icon:2});
+            return false;
+        }
+
+        $.ajax({
+            url:"{:url('user/change_pass')}",
+            type:'post',
+            dataType:'JSON',
+            data:{
+                old_password:old_password,
+                password:password
+            },
+            success:function(result){
+                layer.msg(result.msg,{icon: result.code ? 1 : 2 },function(){
+                    if(result.code === 1){
+                        parent.location.reload();
                     }
                 })
             }
