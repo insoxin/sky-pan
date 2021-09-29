@@ -482,7 +482,7 @@ a[data-v-e9e0751c] {
 }
 
 .space .space-content .space-body .body-item:first-child .space-logo[data-v-35ecef7e] {
-	background: url(../index_static/img/space-img1.png);
+	background: url(../image/space-img1.png);
 	background-size: cover
 }
 
@@ -492,7 +492,7 @@ a[data-v-e9e0751c] {
 }
 
 .space .space-content .space-body .body-item:nth-child(4) .space-logo[data-v-35ecef7e] {
-	background: url(../index_static/img/space-img2.png);
+	background: url(../image/space-img2.png);
 	background-size: cover
 }
 
@@ -501,7 +501,7 @@ a[data-v-e9e0751c] {
 }
 
 .space .space-content .space-body .body-item:nth-child(2) .space-logo[data-v-35ecef7e] {
-	background: url(../index_static/img/space-img3.png);
+	background: url(../image/space-img3.png);
 	background-size: cover
 }
 
@@ -511,7 +511,7 @@ a[data-v-e9e0751c] {
 }
 
 .space .space-content .space-body .body-item:nth-child(3) .space-logo[data-v-35ecef7e] {
-	background: url(../index_static/img/space-img4.png);
+	background: url(../image/space-img4.png);
 	background-size: cover
 }
 
@@ -613,7 +613,7 @@ a[data-v-e9e0751c] {
 	height: 159px;
 	position: absolute;
 	top: 40px;
-	background: url(../index_static/img/collect-img1.png);
+	background: url(.../image/collect-img1.png);
 	background-size: cover
 }
 
@@ -690,7 +690,7 @@ a[data-v-e9e0751c] {
 	width: 9px;
 	height: 73px;
 	top: 0;
-	background: url(../index_static/img/collect-line.svg);
+	background: url(../image/collect-line.svg);
 	background-size: cover
 }
 
@@ -732,7 +732,7 @@ a[data-v-e9e0751c] {
 	top: 481px;
 	width: 186px;
 	height: 73px;
-	background: url(../index_static/img/collect-image-left.png);
+	background: url(../image/collect-image-left.png);
 	background-size: cover
 }
 
@@ -742,7 +742,7 @@ a[data-v-e9e0751c] {
 	top: 430px;
 	width: 186px;
 	height: 73px;
-	background: url(../index_static/img/collect-image-right.png);
+	background: url(../image/collect-image-right.png);
 	background-size: cover
 }
 
@@ -751,7 +751,7 @@ a[data-v-e9e0751c] {
 }
 
 .collect .collect-right .right-item:nth-child(2) .item-round .item-image[data-v-e39358dc] {
-	background: url(../index_static/img/collect-item1.png);
+	background: url(../image/collect-item1.png);
 	background-size: cover
 }
 
@@ -760,7 +760,7 @@ a[data-v-e9e0751c] {
 }
 
 .collect .collect-right .right-item:nth-child(3) .item-round .item-image[data-v-e39358dc] {
-	background: url(../index_static/img/collect-item2.png);
+	background: url(../image/collect-item2.png);
 	background-size: cover
 }
 
@@ -769,7 +769,7 @@ a[data-v-e9e0751c] {
 }
 
 .collect .collect-right .right-item:nth-child(4) .item-round .item-image[data-v-e39358dc] {
-	background: url(../index_static/img/collect-item3.png);
+	background: url(../image/collect-item3.png);
 	background-size: cover
 }
 
@@ -790,7 +790,7 @@ a[data-v-e9e0751c] {
 	top: -49px;
 	width: 108px;
 	height: 107px;
-	background: url(../index_static/img/collect-img2.png);
+	background: url(../image/collect-img2.png);
 	background-size: cover
 }
 
@@ -800,7 +800,7 @@ a[data-v-e9e0751c] {
 	bottom: 108px;
 	width: 241px;
 	height: 176px;
-	background: url(../index_static/img/collect-img3.png);
+	background: url(../image/collect-img3.png);
 	background-size: cover
 }
 
@@ -810,7 +810,7 @@ a[data-v-e9e0751c] {
 	bottom: 259px;
 	width: 40px;
 	height: 40px;
-	background: url(../index_static/img/collect-img4.png);
+	background: url(../image/collect-img4.png);
 	background-size: cover
 }
 
@@ -845,7 +845,7 @@ a[data-v-20ff4511] {
 	width: 367px;
 	height: 322px;
 	transform: rotate(-13.32deg);
-	background: url(../index_static/img/footer-img1.png);
+	background: url(../image/footer-img1.png);
 	background-size: cover;
 	margin-top: 84px;
 	margin-left: 15px
@@ -855,7 +855,7 @@ a[data-v-20ff4511] {
 	position: absolute;
 	width: 290px;
 	height: 252px;
-	background: url(../index_static/img/footer-img2.png);
+	background: url(../image/footer-img2.png);
 	background-size: contain;
 	background-repeat: no-repeat;
 	margin-top: -72px;
@@ -994,7 +994,7 @@ a[data-v-20ff4511] {
 		height: 152.5px;
 		top: 340px;
 		left: 217px;
-		background: url(../index_static/img/footer-img2.png);
+		background: url(../image/footer-img2.png);
 		background-size: contain;
 		background-repeat: no-repeat;
 		margin: 0

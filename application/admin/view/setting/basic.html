@@ -28,6 +28,19 @@
             </div>
 
             <div class="layui-form-item">
+                <label class="layui-form-label">网站首页</label>
+                <div class="layui-input-block" style="max-width: 800px;">
+                    <select name="index_theme" lay-verify="required">
+                        <option value="default" {eq name="$option.index_theme" value="default"}selected{/eq}>旧版主题</option>
+                        <option value="new1" {eq name="$option.index_theme" value="new1"}selected{/eq}>新版主题</option>
+                    </select>
+                    <div class="layui-form-mid layui-word-aux">网站首页主题</div>
+                </div>
+            </div>
+
+            <br>
+
+            <div class="layui-form-item">
                 <label class="layui-form-label">SEO标题</label>
                 <div class="layui-input-block" style="max-width: 800px;">
                     <input type="text" name="site_name" value="{$option.site_name}" required  lay-verify="required" autocomplete="off" class="layui-input">

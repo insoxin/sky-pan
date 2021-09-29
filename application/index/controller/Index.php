@@ -23,7 +23,7 @@ class Index extends Home
 {
     public function index()
     {
-        return $this->fetch();
+        return $this->fetch('index_'.config('basic.index_theme'));
     }
 
     public function share(){

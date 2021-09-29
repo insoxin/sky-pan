@@ -1,0 +1,262 @@
+/* 文件列表图标 关于母猪的产后护养研究 */
+.file-icon{
+    cursor: default;
+    display: inline-block;  /* 一行显示 */
+    height: 26px;
+    width: 26px;
+    left: 43px;
+    top: 10px;
+    margin-right: 5px;
+    vertical-align:middle; /* 对齐 */
+}
+
+.filename{
+    vertical-align:middle;
+    font-size:13px;
+}
+
+
+.viewer{
+    
+    cursor:pointer; /* 鼠标样式 */
+}
+
+.folder{
+    cursor:pointer; /* 鼠标样式 */
+}
+
+.icon-search:hover{
+    color: #09AAFF;
+}
+
+/* 鼠标悬浮显示更多按钮 */
+.gengduo {
+    z-index: 3;
+    float:right;
+    margin-top: 5px;
+    cursor:pointer;
+    display: none;
+}
+
+
+/* 图标 */
+.icon-color {
+    color: #09AAFF;
+}
+
+
+/* 路劲导航  */
+.daohang {
+    background-color: #fff;
+    height: 16px;
+    line-height: 16px;
+    margin-bottom: 15px;
+    position: relative;
+    font-size: 13px;
+    display: block;
+    padding: 15px 0 7px 9px;
+    margin-top: 0px;
+    color: #666;
+}
+
+.daohang-path {
+    line-height: 16px;
+    background: #fff;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.daohang-path li {
+    float: left;
+}
+
+.daohang-path a {
+    color: #09aaff;
+}
+
+.daohang-path .fuhao {
+    padding: 0 5px;
+    color: #c5d8f3;
+    padding: 0 3px;
+}
+
+
+
+
+/* 空文件样式 */
+.emptyFile {
+    top: 20px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    line-height: 30px;
+}
+
+.emptyFile p {
+    color: #424e67;
+    margin: 20px 0;
+    font-weight: 200;
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-size: 14px;
+}
+
+.emptyFile2 {
+    margin: 0;
+    display: block;
+    text-align: left;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100%;
+    min-height: 400px;
+}
+.emptyFile2 .img {
+    background: url(img/emptyfile.png) no-repeat scroll center 0 transparent;
+    padding-top: 150px;
+    width: 488px;
+    position: absolute;
+    left: 50%;  /* 左边距实现居中 */
+    top: 90%;
+    text-align: center;
+    margin: -190px 0 0 -244px;
+}
+
+/* 空回收站样式 */
+.emptyRecyclebin .img {
+    background: url(img/emptyRecyclebin.png) no-repeat scroll center 0 transparent;
+    padding-top: 80px;
+}
+
+.emptyRecyclebin-p {
+    font-size: 16px;
+    font-weight: 700;
+    color: #03081a;
+}
+
+/* 搜索未找到时 */
+.emptySousuo .img {
+    background: url(img/emptySousuo.png) no-repeat scroll center 0 transparent;
+    padding-top: 110px;
+}
+
+
+
+/*  开关按钮   */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  
+  .switch input {display:none;}
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #2196F3;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+
+
+/*  右键菜单   */
+.context-menu .list {
+    border: 1px solid #dde0e4;
+    border-radius: 5px;
+    box-shadow: 0 0 8px #ccc;
+}
+
+.context-menu .list {
+    min-height: 23px;
+    padding: 2px 0;
+    position: absolute;
+    background-color: #FFF;
+    color: #000;
+}
+
+.context-menu .list li {
+    display: list-item;
+    cursor: default;
+    width: 110px;
+    height: 23px;
+    line-height: 23px;
+    white-space: nowrap;
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+    padding: 0 27px 0 20px;
+}
+@media (max-width:767px) {
+    .context-menu .list li {
+        width: 120px;
+        height: 30px;
+        line-height: 30px;
+    }
+}
+
+.context-menu .list .separate,
+.context-menu .list .separate.list-hover {
+    padding: 0;
+    margin: 5px 0;
+    height: 1px;
+    line-height: 0;
+    font-size: 0 !important;
+    background-color: #e9e9e9;
+    cursor: default;
+}
+.context-menu .list li:hover {
+    background-color: #4281F4;
+    color: #FFF!important;
+}
+
+.context-menu ul, .context-menu li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 13px!important;
+    color: #5b667b!important;
+}

@@ -1,0 +1,47 @@
+@CHARSET "UTF-8";
+
+.input-order {
+	width: 30px;
+}
+
+.wrap {
+	padding: 20px 20px 70px;
+}
+
+.margin-top-10 {
+	margin-top: 10px !important;
+}
+
+.margin-top-20 {
+	margin-top: 20px !important;
+}
+
+
+/* BTN改a标签样式 */
+.js-btn-a{
+    border: 0;
+    background-color: transparent;
+    outline: none;
+    color: #18BC9C;
+    text-decoration: underline;
+	margin: 0;
+	padding: 0;
+}
+
+
+/* 排序功能 */
+.both {
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAQAAADYWf5HAAAAkElEQVQoz7X QMQ5AQBCF4dWQSJxC5wwax1Cq1e7BAdxD5SL+Tq/QCM1oNiJidwox0355mXnG/DrEtIQ6azioNZQxI0ykPhTQIwhCR+BmBYtlK7kLJYwWCcJA9M4qdrZrd8pPjZWPtOqdRQy320YSV17OatFC4euts6z39GYMKRPCTKY9UnPQ6P+GtMRfGtPnBCiqhAeJPmkqAAAAAElFTkSuQmCC");
+}
+.sortable {
+	cursor: pointer;
+	background-position: right;
+	background-repeat: no-repeat;
+	padding-right: 30px!important;
+}
+.th-inner {
+	vertical-align: bottom;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
