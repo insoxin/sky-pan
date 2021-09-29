@@ -127,15 +127,12 @@ class User extends Admin
             $result = $this->validate($data,[
                 'email|安全邮箱' => 'email',
                 'password|登录密码' => 'alphaNum|length:6,18',
-                'amount|账户余额' => 'float',
                 'group|用户组' => 'require|number'
             ]);
 
             if($result !== true) return json(['code' => 502,'msg' => $result]);
 
             $update = [];
-
-            $update['amount'] = $data['amount'];
 
             if(!empty($data['email'])){
                 $update['email'] = $data['email'];
