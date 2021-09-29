@@ -68,3 +68,16 @@ https://xiaoluzyw.lanzoui.com/iMblCto46sb
 `AccessKey` LTAI5tRkL7PfE5YrYnK5i5Vp
 
 `AccessKeySecret` LSRzPi3vGLsOdKh6Q48Wl89nTp6O9R
+
+#### COS帐号
+
+`SecretId` AKIDpEJHRNjG2nQtFTowuqlaKeDg5Pi0weuA
+
+`SecretKey` Lajv0umaEi4KAuY9bzFQzTrBMwMct461
+
+`APPID` 1253809068
+
+`存储桶名称` skpan-1253809068
+
+`访问域名` https://skpan-1253809068.cos.ap-guangzhou.myqcloud.com
+

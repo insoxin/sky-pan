@@ -285,7 +285,7 @@ function getDownloadFileSignVerify($param,$sign): bool
 }
 
 function getFileName($field_id){
-    return \app\common\model\Stores::where('id',$field_id)->value('origin_name');
+    return \app\common\model\Stores::withTrashed()->where('id',$field_id)->value('origin_name');
 }
 
 function getWeekDay($time){
@@ -348,4 +348,43 @@ function getRemoteSign($params,$key): string
 
     // 签名
     return md5(urldecode(http_build_query($params)) . $key);
+}
+
+function Recursion($data, $pid = 0)
+{
+    static $child = [];
+
+    foreach ($data as $key => $value) {
+        if ($value['pid'] == $pid) {
+            $child[] = $value;
+            unset($data[$key]);
+            Recursion($data, $value['id']);
+        }
+    }
+
+    return $child;
+}
+
+function getFolderChildFiles($uid,$folder_id){
+    // 获取目录列表
+    $folder_list = db('folders')
+        ->where('uid',$uid)
+        ->field('id,parent_folder as pid')
+        ->select();
+
+    $folder = Recursion($folder_list,$folder_id);
+
+    $folder_ids = array_column($folder,'id');
+
+    $files = db('stores')->where('uid',$uid)
+        ->where('parent_folder','in',$folder_ids)
+        ->field('id')
+        ->select();
+
+    $files_ids = array_column($files,'id');
+
+    return [
+        'folder' => $folder_ids,
+        'file' => $files_ids
+    ];
 }

@@ -109,9 +109,15 @@ class File extends Home
                 return json(['status' => 0,'msg' => '删除失败，您不能删除根目录']);
             }
 
-            Folders::destroy(function($query) use($id,$uid){
-                $query->where('id','=',$id)->where('uid','=',$uid);
-            });
+            $child_object = getFolderChildFiles($uid,$pid);
+
+            if(!empty($child_object['file'])){
+                Stores::destroy($child_object['file']);
+            }
+
+            if(!empty($child_object['folder'])){
+                Folders::destroy($child_object['folder']);
+            }
 
         }else{
             Stores::destroy(function($query) use($id,$uid){
@@ -206,10 +212,18 @@ class File extends Home
                     if($pid == 0){
                         return json(['status' => 0,'msg' => '删除失败，目录操作异常']);
                     }
+
                     //删除
-                    Folders::destroy(function($query) use($dir,$uid){
-                        $query->where('id','=',$dir)->where('uid','=',$uid);
-                    });
+                    $child_object = getFolderChildFiles($uid,$pid);
+
+                    if(!empty($child_object['file'])){
+                        Stores::destroy($child_object['file']);
+                    }
+
+                    if(!empty($child_object['folder'])){
+                        Folders::destroy($child_object['folder']);
+                    }
+
                     $success_ids[] = $dir;
                 }
             }catch (\Throwable $e){
@@ -324,32 +338,11 @@ class File extends Home
             $this->error('数据不存在');
         }
 
-        $policy = Policys::get($info['policy_id']);
+        $share = Shares::where('id',$info['shares_id'])->find();
 
-        if(empty($policy)){
-            $this->error('存储策略不存在');
-        }
+        $share_url = getShareUrl($share['code']);
 
-
-        // 判断策略类型
-        switch ($policy['type']){
-            case 'local':
-                //文件地址
-                $file_path = env('root_path').'public'.getSafeDirSeparator($policy->config['save_dir'] . $info['file_name']);
-                // 文件不存在
-                if(!is_file($file_path)){
-                    $this->error('存储文件不存在');
-                }
-                //下载对象
-                $down = new Download($file_path);
-                //下载文件
-                return $down->name($info['origin_name']);
-                break;
-            case 'remote':
-                $down_url = getDownloadRemote($info['file_name'],$info['origin_name'],$policy->config['server_uri'],'',$policy->config['access_token']);
-                $this->redirect($down_url);
-                break;
-        }
+        $this->redirect($share_url);
 
     }
 
