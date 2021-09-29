@@ -38,8 +38,8 @@ composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 ```
 location / { 
    if (!-e $request_filename) {
-   		rewrite  ^(.*)$  /index.php?s=/$1  last;
-    }
+   	rewrite  ^(.*)$  /index.php?s=/$1  last;
+   }
 }
 ```
 #### nginx下载规则

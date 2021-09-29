@@ -186,11 +186,10 @@ class TxyunOss extends PolicyStore
 
         $url = $client->getPresignedUrl('GetObject',[
             'Bucket' => $bucket,
-            'Key' => $object,
-            'Headers' => [
-                'response-content-disposition' => $disposition
-            ]
+            'Key' => $object
         ],'+10 minutes')->__toString();
+
+        $url .= 'response-content-disposition='.urlencode($disposition).'&';
 
         // 限速下载
         if($speed !== ""){
