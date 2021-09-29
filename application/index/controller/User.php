@@ -99,11 +99,13 @@ class User extends Home
 
     public function vip(){
         $share_id = input('get.share_id',0);
+        $is_layer = input('get.layer',0);
 
         $rule = getVipRule();
 
         $this->assign('rule',$rule);
         $this->assign('share_id',$share_id);
+        $this->assign('is_layer',$is_layer);
 
         if($this->request->isMobile()){
             return $this->fetch('vip_wap');
@@ -352,6 +354,10 @@ class User extends Home
             return json(['code' => 1,'msg' => '申请成功，请等待处理']);
         }
         $this->assign('amount',$this->userInfo['amount']);
+        return $this->fetch();
+    }
+
+    public function info(){
         return $this->fetch();
     }
 

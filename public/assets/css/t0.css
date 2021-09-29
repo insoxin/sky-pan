@@ -6,7 +6,7 @@ body {
 }
 
 .bgimg {
-    background-image: url(img/logo3.gif);
+    background-image: url(../image/logo3.gif);
     background-repeat: no-repeat;
     background-position: 17px 14px;
 }

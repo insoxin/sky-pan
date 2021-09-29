@@ -5,6 +5,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link href="__STATIC__/pan/shouyi/theme.css" rel="stylesheet">
+  <script src="__STATIC__/js/jquery.js"></script>
+  <script src="__STATIC__/js/lay/modules/layer.js"></script>
+  <script src="__STATIC__/pan/shouyi/bootstrap.js"></script>
 </head>
 <body>
 <style>
@@ -42,10 +46,12 @@
 <div class="modal-dialog" role="document" style="max-width: 550px;">
   <div class="modal-content">
     <div class="modal-header">
-      <h5 class="modal-title">在线开通VIP会员</h5>
+      <h5 class="modal-title">开通VIP会员</h5>
+      {eq name="$is_layer" value="0"}
       <button class="close" type="button" data-dismiss="modal" aria-label="Close">
         <span class="font-weight-light" aria-hidden="true">&times;</span>
       </button>
+      {/eq}
     </div>
     <div class="modal-body p-3">
       <div id="mb_vip_selection">
@@ -88,8 +94,10 @@
       </div>
     </div>
     <div class="modal-footer">
+      {eq name="$is_layer" value="0"}
       <button class="btn btn-secondary" type="button" data-dismiss="modal">关闭</button>
-      <a href="javascript:;" onclick="kefu()" class="btn btn-primary">联系客服</a>
+      {/eq}
+      <a href="javascript:;" onclick="vip_kefu()" class="btn btn-primary">联系客服</a>
     </div>
   </div>
 </div>
@@ -97,6 +105,10 @@
 
 <script>
   var vip_id = "";
+
+  function vip_kefu() {
+    layer.alert("{$Think.config.basic.site_kefu|raw}", { title: '联系客服' });
+  }
 
   function zhifu(pay_type){
 

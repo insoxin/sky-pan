@@ -122,11 +122,16 @@
 }
 
 .acss-header .CMxQsC {
-    background: url(https://pan.baidu.com/sns/box-static/disk-share/widget/pageModule/init/image/share_tit_bg_5855301.png?t=1611893514972) no-repeat;
+    background: url(https://pan.baidu.com/sns/box-static/disk-share/widget/pageModule/init/image/share_tit_bg_5855301.png) no-repeat;
     background-size: 100% 100%;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px
 }
+
+.acss-header .CMxQsC.is_vip{
+    background: url(https://pannss.bdstatic.com/m-static/disk-share/widget/pageModule/init/image/share_tit_bg_svip_5ab407f.png) no-repeat;
+}
+
 
 .verify-form {
     margin: 0 auto;
@@ -184,7 +189,7 @@
 .verify-property {
     width: 275px;
     color: #fff;
-    margin: 10px 0;
+    margin: 12px 0;
     overflow: hidden
 }
 
@@ -192,7 +197,15 @@
     _display: inline;
     display: inline-block;
     font-size: 16px;
-    font-family: PingFangSC-Semibold
+    font-weight: 900;
+}
+
+.CMxQsC.is_vip .verify-property{
+    color: #64360D;
+}
+
+.CMxQsC.is_vip .author-desc{
+    color: rgba(100,54,13,.7);
 }
 
 .verify-input {
@@ -232,6 +245,10 @@
     background: #9ADAF2
 }
 
+.CMxQsC.is_vip .photo-frame{
+    background: #e8c486
+}
+
 .photo-frame,
 .photo-frame>span {
     width: 44px;
@@ -253,14 +270,26 @@
 }
 
 .verify-user-avatar .v-icon em {
-    width: 19px;
+    width: 22px;
     height: 19px;
-    background: url(https://pan.baidu.com/sns/box-static/disk-share/widget/pageModule/init/image/p-vip-icon-all_be8d2cb.png?t=1611893514972) no-repeat;
+    background: url(https://pannss.bdstatic.com/m-static/disk-share/widget/pageModule/init/image/p-vip-icon-all_be8d2cb.png) no-repeat;
     display: block
 }
 
 .verify-user-avatar .unvip-icon em {
     background-position: -1px 0
+}
+
+.verify-user-avatar .vip-icon em {
+    background-position: -22px 0
+}
+
+.verify-user-avatar .unvip-icon em {
+    background-position: -1px 0
+}
+
+.verify-user-avatar .vipicon em {
+    display: none
 }
 
 .verify-user-avatar {

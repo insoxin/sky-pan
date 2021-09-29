@@ -156,21 +156,56 @@
         APP: ''/*当前应用名*/
     };
 
+    function isMobile(){
+        return /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent);
+    }
 
     function vip() {
-        if (window.screen.width < 768) {
-            var w = '95%';
+
+        let w = window.screen.width < 768 ? '95%' : '723px';
+
+        let h = window.screen.width < 768 ? '95%' : '520px';
+
+        if (isMobile()) {
+            layer.open({
+                type: 2,
+                shadeClose: true,
+                closeBtn: 0,
+                title: false,
+                offset: 'b',
+                anim: 2,
+                area: ['100%', '620px'], // 宽高
+                content: "/user/vip?layer=1",
+                end: function () {
+
+                },
+            });
+        }else{
+            layer.open({
+                type: 2,
+                shadeClose: true,
+                title: "VIP中心",
+                area: [w, h], // 宽高
+                content: "/user/vip",
+                end: function () {
+                    //location.reload();
+                },
+            });
         }
-        else {
-            var w = '723px';
-        }
+    }
+
+    function userinfo() {
+
+        let w = window.screen.width < 768 ? '95%' : '723px';
+
+        let h = window.screen.width < 768 ? '95%' : '620px';
 
         layer.open({
             type: 2,
             shadeClose: true,
-            title: {eq name="$vip_info.is_vip" value="0"}"在线开通VIP会员"{else/}"VIP到期时间：{$vip_info.expire_time}"{/eq},
-            area: [w, '520px'], // 宽高
-            content: "/user/vip",
+            title: "个人中心",
+            area: [w, h], // 宽高
+            content: "/user/info",
             end: function () {
                 //location.reload();
             },
@@ -189,7 +224,7 @@
 
     $(".head-box").click(
         function () {
-            vip();
+            userinfo();
         }
     );
 

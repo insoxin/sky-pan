@@ -54,7 +54,7 @@ class Index extends Home
         }
 
         // 获取文件所有者信息
-        $user = Users::where('id',$storeInfo['uid'])->field('id,nickname,avatar,status')->find();
+        $user = Users::where('id',$storeInfo['uid'])->field('id,nickname,avatar,status,group')->find();
 
         if(empty($user) || $user['status'] == 0){
             return $this->fetch('404');
@@ -68,11 +68,19 @@ class Index extends Home
 
         // 需要密码
         if($info['pwd_status'] == 1 && !empty($info['pwd']) && $share_pwd != $info['pwd']){
+            // VIP用户组
+            $vip_group = config('vip.vip_group');
+
+            $is_vip = $user['group'] == $vip_group ? 1 : 0;
+
+            $this->assign('userinfo',$user);
+            $this->assign('is_vip',$is_vip);
             return $this->fetch('pwd');
         }
 
         // 显示界面
         if($info['type']){
+
             // 目录显示
             $base_info = [
                 'id' => $storeInfo['id'],

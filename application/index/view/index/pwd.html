@@ -30,18 +30,26 @@
         <div class="acss_banner"></div>
         <div class="verify-form">
             <div class="clearfix">
-                <div class="CMxQsC">
+                <div class="CMxQsC {eq name="$is_vip" value="1"}is_vip{/eq}">
                     <div class="avatar">
                         <div class="photo-frame">
                                 <span class="radius-3">
-                                    <img src="{:getUserHead($info.avatar)}" width="44">
+                                    <img src="{:getUserHead($userinfo.avatar)}" width="44">
                                     <span class="cert-info"></span>
                                 </span>
                         </div>
                     </div>
                     <div class="verify-property">
                         <div class="verify-user">
-                            <div class="username">{:getSafeNickname($info.nickname)}</div>
+                            <div class="username">{:getSafeNickname($userinfo.nickname)}</div>
+                            &nbsp;
+                            <span class="verify-user-avatar">
+                                {eq name="$is_vip" value="1"}
+                                <a href="javascript:;" class="v-icon vip-icon" title="VIP会员"><em></em></a>
+                                {else/}
+                                <a href="javascript:;" class="v-icon unvip-icon" title="普通用户"><em></em></a>
+                                {/eq}
+                            </span>
                         </div>
                         <div class="author-desc">暂无签名</div>
                     </div>
@@ -55,9 +63,9 @@
                             <input class="QKKaIE LxgeIt" id="accessCode" tabindex="1" type="text">
                             <div id="submitBtn">
                                 <a class="submit-a g-button-blue-large" href="javascript:;" title="提取文件">
-                                        <span class="g-button-right">
-                                            <span class="text" style="width: auto;">提取文件</span>
-                                        </span>
+                                    <span class="g-button-right">
+                                        <span class="text" style="width: auto;">提取文件</span>
+                                    </span>
                                 </a>
                             </div>
                         </dd>

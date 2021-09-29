@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <!-- Set render engine for 360 browser -->
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- HTML5 shim for IE8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <![endif]-->
+
+
+    <link href="__STATIC__/themes/admin_simpleboot3/public/assets/themes/flatadmin/bootstrap.min.css" rel="stylesheet">
+    <link href="__STATIC__/themes/admin_simpleboot3/public/assets/simpleboot3/css/simplebootadmin.css" rel="stylesheet">
+    <link href="__STATIC__/static/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        form .input-order {
+            margin-bottom: 0px;
+            padding: 0 2px;
+            width: 42px;
+            font-size: 12px;
+        }
+
+        form .input-order:focus {
+            outline: none;
+        }
+
+        .table-actions {
+            margin-top: 5px;
+            margin-bottom: 5px;
+            padding: 0px;
+        }
+
+        .table-list {
+            margin-bottom: 0px;
+        }
+
+        .form-required {
+            color: red;
+        }
+    </style>
+    <script type="text/javascript">
+        //全局变量
+        var GV = {
+            ROOT: "/",
+            WEB_ROOT: "/",
+            JS_ROOT: "static/js/",
+            APP: 'admin'/*当前应用名*/
+        };
+    </script>
+    <script src="__STATIC__/themes/admin_simpleboot3/public/assets/js/jquery-1.10.2.min.js"></script>
+    <script src="__STATIC__/static/js/wind.js"></script>
+    <script src="__STATIC__/themes/admin_simpleboot3/public/assets/js/bootstrap.min.js"></script>
+    <link href="__STATIC__/static/js/layer/skin/default/layer.css" rel="stylesheet">
+    <script src="__STATIC__/static/js/layer/layer.js"></script>
+    <script>
+        Wind.css('artDialog');
+        $(function () {
+            $("[data-toggle='tooltip']").tooltip({
+                container: 'body',
+                html: true,
+            });
+            $("li.dropdown").hover(function () {
+                $(this).addClass("open");
+            }, function () {
+                $(this).removeClass("open");
+            });
+        });
+    </script>
+    <style>
+        #think_page_trace_open {
+            z-index: 9999;
+        }
+    </style>
+</head>
+
+<body>
+<div class="wrap js-check-wrap">
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#A" data-toggle="tab">个人信息</a></li>
+        <li><a href="#B" data-toggle="tab">修改密码</a></li>
+    </ul>
+
+    <form class="form-horizontal">
+        <fieldset>
+            <div class="tabbable">
+                <div class="tab-content" style="margin-top: 20px;">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">用户账号</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="text" class="form-control" value="{$info.username}" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">VIP到期时间</label>
+                            <div class="col-md-6 col-sm-10">
+                                {eq name="$vip_info.is_vip" value="1"}
+                                <a href="javascript:parent.vip()" class="tan" tan="点击开通/续费">VIP到期时间：{$vip_info.expire_time}</a>
+                                {else/}
+                                <a href="javascript:parent.vip()" class="tan" tan="点击开通/续费">未开通</a>
+                                {/eq}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label"><span class="form-required">*</span>设置昵称</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input required type="text" class="form-control" name="user_nickname"
+                                       value="{$info.nickname}" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label"><span class="form-required">*</span>设置头像</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input type="hidden" name="avatar" value="" id="thumbnail">
+                                <a href="javascript:uploadOneImage('图片上传','#thumbnail');">
+                                    <img src="{:getUserHead($info.avatar)}"
+                                         id="thumbnail-preview"
+                                         style="cursor: pointer;max-height: 80px;max-width: 80px;" />
+                                </a>
+                                <span class="help-block">
+                                   点击图片上传您的头像，请上传150x150大小的头像
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-success">保存</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="B">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">原密码</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input required type="password" class="form-control" name="old_password"
+                                       autocomplete="new-password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">新密码</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input required type="password" class="form-control" name="password"
+                                       autocomplete="new-password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">重复新密码</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input required type="password" class="form-control" name="re_password"
+                                       autocomplete="new-password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-success js-ajax-submit">保存</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+
+<script>
+    $('.tan').on({
+        mouseenter: function () {
+            var nei = $(this).attr("tan");
+            if (nei) {
+                var that = $(this);
+                tips = layer.tips("<span style='color:#000;font-size:17px;'>" + nei + "</span>", that, { tips: [2, '#fff'], time: 0, area: 'auto', maxWidth: 700 });
+            }
+        },
+        mouseleave: function () {
+            layer.close(tips);
+        }
+    });
+</script>
+</body>
+
+</html>
