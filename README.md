@@ -6,10 +6,6 @@
 #### 介绍
 一款多用户赚钱网盘程序
 
-![输入图片说明](https://images.gitee.com/uploads/images/2021/1030/000900_cbda611f_9161054.png "QQ截图20211030000838.png")
-![输入图片说明](https://images.gitee.com/uploads/images/2021/1030/000910_3729e8f9_9161054.png "QQ截图20211030000827.png")
-
-
 #### 软件架构
 前端
 * Pear-admin
