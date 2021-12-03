@@ -29,9 +29,13 @@
 #### 环境依赖
 * `fileinfo`
 
-#### 解决composer安装失败
+#### 常见问题
 
+* 解决composer安装失败
 https://gitee.com/tobugnet/sky-pan/issues/I4H6WR
+
+* 如何配置远程服务器
+https://gitee.com/tobugnet/sky-pan/issues/I4KPMY
 
 
 #### 安装教程
