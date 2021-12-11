@@ -71,8 +71,8 @@ location /下载目录名 {
 
 **支付宝捐赠**
 
-![](C:\Users\16555\Desktop\1639174033.jpg)
+![输入图片说明](runtime/1639174033.jpg)
 
 **微信捐赠**
 
-![](C:\Users\16555\Desktop\mm_facetoface_collect_qrcode_1639173945300.png)
+![输入图片说明](runtime/mm_facetoface_collect_qrcode_1639173945300.png)
