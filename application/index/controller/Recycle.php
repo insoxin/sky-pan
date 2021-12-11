@@ -2,12 +2,14 @@
 
 namespace app\index\controller;
 
+use app\common\behavior\FileDelete;
 use app\common\controller\Home;
 use app\common\model\FileManage;
 use app\common\model\Folders;
 use app\common\model\Profit;
 use app\common\model\Shares;
 use app\common\model\Stores;
+use think\facade\Hook;
 
 class Recycle extends Home
 {
@@ -37,39 +39,58 @@ class Recycle extends Home
         try {
             $stores = Stores::onlyTrashed()->where('uid',$uid)->select();
             foreach ($stores as $file){
-                // 删除文件
-                $file->delete(true);
-                // 删除分享信息
-                Profit::where('file_id',$file['id'])
-                    ->where('uid',$uid)
-                    ->delete();
+                $result = Hook::exec(FileDelete::class,['file' => $file['id']]);
 
-                $success_ids[] = $file['id'];
+                if($result == true){
+
+                    // 删除分享信息
+                    Profit::where('file_id',$file['id'])
+                        ->where('uid',$uid)
+                        ->delete();
+
+                    // 删除文件
+                    $file->delete(true);
+
+                    $success_ids[] = $file['id'];
+                }
+
             }
 
             $folders = Folders::onlyTrashed()->where('uid',$uid)->select();
             foreach ($folders as $dir){
-                // 删除文件
-                $dir->delete(true);
                 // 获取子文件夹
                 $folder_object = getFolderChildFiles($uid,$dir['id']);
 
-                // 子文件夹
-                if(!empty($folder_object['folder'])){
-                    Folders::where('id','in',$folder_object['folder'])->delete(true);
-                }
+                $result = Hook::exec(FileDelete::class,[
+                    'folder' => $folder_object['folder'],
+                    'file' => $folder_object['file']
+                ]);
 
-                // 子文件
-                if(!empty($folder_object['file'])){
+                if($result == true){
+
+                    // 子文件夹
+                    if(!empty($folder_object['folder'])){
+                        Folders::where('id','in',$folder_object['folder'])->delete(true);
+                    }
+
+                    // 子文件
+                    if(!empty($folder_object['file'])){
+                        // 删除文件
+                        Stores::where('id','in',$folder_object['file'])->delete(true);
+                        // 删除分享信息
+                        Profit::where('file_id','in',$folder_object['file'])
+                            ->where('uid',$uid)
+                            ->delete();
+                    }
+
                     // 删除文件
-                    Stores::where('id','in',$folder_object['file'])->delete(true);
-                    // 删除分享信息
-                    Profit::where('file_id','in',$folder_object['file'])
-                        ->where('uid',$uid)
-                        ->delete();
+                    $dir->delete(true);
+
+                    $success_ids[] = $dir['id'];
+
                 }
 
-                $success_ids[] = $dir['id'];
+
             }
 
             return json(['status' => 1,'msg' => '成功清空回收站，共删除 '.count($success_ids).' 个文件(夹)~']);
@@ -137,15 +158,19 @@ class Recycle extends Home
             try {
                 $stores = Stores::onlyTrashed()->where('id','in',$ids)->where('uid',$uid)->select();
                 foreach ($stores as $file){
-                    // 删除文件
-                    $file->delete(true);
+                    $result = Hook::exec(FileDelete::class,['file' => $file['id']]);
 
-                    // 删除分享信息
-                    Profit::where('file_id',$file['id'])
-                        ->where('uid',$uid)
-                        ->delete();
+                    if($result == true){
+                        // 删除分享信息
+                        Profit::where('file_id',$file['id'])
+                            ->where('uid',$uid)
+                            ->delete();
 
-                    $success_ids[] = $file['id'];
+                        // 删除文件
+                        $file->delete(true);
+
+                        $success_ids[] = $file['id'];
+                    }
                 }
             }catch (\Throwable $e){
                 return json(['status' => 0,'msg' => $e->getMessage()]);
@@ -156,28 +181,37 @@ class Recycle extends Home
             try {
                 $folders = Folders::onlyTrashed()->where('id','in',$idFs)->where('uid',$uid)->select();
                 foreach ($folders as $dir){
-                    // 删除文件
-                    $dir->delete(true);
 
                     // 获取子文件夹
                     $folder_object = getFolderChildFiles($uid,$dir['id']);
 
-                    // 子文件夹
-                    if(!empty($folder_object['folder'])){
-                        Folders::where('id','in',$folder_object['folder'])->delete(true);
-                    }
+                    $result = Hook::exec(FileDelete::class,[
+                        'folder' => $folder_object['folder'],
+                        'file' => $folder_object['file']
+                    ]);
 
-                    // 子文件
-                    if(!empty($folder_object['file'])){
+                    if($result == true){
+                        // 子文件夹
+                        if(!empty($folder_object['folder'])){
+                            Folders::where('id','in',$folder_object['folder'])->delete(true);
+                        }
+
+                        // 子文件
+                        if(!empty($folder_object['file'])){
+                            // 删除文件
+                            Stores::where('id','in',$folder_object['file'])->delete(true);
+                            // 删除分享信息
+                            Profit::where('file_id','in',$folder_object['file'])
+                                ->where('uid',$uid)
+                                ->delete();
+                        }
+
                         // 删除文件
-                        Stores::where('id','in',$folder_object['file'])->delete(true);
-                        // 删除分享信息
-                        Profit::where('file_id','in',$folder_object['file'])
-                            ->where('uid',$uid)
-                            ->delete();
+                        $dir->delete(true);
+
+                        $success_ids[] = $dir['id'];
                     }
 
-                    $success_ids[] = $dir['id'];
                 }
             }catch (\Throwable $e){
                 return json(['status' => 0,'msg' => $e->getMessage()]);

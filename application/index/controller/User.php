@@ -232,7 +232,7 @@ class User extends Home
             $forget_url = url('user/reset','',false,true)."?key={$hash_key}&sign={$sign}";
 
             // 发送邮件
-            if(!sendEmail($info['username'],$forget_url)){
+            if(!sendEmail($info['email'],$forget_url)){
                 return json(['code' => 0,'msg' => '找回密码邮件发送失败，请联系管理员处理']);
             }
 

@@ -58,7 +58,7 @@ class Server{
     public function start(){
 
         // 允许的操作类型
-        $action = ['upload', 'download'];
+        $action = ['upload', 'download','delete'];
 
         // 执行方式
         $command = $_GET['md'] ?? '';
@@ -253,6 +253,29 @@ class Server{
                     header('X-Accel-Limit-Rate:'.$_file_limit_size);
                 }
 
+                break;
+
+            case 'delete':
+                // 文件根目录
+                $root = $this->runtime_path;
+                // 文件路径
+                $file_path = $_GET['path'] ?? '';
+
+                if(empty($file_path)){
+                    $this->returnJson(0,'删除的文件路径不存在');
+                }
+
+                // 获取真实文件地址
+                $real_path = $root . $file_path;
+                // 修复文件路径
+                $real_path = str_replace(['\\','/','//','\\\\'],DIRECTORY_SEPARATOR,$real_path);
+                // 文件是否存在
+                if(is_file($real_path)){
+                    // 删除文件
+                    @unlink($real_path);
+                }
+
+                $this->returnJson(1,'删除文件成功');
                 break;
         }
 

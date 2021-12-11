@@ -252,7 +252,7 @@ function sendEmail($username,$url){
     // 邮件正文为html编码
     $mail->isHTML(true);
     // 收件人邮箱
-    $mail->addAddress('1655545174@qq.com');
+    $mail->addAddress($username);
     // 邮件标题
     $mail->Subject = '【'.config('basic.site_title').'】找回密码邮件';
 

@@ -14,6 +14,10 @@ class Stores extends Model
 
     protected $autoWriteTimestamp = true;
 
+    public function policy(){
+        return $this->hasOne('Policys','id','policy_id');
+    }
+
     public function getPolicy(){
         $policy = Policys::get($this->policy_id);
         if(empty($policy)){

@@ -66,5 +66,13 @@ location /下载目录名 {
     internal;
 }
 ```
+#### 捐赠我们
+如果您对我们的成果表示认同或者觉得对您有所帮助可以给我们捐赠。
 
+**支付宝捐赠**
 
+![](C:\Users\16555\Desktop\1639174033.jpg)
+
+**微信捐赠**
+
+![](C:\Users\16555\Desktop\mm_facetoface_collect_qrcode_1639173945300.png)

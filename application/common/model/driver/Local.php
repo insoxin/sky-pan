@@ -53,6 +53,10 @@ class Local extends PolicyStore
 
             $save_file = $this->path['path'] . $this->path['filename'];
 
+            if(!is_dir(dirname($save_file))){
+                @mkdir(dirname($save_file),0775,true);
+            }
+
             // 融合文件路径
             $fileObj = fopen($save_file,"a+");
 
