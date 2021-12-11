@@ -10,6 +10,16 @@
     <script type="text/javascript" src="__STATIC__/js/jquery.js"></script>
     <script src="__STATIC__/js/common.js"></script>
     <script src="__STATIC__/js/layer.js"></script>
+    <style>
+        .pmob2{
+            position: relative;
+        }
+        .pmob2 .send-code{
+            position: absolute;
+            top: 12px;
+            right: 13px;
+        }
+    </style>
 </head>
 
 <body>
@@ -39,6 +49,11 @@
 
             <div class="p3 pmob2">
                 <input class="input" id="reg_email" type="email" value="" tabindex="3" maxlength="64" placeholder="安全邮箱">
+            </div>
+
+            <div class="p3 pmob2">
+                <input class="input" id="reg_email_code" type="email" value="" tabindex="3" maxlength="6" placeholder="邮件验证码">
+                <button id="send-email-code" type="button" class="send-code">发送验证码</button>
             </div>
 
             <div class="p3">
@@ -127,6 +142,10 @@
                 <div class="p3 pmob2">
                     <input class="input" id="reg_email" type="email" value="" tabindex="3" maxlength="64" placeholder="安全邮箱">
                 </div>
+                <div class="p3 pmob2">
+                    <input class="input" id="reg_email_code" type="email" value="" tabindex="3" maxlength="6" placeholder="邮件验证码">
+                    <button id="send-email-code" type="button" class="send-code">发送验证码</button>
+                </div>
 
                 <div class="p3">
                     <div class="errorBox">请输入密码</div>
@@ -181,7 +200,45 @@
 {/eq}
 <script>
         $(function () {
-            //setTimeout("check_login()", 1300);
+            $("#send-email-code").on('click',function(){
+                var email = $("#reg_email").val();
+
+                if($("#send-email-code").hasClass('disable')){
+                    return false;
+                }
+
+                if(!email){
+                    $('#reg_email').focus();
+                    return error("请输入安全邮箱");
+                }
+
+                $("#send-email-code").addClass('disable');
+
+                var times = 60;
+
+                var emailCodeTimer = setInterval(function(){
+                    $("#send-email-code").html(times + "秒后重试")
+                    times --;
+                    if(times < 0){
+                        $("#send-email-code").removeClass('disable');
+                        $("#send-email-code").html("发送验证码")
+                        clearInterval(emailCodeTimer);
+                    }
+                },1000);
+
+               $.ajax({
+                   url:"{:url('user/send_reg_email')}?email=" + email,
+                   type:'get',
+                   dataType:"json",
+                   success:function(result){
+                       if(result.code === 1){
+                           layer.msg(result.msg,{icon:1});
+                       }else{
+                           layer.msg(result.msg,{icon:2});
+                       }
+                   }
+               })
+            });
         });
 
         function wx() {
@@ -270,6 +327,7 @@
             var pwd2 = $("#reg_pass2").val();
             var nick = $("#reg_nickname").val();
             var email = $("#reg_email").val();
+            var email_code = $("#reg_email_code").val();
 
             var msg = '';
 
@@ -297,6 +355,9 @@
             }else if(!email){
                 $('#reg_email').focus();
                 msg = "请输入安全邮箱";
+            }else if(!email_code){
+                $('#reg_email_code').focus();
+                msg = "请输入邮件验证码";
             }
 
             if(msg != ''){
@@ -311,7 +372,8 @@
                     "nickname":nick,
                     "username":sacct,
                     "password":pwd1,
-                    "email":email
+                    "email":email,
+                    "email_code":email_code
                 },
                 dataType:'json',
                 success: function(data){

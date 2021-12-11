@@ -64,6 +64,19 @@
                 </div>
             </div>
 
+            <div class="layui-form-item">
+                <label class="layui-form-label">注册验证模板</label>
+                <div class="layui-input-block" style="max-width: 800px;">
+                    <textarea name="template_register" id="reg_edit" cols="30" rows="10">{$option.template_register}</textarea>
+                    <div class="layui-form-mid layui-word-aux">
+                        模板内变量：
+                        {email} 邮箱账号
+                        {site_name} 站点名称
+                        {code} 验证码
+                    </div>
+                </div>
+            </div>
+
 
             <div class="layui-form-item">
                 <div class="layui-input-block">
@@ -90,8 +103,17 @@
             toolbar: "code",
         });
 
+        var reg_edit = tinymce.render({
+            elem: "#reg_edit",
+            height: 400,
+            menubar: false, //隐藏菜单栏
+            plugins: "code",
+            toolbar: "code",
+        });
+
         form.on('submit(save)', function(data){
             data.field['template_forget'] = edit.getContent()
+            data.field['template_register'] = reg_edit.getContent()
             $.ajax({
                 data:JSON.stringify(data.field),
                 dataType:'json',

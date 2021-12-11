@@ -61,10 +61,21 @@ class User extends Home
             'nickname|昵称' => 'require|chsAlphaNum|length:2,18',
             'username|用户帐号' => 'require|alphaNum|length:6,26',
             'password|登录密码' => 'require|alphaNum|length:6,18',
-            'email|安全邮箱' => 'require|email'
+            'email|安全邮箱' => 'require|email',
+            'email_code|邮件验证码' => 'require|length:6'
         ]);
 
         if($result !== true) return json(['code' => 0,'msg' => $result]);
+
+        $reg_cache_key = 'reg_verify_'.str_replace(['@','.'],['_','_'],$data['email']);
+        $forget_info = Cache::get($reg_cache_key);
+        if(empty($data['email_code']) || empty($forget_info['email_code'])){
+            return json(['code' => 0,'msg' => '邮件验证码不存在']);
+        }
+
+        if($forget_info['email_code'] != $data['email_code']){
+            return json(['code' => 0,'msg' => '邮件验证码错误']);
+        }
 
         $default_group = config('register.default_group');
 
@@ -239,6 +250,43 @@ class User extends Home
             return json(['code' => 1,'msg' => '找回密码邮件发送成功']);
         }
         return $this->fetch();
+    }
+
+    public function send_reg_email(){
+        $email = input('get.email');
+        $result = $this->validate(['email' => $email],[
+            'email|安全邮箱' => 'require|email'
+        ]);
+
+        if(true !== $result){
+            return json(['status' => 0,'msg' => $result]);
+        }
+
+        $reg_cache_key = 'reg_verify_'.str_replace(['@','.'],['_','_'],$email);
+
+        // 邮件发送记录
+        $cache_info = Cache::get($reg_cache_key);
+
+        if(!empty($cache_info)){
+            if($cache_info['time'] >= time()){
+                return json(['code' => 0,'msg' => '发送频繁，请等待'.($cache_info['time'] - time()) . ' 秒后重新发送']);
+            }
+        }
+
+        $email_code = rand(0,9) . rand(0,9). rand(0,9) . rand(0,9) . rand(0,9). rand(0,9);
+
+        Cache::set($reg_cache_key,[
+            'email' => $email,
+            'email_code' => $email_code,
+            'time' => time() + 60
+        ],600);
+
+        // 发送邮件
+        if(!sendRegEmail($email,$email_code)){
+            return json(['code' => 0,'msg' => '邮件发送失败，请联系管理员处理']);
+        }
+
+        return json(['code' => 1,'msg' => '验证码邮件发送成功']);
     }
 
     public function reset(){

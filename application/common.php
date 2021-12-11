@@ -263,6 +263,58 @@ function sendEmail($username,$url){
     return $mail->send();
 }
 
+function sendRegEmail($email,$code){
+    // 邮件配置
+    $config = config('email.');
+
+    // 获取模板变量
+    $temp_var = [
+        '{email}' => $email,
+        '{site_title}' => config('basic.site_title'),
+        '{code}' => $code
+    ];
+
+    // 邮件正文
+    $email_body = str_replace(array_keys($temp_var),array_values($temp_var),$config['template_register']);
+
+    // php mail客户端
+    $mail = new PHPMailer\PHPMailer\PHPMailer();
+    // debug调试
+    $mail->SMTPDebug = 0;
+    //  使用smtp鉴权方式
+    $mail->isSMTP();
+    // SMTP鉴权
+    $mail->SMTPAuth = true;
+    // 邮箱服务器地址
+    $mail->Host = $config['smtp_host'];
+    // SSL加密
+    $mail->SMTPSecure = 'ssl';
+    // 端口
+    $mail->Port = $config['smtp_port'];
+    // 邮件的编码
+    $mail->CharSet = 'UTF-8';
+    // smtp账号
+    $mail->Username = $config['username'];
+    // smtp密码
+    $mail->Password = $config['password'];
+    // 设置发件人昵称
+    $mail->FromName = $config['nickname'];
+    // 设置发件人邮箱
+    $mail->From = $config['username'];
+    // 邮件正文为html编码
+    $mail->isHTML(true);
+    // 收件人邮箱
+    $mail->addAddress($email);
+    // 邮件标题
+    $mail->Subject = '【'.config('basic.site_title').'】注册验证码邮件';
+
+    // 邮件正文
+    $mail->Body = $email_body;
+
+    // 发送邮件 返回状态
+    return $mail->send();
+}
+
 function getFileDownloadUrl($shares_id,$file_id,$is_count = 1){
 
     $params = [

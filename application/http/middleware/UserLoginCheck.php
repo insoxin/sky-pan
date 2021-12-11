@@ -10,6 +10,7 @@ class UserLoginCheck
         'User/login',
         'User/register',
         'User/forget',
+        'User/send_reg_email',
         'User/reset',
         'Index/index',
         'Index/share',
