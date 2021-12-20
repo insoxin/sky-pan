@@ -278,7 +278,11 @@ class Index extends Home
 
             // 远程文件下载
             if($policy->type == 'remote'){
-                $down_url = getDownloadRemote($stores['file_name'],$stores['origin_name'],$policy->config['server_uri'],$this->groupData['speed'],$policy->config['access_token']);
+                if(isset($policy->config['download_uri']) && !empty($policy->config['download_uri'])){
+                    $down_url = getDownloadRemote($stores['file_name'],$stores['origin_name'],$policy->config['download_uri'],$this->groupData['speed'],$policy->config['access_token']);
+                }else{
+                    $down_url = getDownloadRemote($stores['file_name'],$stores['origin_name'],$policy->config['server_uri'],$this->groupData['speed'],$policy->config['access_token']);
+                }
                 $this->redirect($down_url);
             }
 
